@@ -22,7 +22,7 @@ public class AddManuallyActivity extends AppCompatActivity {
     private String surname;
     private String callSign;
     private String phoneNumber;
-    MainViewModel mainViewModel;
+    private MainViewModel mainViewModel;
     int index;
 
 

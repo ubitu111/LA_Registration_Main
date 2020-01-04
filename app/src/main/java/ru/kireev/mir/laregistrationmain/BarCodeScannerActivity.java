@@ -1,14 +1,15 @@
 package ru.kireev.mir.laregistrationmain;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -20,6 +21,8 @@ import com.yanzhenjie.zbar.ImageScanner;
 import com.yanzhenjie.zbar.Symbol;
 import com.yanzhenjie.zbar.SymbolSet;
 
+import ru.kireev.mir.laregistrationmain.data.MainViewModel;
+import ru.kireev.mir.laregistrationmain.data.Volunteer;
 import ru.kireev.mir.laregistrationmain.util.CameraPreview;
 
 public class BarCodeScannerActivity extends AppCompatActivity {
@@ -31,11 +34,20 @@ public class BarCodeScannerActivity extends AppCompatActivity {
     private boolean previewing = true;
     private FrameLayout frameLayout;
     private Button scanButton;
+    private String name;
+    private String surname;
+    private String callSign;
+    private String phoneNumber;
+    private MainViewModel mainViewModel;
+    private int index;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bar_code_scanner);
+        mainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+        Intent intent = getIntent();
+        index = intent.getIntExtra("size", 0);
         initControls();
     }
 
@@ -118,15 +130,41 @@ public class BarCodeScannerActivity extends AppCompatActivity {
                 SymbolSet syms = scanner.getResults();
                 for (Symbol sym : syms) {
 
-                    Log.i("<<<<<<Asset Code>>>>> ",
-                            "<<<<Bar Code>>> " + sym.getData());
                     String scanResult = sym.getData().trim();
+                    String[] scanResultArray = scanResult.split("\n");
+                    int lengthOfArray = scanResultArray.length;
+                    if (lengthOfArray == 3 || lengthOfArray == 4) {
+                        if (lengthOfArray == 3) {
+                            name = scanResultArray[0];
+                            surname = scanResultArray[1];
+                            callSign = "";
+                            phoneNumber = scanResultArray[2];
 
-                    showAlertDialog(scanResult);
+                        } else  {
+                            name = scanResultArray[0];
+                            surname = scanResultArray[1];
+                            callSign = scanResultArray[2];
+                            phoneNumber = scanResultArray[3];
 
-                  /*  Toast.makeText(BarcodeScanner.this, scanResult,
-                            Toast.LENGTH_SHORT).show();*/
+                        }
 
+                        Volunteer volunteer;
+                        if (index == 0) {
+                            volunteer = new Volunteer(0, name, surname, callSign, phoneNumber, "false");
+                        }
+                        else {
+                            volunteer = new Volunteer(index, name, surname, callSign, phoneNumber, "false");
+                        }
+                        mainViewModel.insertVolunteer(volunteer);
+
+                        showAlertDialog("Сканирование прошло успешно");
+
+                        barcodeScanned = true;
+
+                        break;
+                    }
+
+                    showAlertDialog("Произошла ошибка при сканировании, попробуйте еще раз");
                     barcodeScanned = true;
 
                     break;

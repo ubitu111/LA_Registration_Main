@@ -54,7 +54,9 @@ public class NotSentVolunteersActivity extends AppCompatActivity {
 
     public void onClickAddByScanner(View view) {
         Intent intent = new Intent(this, BarCodeScannerActivity.class);
+        intent.putExtra("size", adapter.getItemCount());
         startActivity(intent);
+        famMenu.close(true);
     }
 
     public void onClickSentNew(View view) {
