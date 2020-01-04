@@ -53,6 +53,8 @@ public class NotSentVolunteersActivity extends AppCompatActivity {
     }
 
     public void onClickAddByScanner(View view) {
+        Intent intent = new Intent(this, BarCodeScannerActivity.class);
+        startActivity(intent);
     }
 
     public void onClickSentNew(View view) {

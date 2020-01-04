@@ -68,4 +68,6 @@ dependencies {
     // floating action menu / button
     implementation 'com.github.clans:fab:1.6.4'
 
+    implementation 'com.yanzhenjie.zbar:zbar:1.0.0'
+
 }
