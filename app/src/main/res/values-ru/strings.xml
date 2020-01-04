@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Регистрация</string>
+    <string name="add_volunteer_by_qrcode_scanner">Добавить\nсканером QRCode</string>
+    <string name="add_volunteer_manually">Добавить\nвручную</string>
+    <string name="call_sign">Позывной:</string>
+    <string name="enter_your_data_below">Введите данные ниже.</string>
+    <string name="name">Имя:</string>
+    <string name="phone_number">Номер телефона:</string>
+    <string name="save_data">Сохранить данные</string>
+    <string name="surname">Фамилия:</string>
+    <string name="chooser_title">Как отправить сообщение?</string>
+</resources>

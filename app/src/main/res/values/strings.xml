@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">LA Registration Main</string>
+    <string name="add_volunteer_manually">Add volunteer\nmanually</string>
+    <string name="add_volunteer_by_qrcode_scanner">Add volunteer\nby QRCode scanner</string>
+    <string name="name">Name:</string>
+    <string name="surname">Surname:</string>
+    <string name="call_sign">Call sign:</string>
+    <string name="phone_number">Phone number:</string>
+    <string name="enter_your_data_below">Enter data below.</string>
+    <string name="save_data">Save data</string>
+    <string name="chooser_title">How you want to sent message?</string>
+</resources>
