@@ -16,6 +16,15 @@ import ru.kireev.mir.laregistrationmain.data.Volunteer;
 
 public class VolunteerAdapter extends RecyclerView.Adapter<VolunteerAdapter.VolunteerViewHolder> {
     List<Volunteer> volunteers;
+    private OnVolunteerClickListener onVolunteerClickListener;
+
+    public void setOnVolunteerClickListener(OnVolunteerClickListener onVolunteerClickListener) {
+        this.onVolunteerClickListener = onVolunteerClickListener;
+    }
+
+    public interface OnVolunteerClickListener {
+        void onLongClick(int position);
+    }
 
     public VolunteerAdapter() {
         volunteers = new ArrayList<>();
@@ -57,6 +66,16 @@ public class VolunteerAdapter extends RecyclerView.Adapter<VolunteerAdapter.Volu
             textViewCallSign = itemView.findViewById(R.id.textViewCallSign);
             textViewPhoneNumber = itemView.findViewById(R.id.textViewPhoneNumber);
             textViewPosition = itemView.findViewById(R.id.textViewPosition);
+
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    if (onVolunteerClickListener != null) {
+                        onVolunteerClickListener.onLongClick(getAdapterPosition());
+                    }
+                    return true;
+                }
+            });
         }
     }
 

@@ -1,5 +1,6 @@
 package ru.kireev.mir.laregistrationmain.ui.main;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
@@ -39,6 +41,12 @@ public class SentVolunteersFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_tabbed_sent_volunteers, container, false);
         recyclerView = root.findViewById(R.id.recyclerViewSentVolunteersTab);
         adapter = new VolunteerAdapter();
+        adapter.setOnVolunteerClickListener(new VolunteerAdapter.OnVolunteerClickListener() {
+            @Override
+            public void onLongClick(int position) {
+                onClickDeleteVolunteer(adapter.getVolunteers().get(position));
+            }
+        });
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
@@ -50,5 +58,19 @@ public class SentVolunteersFragment extends Fragment {
             }
         });
         return root;
+    }
+
+    private void onClickDeleteVolunteer (final Volunteer volunteer) {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
+        alertDialog.setTitle("Предупреждение");
+        alertDialog.setMessage("Подтвердите удаление выбранной записи");
+        alertDialog.setPositiveButton("Удалить", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                mainViewModel.deleteVolunteer(volunteer);
+            }
+        });
+        alertDialog.setNegativeButton("Отмена", null);
+        alertDialog.show();
     }
 }

@@ -44,6 +44,12 @@ public class AllVolunteersFragment extends Fragment implements View.OnClickListe
         View root = inflater.inflate(R.layout.fragment_tabbed_all_volunteers, container, false);
         recyclerView = root.findViewById(R.id.recyclerViewAllVolunteersTab);
         adapter = new VolunteerAdapter();
+        adapter.setOnVolunteerClickListener(new VolunteerAdapter.OnVolunteerClickListener() {
+            @Override
+            public void onLongClick(int position) {
+                onClickDeleteVolunteer(adapter.getVolunteers().get(position));
+            }
+        });
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
@@ -76,5 +82,19 @@ public class AllVolunteersFragment extends Fragment implements View.OnClickListe
     @Override
     public void onClick(View v) {
         onClickDeleteAllTab();
+    }
+
+    private void onClickDeleteVolunteer (final Volunteer volunteer) {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
+        alertDialog.setTitle("Предупреждение");
+        alertDialog.setMessage("Подтвердите удаление выбранной записи");
+        alertDialog.setPositiveButton("Удалить", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                mainViewModel.deleteVolunteer(volunteer);
+            }
+        });
+        alertDialog.setNegativeButton("Отмена", null);
+        alertDialog.show();
     }
 }
