@@ -4,13 +4,14 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AllVolunteersActivity"
-    android:background="@drawable/la_background">
+    android:background="@drawable/la_background"
+    tools:context=".ui.main.AllVolunteersFragment">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewAllVolunteers"
+        android:id="@+id/recyclerViewAllVolunteersTab"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -19,11 +20,10 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.github.clans.fab.FloatingActionButton
-        android:id="@+id/fab_buttonAddManually"
+        android:id="@+id/fab_buttonDeleteAllTab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:onClick="onClickDeleteAll"
         android:src="@android:drawable/ic_menu_delete"
         fab:fab_colorNormal="@color/colorPrimary"
         fab:fab_label="Удалить\nвсех"

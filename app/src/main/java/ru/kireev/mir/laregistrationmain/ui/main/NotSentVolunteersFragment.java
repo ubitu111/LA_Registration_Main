@@ -1,40 +1,59 @@
-package ru.kireev.mir.laregistrationmain;
+package ru.kireev.mir.laregistrationmain.ui.main;
 
-import androidx.appcompat.app.AppCompatActivity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+import androidx.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
-
+import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 
 import java.util.List;
 
+import ru.kireev.mir.laregistrationmain.AddManuallyActivity;
+import ru.kireev.mir.laregistrationmain.BarCodeScannerActivity;
+import ru.kireev.mir.laregistrationmain.R;
 import ru.kireev.mir.laregistrationmain.adapters.VolunteerAdapter;
 import ru.kireev.mir.laregistrationmain.data.MainViewModel;
 import ru.kireev.mir.laregistrationmain.data.Volunteer;
 
-public class NotSentVolunteersActivity extends AppCompatActivity {
+/**
+ * A placeholder fragment containing a simple view.
+ */
+public class NotSentVolunteersFragment extends Fragment implements View.OnClickListener {
+
     private MainViewModel mainViewModel;
     private VolunteerAdapter adapter;
     private RecyclerView recyclerView;
     private LiveData<List<Volunteer>> volunteers;
     private FloatingActionMenu famMenu;
+    private FloatingActionButton fabManually;
+    private FloatingActionButton fabScanner;
+    private FloatingActionButton fabSent;
+
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_not_sent_volunteers);
-        recyclerView = findViewById(R.id.recyclerViewNotSentVolunteers);
-        famMenu = findViewById(R.id.fam_menu);
+    public View onCreateView(
+            @NonNull LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
+        View root = inflater.inflate(R.layout.fragment_tabbed_not_sent_volunteers, container, false);
+
+        recyclerView = root.findViewById(R.id.recyclerViewNotSentVolunteersTab);
+        famMenu = root.findViewById(R.id.fam_menu_tab);
         adapter = new VolunteerAdapter();
         recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
         volunteers = mainViewModel.getNotSentVolunteers();
         volunteers.observe(this, new Observer<List<Volunteer>>() {
@@ -43,23 +62,32 @@ public class NotSentVolunteersActivity extends AppCompatActivity {
                 adapter.setVolunteers(volunteers);
             }
         });
+
+        fabManually = root.findViewById(R.id.fab_buttonAddManuallyTab);
+        fabScanner = root.findViewById(R.id.fab_buttonAddByScannerTab);
+        fabSent = root.findViewById(R.id.fab_buttonSentNewTab);
+        fabManually.setOnClickListener(this);
+        fabScanner.setOnClickListener(this);
+        fabSent.setOnClickListener(this);
+
+        return root;
     }
 
-    public void onClickAddManually(View view) {
-        Intent intent = new Intent(this, AddManuallyActivity.class);
+    private void onClickAddManuallyTab() {
+        Intent intent = new Intent(getContext(), AddManuallyActivity.class);
         intent.putExtra("size", adapter.getItemCount());
         startActivity(intent);
         famMenu.close(true);
     }
 
-    public void onClickAddByScanner(View view) {
-        Intent intent = new Intent(this, BarCodeScannerActivity.class);
+    private void onClickAddByScannerTab() {
+        Intent intent = new Intent(getContext(), BarCodeScannerActivity.class);
         intent.putExtra("size", adapter.getItemCount());
         startActivity(intent);
         famMenu.close(true);
     }
 
-    public void onClickSentNew(View view) {
+    private void onClickSentNewTab() {
         StringBuilder builder = new StringBuilder();
         List<Volunteer> volunteers = adapter.getVolunteers();
         for (Volunteer volunteer : volunteers) {
@@ -89,4 +117,18 @@ public class NotSentVolunteersActivity extends AppCompatActivity {
         famMenu.close(true);
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.fab_buttonAddManuallyTab :
+                onClickAddManuallyTab();
+                break;
+            case R.id.fab_buttonAddByScannerTab :
+                onClickAddByScannerTab();
+                break;
+            case R.id.fab_buttonSentNewTab :
+                onClickSentNewTab();
+                break;
+        }
+    }
 }

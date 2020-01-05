@@ -11,4 +11,7 @@
     <string name="surname">Фамилия:</string>
     <string name="chooser_title">Как отправить сообщение?</string>
     <string name="scan_again">Сканировать еще раз</string>
+    <string name="tab_text_1">Новые</string>
+    <string name="tab_text_2">Отправлены</string>
+    <string name="tab_text_3">Все</string>
 </resources>

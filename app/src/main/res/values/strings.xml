@@ -10,4 +10,7 @@
     <string name="save_data">Save data</string>
     <string name="chooser_title">How you want to sent message?</string>
     <string name="scan_again">Scan again</string>
+    <string name="tab_text_1">New</string>
+    <string name="tab_text_2">Sent</string>
+    <string name="tab_text_3">All</string>
 </resources>
