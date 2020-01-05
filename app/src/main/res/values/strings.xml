@@ -13,4 +13,7 @@
     <string name="tab_text_1">New</string>
     <string name="tab_text_2">Sent</string>
     <string name="tab_text_3">All</string>
+    <string name="fab_sent_manually_label">Add\nmanually</string>
+    <string name="fab_add_scanner_label">Add by\nQRScanner</string>
+    <string name="fab_sent_new_label">Sent\nnew</string>
 </resources>

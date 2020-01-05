@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.main.SentVolunteersFragment"
-    android:background="@drawable/la_background">
+    >
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewSentVolunteersTab"

@@ -7,7 +7,7 @@
     android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/la_background"
+
     tools:context=".ui.main.NotSentVolunteersFragment">
 
     <androidx.recyclerview.widget.RecyclerView
@@ -34,7 +34,7 @@
             android:layout_height="wrap_content"
             android:src="@android:drawable/ic_menu_edit"
             fab:fab_colorNormal="@color/colorPrimary"
-            fab:fab_label="Добавить\nвручную" />
+            fab:fab_label="@string/fab_sent_manually_label" />
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/fab_buttonAddByScannerTab"
@@ -42,7 +42,7 @@
             android:layout_height="wrap_content"
             android:src="@android:drawable/ic_menu_camera"
             fab:fab_colorNormal="@color/colorPrimary"
-            fab:fab_label="Добавить\nс помощью\nQRScanner" />
+            fab:fab_label="@string/fab_add_scanner_label" />
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/fab_buttonSentNewTab"
@@ -50,7 +50,7 @@
             android:layout_height="wrap_content"
             android:src="@android:drawable/ic_menu_send"
             fab:fab_colorNormal="@color/colorPrimary"
-            fab:fab_label="Отправить\nновые" />
+            fab:fab_label="@string/fab_sent_new_label" />
 
     </com.github.clans.fab.FloatingActionMenu>
 

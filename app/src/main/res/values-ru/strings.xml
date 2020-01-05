@@ -6,7 +6,7 @@
     <string name="call_sign">Позывной:</string>
     <string name="enter_your_data_below">Введите данные ниже.</string>
     <string name="name">Имя:</string>
-    <string name="phone_number">Номер телефона:</string>
+    <string name="phone_number">Телефон:</string>
     <string name="save_data">Сохранить данные</string>
     <string name="surname">Фамилия:</string>
     <string name="chooser_title">Как отправить сообщение?</string>
@@ -14,4 +14,7 @@
     <string name="tab_text_1">Новые</string>
     <string name="tab_text_2">Отправлены</string>
     <string name="tab_text_3">Все</string>
+    <string name="fab_add_scanner_label">Добавить\nс помощью\nQRScanner</string>
+    <string name="fab_sent_manually_label">Добавить\nвручную</string>
+    <string name="fab_sent_new_label">Отправить\nновые\nинфоргу</string>
 </resources>
