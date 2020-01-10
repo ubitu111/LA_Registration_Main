@@ -6,9 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
-import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
@@ -43,6 +41,7 @@ public class NotSentVolunteersFragment extends Fragment implements View.OnClickL
     private FloatingActionButton fabManually;
     private FloatingActionButton fabScanner;
     private FloatingActionButton fabSent;
+    private boolean isSentToInforg = false;
 
 
     @Override
@@ -96,6 +95,7 @@ public class NotSentVolunteersFragment extends Fragment implements View.OnClickL
     }
 
     private void onClickSentNewTab() {
+        isSentToInforg = true;
         StringBuilder builder = new StringBuilder();
         List<Volunteer> volunteers = adapter.getVolunteers();
         for (Volunteer volunteer : volunteers) {
@@ -115,12 +115,6 @@ public class NotSentVolunteersFragment extends Fragment implements View.OnClickL
         intent.putExtra(Intent.EXTRA_TEXT, message);
         Intent choosenIntent = Intent.createChooser(intent,getString(R.string.chooser_title));
         startActivity(choosenIntent);
-
-        for (Volunteer volunteer : volunteers) {
-            mainViewModel.deleteVolunteer(volunteer);
-            volunteer.setSent("true");
-            mainViewModel.insertVolunteer(volunteer);
-        }
 
         famMenu.close(true);
     }
@@ -142,15 +136,40 @@ public class NotSentVolunteersFragment extends Fragment implements View.OnClickL
 
     private void onClickDeleteVolunteer (final Volunteer volunteer) {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
-        alertDialog.setTitle("Предупреждение");
-        alertDialog.setMessage("Подтвердите удаление выбранной записи");
-        alertDialog.setPositiveButton("Удалить", new DialogInterface.OnClickListener() {
+        alertDialog.setTitle(getString(R.string.warning));
+        alertDialog.setMessage(getString(R.string.message_confirm_delete_one));
+        alertDialog.setPositiveButton(getString(R.string.delete_all), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 mainViewModel.deleteVolunteer(volunteer);
             }
         });
-        alertDialog.setNegativeButton("Отмена", null);
+        alertDialog.setNegativeButton(getString(R.string.cancel), null);
         alertDialog.show();
+    }
+
+    @Override
+    public void onResume() {
+        if (isSentToInforg) {
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
+            alertDialog.setTitle(getString(R.string.attention));
+            alertDialog.setMessage(getString(R.string.message_confirm_sent_to_inforg));
+            alertDialog.setPositiveButton(getString(R.string.sent_successfully), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    List<Volunteer> volunteers = adapter.getVolunteers();
+                    for (Volunteer volunteer : volunteers) {
+                        mainViewModel.deleteVolunteer(volunteer);
+                        volunteer.setSent("true");
+                        mainViewModel.insertVolunteer(volunteer);
+                    }
+                }
+            });
+            alertDialog.setNegativeButton(getString(R.string.not_sent), null);
+            alertDialog.show();
+            isSentToInforg = false;
+        }
+
+        super.onResume();
     }
 }

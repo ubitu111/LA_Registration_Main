@@ -5,10 +5,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
@@ -67,15 +65,15 @@ public class AllVolunteersFragment extends Fragment implements View.OnClickListe
 
     private void onClickDeleteAllTab() {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
-        alertDialog.setTitle("Предупреждение");
-        alertDialog.setMessage("Подтвердите удаление всех записей");
-        alertDialog.setPositiveButton("Удалить", new DialogInterface.OnClickListener() {
+        alertDialog.setTitle(getString(R.string.warning));
+        alertDialog.setMessage(getString(R.string.message_confirm_delete_all));
+        alertDialog.setPositiveButton(getString(R.string.delete_all), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 mainViewModel.deleteAllVolunteers();
             }
         });
-        alertDialog.setNegativeButton("Отмена", null);
+        alertDialog.setNegativeButton(getString(R.string.cancel), null);
         alertDialog.show();
     }
 
@@ -86,15 +84,15 @@ public class AllVolunteersFragment extends Fragment implements View.OnClickListe
 
     private void onClickDeleteVolunteer (final Volunteer volunteer) {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
-        alertDialog.setTitle("Предупреждение");
-        alertDialog.setMessage("Подтвердите удаление выбранной записи");
-        alertDialog.setPositiveButton("Удалить", new DialogInterface.OnClickListener() {
+        alertDialog.setTitle(getString(R.string.warning));
+        alertDialog.setMessage(getString(R.string.message_confirm_delete_one));
+        alertDialog.setPositiveButton(getString(R.string.delete_all), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 mainViewModel.deleteVolunteer(volunteer);
             }
         });
-        alertDialog.setNegativeButton("Отмена", null);
+        alertDialog.setNegativeButton(getString(R.string.cancel), null);
         alertDialog.show();
     }
 }

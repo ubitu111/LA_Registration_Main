@@ -20,4 +20,13 @@
     <string name="permission_denied">В доступе отказано\n</string>
     <string name="permission_granded">Разрешение получено</string>
     <string name="denied_message">Если вы отклоняете это разрешение, вы не сможете использовать сканер QR кода\n\nПожалуйста, включите разрешение в [Настройки] > [Разрешения]</string>
+    <string name="attention">Внимание</string>
+    <string name="cancel">Отмена</string>
+    <string name="delete_all">Удалить</string>
+    <string name="message_confirm_delete_all">Подтвердите удаление всех записей</string>
+    <string name="message_confirm_delete_one">Подтвердите удаление выбранной записи</string>
+    <string name="message_confirm_sent_to_inforg">Подтвердите отправку данных инфоргу</string>
+    <string name="not_sent">Не отправлено</string>
+    <string name="sent_successfully">Отправлено успешно</string>
+    <string name="warning">Предупреждение</string>
 </resources>

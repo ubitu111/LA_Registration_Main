@@ -19,4 +19,13 @@
     <string name="permission_granded">Permission granded</string>
     <string name="permission_denied">Permission Denied\n</string>
     <string name="denied_message">If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]</string>
+    <string name="warning">Warning</string>
+    <string name="message_confirm_delete_one">Confirm delete selected data</string>
+    <string name="delete_all">Delete</string>
+    <string name="cancel">Cancel</string>
+    <string name="attention">Attention</string>
+    <string name="message_confirm_sent_to_inforg">Confirm sent data to inforg</string>
+    <string name="sent_successfully">Sent succesfully</string>
+    <string name="not_sent">Not sent</string>
+    <string name="message_confirm_delete_all">Confirm delete all data</string>
 </resources>
