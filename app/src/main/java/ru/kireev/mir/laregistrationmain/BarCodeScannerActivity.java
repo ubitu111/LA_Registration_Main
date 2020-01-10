@@ -3,6 +3,7 @@ package ru.kireev.mir.laregistrationmain;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -14,12 +15,17 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
+import com.gun0912.tedpermission.PermissionListener;
+import com.gun0912.tedpermission.TedPermission;
 import com.yanzhenjie.zbar.Config;
 import com.yanzhenjie.zbar.Image;
 import com.yanzhenjie.zbar.ImageScanner;
 import com.yanzhenjie.zbar.Symbol;
 import com.yanzhenjie.zbar.SymbolSet;
+
+import java.util.List;
 
 import ru.kireev.mir.laregistrationmain.data.MainViewModel;
 import ru.kireev.mir.laregistrationmain.data.Volunteer;
@@ -48,7 +54,29 @@ public class BarCodeScannerActivity extends AppCompatActivity {
         mainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
         Intent intent = getIntent();
         index = intent.getIntExtra("size", 0);
-        initControls();
+
+        //запрос разрешения на доступ к камере
+        //слушатель результатов запроса
+        PermissionListener permissionListener = new PermissionListener() {
+            @Override
+            public void onPermissionGranted() {
+                initControls();
+            }
+
+            @Override
+            public void onPermissionDenied(List<String> deniedPermissions) {
+                Toast.makeText(BarCodeScannerActivity.this,  getString(R.string.permission_denied) + deniedPermissions.toString() , Toast.LENGTH_SHORT).show();
+            }
+        };
+        //добавление запроса разрешения
+        TedPermission.with(this)
+                .setPermissionListener(permissionListener)
+                .setDeniedMessage(getString(R.string.denied_message))
+                .setPermissions(Manifest.permission.CAMERA)
+                .check();
+
+
+
     }
 
     private void initControls() {
@@ -65,6 +93,7 @@ public class BarCodeScannerActivity extends AppCompatActivity {
                 autoFocusCB);
         frameLayout = findViewById(R.id.camera_preview);
         frameLayout.addView(mPreview);
+
         scanButton = findViewById(R.id.scan_button);
         scanButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
