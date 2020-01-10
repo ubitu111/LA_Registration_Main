@@ -16,4 +16,7 @@
     <string name="fab_sent_manually_label">Add\nmanually</string>
     <string name="fab_add_scanner_label">Add by\nQRScanner</string>
     <string name="fab_sent_new_label">Sent\nnew</string>
+    <string name="permission_granded">Permission granded</string>
+    <string name="permission_denied">Permission Denied\n</string>
+    <string name="denied_message">If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]</string>
 </resources>

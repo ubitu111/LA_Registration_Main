@@ -17,4 +17,7 @@
     <string name="fab_add_scanner_label">Добавить\nс помощью\nQRScanner</string>
     <string name="fab_sent_manually_label">Добавить\nвручную</string>
     <string name="fab_sent_new_label">Отправить\nновые\nинфоргу</string>
+    <string name="permission_denied">В доступе отказано\n</string>
+    <string name="permission_granded">Разрешение получено</string>
+    <string name="denied_message">Если вы отклоняете это разрешение, вы не сможете использовать сканер QR кода\n\nПожалуйста, включите разрешение в [Настройки] > [Разрешения]</string>
 </resources>
