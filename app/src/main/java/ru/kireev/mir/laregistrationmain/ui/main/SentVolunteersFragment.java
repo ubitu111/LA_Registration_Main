@@ -39,7 +39,7 @@ public class SentVolunteersFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_tabbed_sent_volunteers, container, false);
         recyclerView = root.findViewById(R.id.recyclerViewSentVolunteersTab);
         adapter = new VolunteerAdapter();
-        adapter.setOnVolunteerClickListener(new VolunteerAdapter.OnVolunteerClickListener() {
+        adapter.setOnVolunteerLongClickListener(new VolunteerAdapter.OnVolunteerLongClickListener() {
             @Override
             public void onLongClick(int position) {
                 onClickDeleteVolunteer(adapter.getVolunteers().get(position));

@@ -70,11 +70,68 @@
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="15sp"
         android:layout_margin="8dp"
-        android:text="@string/save_data"
         android:onClick="onClickSaveData"
+        android:text="@string/save_data"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <CheckBox
+        android:id="@+id/checkBoxHaveACar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:text="@string/have_a_car"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextPhoneNumber" />
+
+    <EditText
+        android:id="@+id/editTextCarMark"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:visibility="gone"
+        android:textSize="15sp"
+        android:layout_margin="8dp"
+        android:hint="@string/mark_of_a_car"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/checkBoxHaveACar" />
+
+    <EditText
+        android:id="@+id/editTextCarModel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:visibility="gone"
+        android:textSize="15sp"
+        android:layout_margin="8dp"
+        android:hint="@string/model_of_a_car"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextCarMark" />
+
+    <EditText
+        android:id="@+id/editTextCarRegistrationNumber"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:visibility="gone"
+        android:layout_margin="8dp"
+        android:hint="@string/registration_number_of_a_car"
+        android:inputType="textPersonName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextCarModel" />
+
+    <EditText
+        android:id="@+id/editTextCarColor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:visibility="gone"
+        android:layout_margin="8dp"
+        android:hint="@string/color_of_a_car"
+        android:inputType="textPersonName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextCarRegistrationNumber" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -29,4 +29,9 @@
     <string name="not_sent">Не отправлено</string>
     <string name="sent_successfully">Отправлено успешно</string>
     <string name="warning">Предупреждение</string>
+    <string name="model_of_a_car">Модель авто:</string>
+    <string name="registration_number_of_a_car">Госномер:</string>
+    <string name="mark_of_a_car">Марка авто:</string>
+    <string name="have_a_car">Есть автомобиль</string>
+    <string name="color_of_a_car">Цвет авто:</string>
 </resources>

@@ -28,4 +28,9 @@
     <string name="sent_successfully">Sent succesfully</string>
     <string name="not_sent">Not sent</string>
     <string name="message_confirm_delete_all">Confirm delete all data</string>
+    <string name="have_a_car">Have a car</string>
+    <string name="mark_of_a_car">Mark of a car:</string>
+    <string name="model_of_a_car">Model of a car:</string>
+    <string name="registration_number_of_a_car">Registration number:</string>
+    <string name="color_of_a_car">Color of a car:</string>
 </resources>

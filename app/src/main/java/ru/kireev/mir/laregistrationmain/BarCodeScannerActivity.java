@@ -40,10 +40,14 @@ public class BarCodeScannerActivity extends AppCompatActivity {
     private boolean previewing = true;
     private FrameLayout frameLayout;
     private Button scanButton;
-    private String name;
-    private String surname;
-    private String callSign;
-    private String phoneNumber;
+    private String name = "";
+    private String surname = "";
+    private String callSign = "";
+    private String phoneNumber = "";
+    private String carMark = "";
+    private String carModel = "";
+    private String carRegistrationNumber = "";
+    private String carColor = "";
     private MainViewModel mainViewModel;
     private int index;
 
@@ -162,41 +166,51 @@ public class BarCodeScannerActivity extends AppCompatActivity {
                     String scanResult = sym.getData().trim();
                     String[] scanResultArray = scanResult.split("\n");
                     int lengthOfArray = scanResultArray.length;
-                    if (lengthOfArray == 3 || lengthOfArray == 4) {
-                        if (lengthOfArray == 3) {
+
+                    switch (lengthOfArray) {
+                        case 3:
                             name = scanResultArray[0];
                             surname = scanResultArray[1];
-                            callSign = "";
                             phoneNumber = scanResultArray[2];
-
-                        } else  {
+                            insertVolunteer();
+                            break;
+                        case 4:
                             name = scanResultArray[0];
                             surname = scanResultArray[1];
                             callSign = scanResultArray[2];
                             phoneNumber = scanResultArray[3];
+                            insertVolunteer();
+                            break;
+                        case 7:
+                            name = scanResultArray[0];
+                            surname = scanResultArray[1];
+                            phoneNumber = scanResultArray[2];
+                            carMark = scanResultArray[3];
+                            carModel = scanResultArray[4];
+                            carRegistrationNumber = scanResultArray[5];
+                            carColor = scanResultArray[6];
+                            insertVolunteer();
+                            break;
+                        case 8:
+                            name = scanResultArray[0];
+                            surname = scanResultArray[1];
+                            callSign = scanResultArray[2];
+                            phoneNumber = scanResultArray[3];
+                            carMark = scanResultArray[4];
+                            carModel = scanResultArray[5];
+                            carRegistrationNumber = scanResultArray[6];
+                            carColor = scanResultArray[7];
+                            insertVolunteer();
+                            break;
 
-                        }
+                            default:
+                                showAlertDialog("Произошла ошибка при сканировании, попробуйте еще раз");
+                                barcodeScanned = true;
 
-                        Volunteer volunteer;
-                        if (index == 0) {
-                            volunteer = new Volunteer(0, name, surname, callSign, phoneNumber, "false");
-                        }
-                        else {
-                            volunteer = new Volunteer(index, name, surname, callSign, phoneNumber, "false");
-                        }
-                        mainViewModel.insertVolunteer(volunteer);
+                                break;
 
-                        showAlertDialog("Сканирование прошло успешно");
-
-                        barcodeScanned = true;
-
-                        break;
                     }
 
-                    showAlertDialog("Произошла ошибка при сканировании, попробуйте еще раз");
-                    barcodeScanned = true;
-
-                    break;
                 }
             }
         }
@@ -222,5 +236,25 @@ public class BarCodeScannerActivity extends AppCompatActivity {
                 })
 
                 .show();
+    }
+
+    private void insertVolunteer() {
+        Volunteer volunteer = new Volunteer(index, name, surname, callSign, phoneNumber, "false",
+                carMark, carModel, carRegistrationNumber, carColor);
+
+        mainViewModel.insertVolunteer(volunteer);
+
+        showAlertDialog("Сканирование прошло успешно");
+
+        barcodeScanned = true;
+
+        name = "";
+        surname = "";
+        callSign = "";
+        phoneNumber = "";
+        carMark = "";
+        carModel = "";
+        carRegistrationNumber = "";
+        carColor = "";
     }
 }

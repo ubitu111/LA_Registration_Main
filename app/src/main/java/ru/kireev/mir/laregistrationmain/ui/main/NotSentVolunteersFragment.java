@@ -53,7 +53,7 @@ public class NotSentVolunteersFragment extends Fragment implements View.OnClickL
         recyclerView = root.findViewById(R.id.recyclerViewNotSentVolunteersTab);
         famMenu = root.findViewById(R.id.fam_menu_tab);
         adapter = new VolunteerAdapter();
-        adapter.setOnVolunteerClickListener(new VolunteerAdapter.OnVolunteerClickListener() {
+        adapter.setOnVolunteerLongClickListener(new VolunteerAdapter.OnVolunteerLongClickListener() {
             @Override
             public void onLongClick(int position) {
                 onClickDeleteVolunteer(adapter.getVolunteers().get(position));
@@ -79,6 +79,8 @@ public class NotSentVolunteersFragment extends Fragment implements View.OnClickL
 
         return root;
     }
+
+
 
     private void onClickAddManuallyTab() {
         Intent intent = new Intent(getContext(), AddManuallyActivity.class);
@@ -106,6 +108,14 @@ public class NotSentVolunteersFragment extends Fragment implements View.OnClickL
                     .append(volunteer.getCallSign())
                     .append(" ")
                     .append(volunteer.getPhoneNumber())
+                    .append(" ")
+                    .append(volunteer.getCarMark())
+                    .append(" ")
+                    .append(volunteer.getCarModel())
+                    .append(" ")
+                    .append(volunteer.getCarRegistrationNumber())
+                    .append(" ")
+                    .append(volunteer.getCarColor())
                     .append("\n");
 
         }

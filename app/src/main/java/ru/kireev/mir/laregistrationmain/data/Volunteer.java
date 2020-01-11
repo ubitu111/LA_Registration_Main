@@ -15,8 +15,13 @@ public class Volunteer {
     private String callSign;
     private String phoneNumber;
     private String isSent;
+    private String carMark;
+    private String carModel;
+    private String carRegistrationNumber;
+    private String carColor;
 
-    public Volunteer(int uniqueId, int index, String name, String surname, String callSign, String phoneNumber, String isSent) {
+    public Volunteer(int uniqueId, int index, String name, String surname, String callSign, String phoneNumber, String isSent,
+                         String carMark, String carModel, String carRegistrationNumber, String carColor) {
         this.uniqueId = uniqueId;
         this.index = index;
         this.name = name;
@@ -24,16 +29,25 @@ public class Volunteer {
         this.callSign = callSign;
         this.phoneNumber = phoneNumber;
         this.isSent = isSent;
+        this.carMark = carMark;
+        this.carModel = carModel;
+        this.carRegistrationNumber = carRegistrationNumber;
+        this.carColor = carColor;
     }
 
     @Ignore
-    public Volunteer(int index, String name, String surname, String callSign, String phoneNumber, String isSent) {
+    public Volunteer(int index, String name, String surname, String callSign, String phoneNumber, String isSent,
+                     String carMark, String carModel, String carRegistrationNumber, String carColor) {
         this.index = index;
         this.name = name;
         this.surname = surname;
         this.callSign = callSign;
         this.phoneNumber = phoneNumber;
         this.isSent = isSent;
+        this.carMark = carMark;
+        this.carModel = carModel;
+        this.carRegistrationNumber = carRegistrationNumber;
+        this.carColor = carColor;
     }
 
     public String isSent() {
@@ -90,5 +104,37 @@ public class Volunteer {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public String getCarMark() {
+        return carMark;
+    }
+
+    public void setCarMark(String carMark) {
+        this.carMark = carMark;
+    }
+
+    public String getCarModel() {
+        return carModel;
+    }
+
+    public void setCarModel(String carModel) {
+        this.carModel = carModel;
+    }
+
+    public String getCarRegistrationNumber() {
+        return carRegistrationNumber;
+    }
+
+    public void setCarRegistrationNumber(String carRegistrationNumber) {
+        this.carRegistrationNumber = carRegistrationNumber;
+    }
+
+    public String getCarColor() {
+        return carColor;
+    }
+
+    public void setCarColor(String carColor) {
+        this.carColor = carColor;
     }
 }
