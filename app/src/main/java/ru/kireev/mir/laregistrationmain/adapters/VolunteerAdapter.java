@@ -16,7 +16,7 @@ import ru.kireev.mir.laregistrationmain.R;
 import ru.kireev.mir.laregistrationmain.data.Volunteer;
 
 public class VolunteerAdapter extends RecyclerView.Adapter<VolunteerAdapter.VolunteerViewHolder> {
-    List<Volunteer> volunteers;
+    private List<Volunteer> volunteers;
     private OnVolunteerLongClickListener onVolunteerLongClickListener;
 
     public void setOnVolunteerLongClickListener(OnVolunteerLongClickListener onVolunteerLongClickListener) {

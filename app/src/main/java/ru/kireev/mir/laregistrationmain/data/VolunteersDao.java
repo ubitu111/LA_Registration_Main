@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
 import java.util.List;
@@ -19,7 +20,13 @@ public interface VolunteersDao {
     @Query("SELECT * FROM volunteers WHERE isSent == 'false'")
     LiveData<List<Volunteer>> getNotSentVolunteers();
 
-    @Insert
+    @Query("SELECT * FROM volunteers WHERE isAddedToFox == 'true'")
+    LiveData<List<Volunteer>> getAddedToFoxVolunteers();
+
+    @Query("SELECT * FROM volunteers WHERE isAddedToFox == 'false'")
+    LiveData<List<Volunteer>> getNotAddedToFoxVolunteers();
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertVolunteer(Volunteer volunteer);
 
     @Delete

@@ -15,6 +15,8 @@ public class MainViewModel extends AndroidViewModel {
     private LiveData<List<Volunteer>> allVolunteers;
     private LiveData<List<Volunteer>> sentVolunteers;
     private LiveData<List<Volunteer>> notSentVolunteers;
+    private LiveData<List<Volunteer>> addedToFoxVolunteers;
+    private LiveData<List<Volunteer>> notAddedToFoxVolunteers;
 
     public MainViewModel(@NonNull Application application) {
         super(application);
@@ -22,6 +24,8 @@ public class MainViewModel extends AndroidViewModel {
         allVolunteers = database.volunteersDao().getAllVolunteers();
         sentVolunteers = database.volunteersDao().getSentVolunteers();
         notSentVolunteers = database.volunteersDao().getNotSentVolunteers();
+        addedToFoxVolunteers = database.volunteersDao().getAddedToFoxVolunteers();
+        notAddedToFoxVolunteers = database.volunteersDao().getNotAddedToFoxVolunteers();
     }
 
     public LiveData<List<Volunteer>> getAllVolunteers() {
@@ -35,6 +39,10 @@ public class MainViewModel extends AndroidViewModel {
     public LiveData<List<Volunteer>> getNotSentVolunteers() {
         return notSentVolunteers;
     }
+
+    public LiveData<List<Volunteer>> getAddedToFoxVolunteers() { return addedToFoxVolunteers; }
+
+    public LiveData<List<Volunteer>> getNotAddedToFoxVolunteers() { return notAddedToFoxVolunteers; }
 
     public void insertVolunteer (Volunteer volunteer) {
         new InsertTask().execute(volunteer);

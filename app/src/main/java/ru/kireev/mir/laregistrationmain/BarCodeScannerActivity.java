@@ -1,6 +1,7 @@
 package ru.kireev.mir.laregistrationmain;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.Manifest;
@@ -55,7 +56,7 @@ public class BarCodeScannerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bar_code_scanner);
-        mainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+        mainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
         Intent intent = getIntent();
         index = intent.getIntExtra("size", 0);
 
@@ -240,7 +241,7 @@ public class BarCodeScannerActivity extends AppCompatActivity {
 
     private void insertVolunteer() {
         Volunteer volunteer = new Volunteer(index, name, surname, callSign, phoneNumber, "false",
-                carMark, carModel, carRegistrationNumber, carColor);
+                carMark, carModel, carRegistrationNumber, carColor, "false");
 
         mainViewModel.insertVolunteer(volunteer);
 
@@ -257,4 +258,6 @@ public class BarCodeScannerActivity extends AppCompatActivity {
         carRegistrationNumber = "";
         carColor = "";
     }
+
+
 }

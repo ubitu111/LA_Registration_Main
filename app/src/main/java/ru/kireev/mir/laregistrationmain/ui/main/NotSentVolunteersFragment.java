@@ -63,7 +63,7 @@ public class NotSentVolunteersFragment extends Fragment implements View.OnClickL
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
         volunteers = mainViewModel.getNotSentVolunteers();
-        volunteers.observe(this, new Observer<List<Volunteer>>() {
+        volunteers.observe(getViewLifecycleOwner(), new Observer<List<Volunteer>>() {
             @Override
             public void onChanged(List<Volunteer> volunteers) {
                 adapter.setVolunteers(volunteers);

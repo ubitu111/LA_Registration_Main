@@ -19,9 +19,10 @@ public class Volunteer {
     private String carModel;
     private String carRegistrationNumber;
     private String carColor;
+    private String isAddedToFox;
 
     public Volunteer(int uniqueId, int index, String name, String surname, String callSign, String phoneNumber, String isSent,
-                         String carMark, String carModel, String carRegistrationNumber, String carColor) {
+                         String carMark, String carModel, String carRegistrationNumber, String carColor, String isAddedToFox) {
         this.uniqueId = uniqueId;
         this.index = index;
         this.name = name;
@@ -33,11 +34,12 @@ public class Volunteer {
         this.carModel = carModel;
         this.carRegistrationNumber = carRegistrationNumber;
         this.carColor = carColor;
+        this.isAddedToFox = isAddedToFox;
     }
 
     @Ignore
     public Volunteer(int index, String name, String surname, String callSign, String phoneNumber, String isSent,
-                     String carMark, String carModel, String carRegistrationNumber, String carColor) {
+                     String carMark, String carModel, String carRegistrationNumber, String carColor, String isAddedToFox) {
         this.index = index;
         this.name = name;
         this.surname = surname;
@@ -48,6 +50,7 @@ public class Volunteer {
         this.carModel = carModel;
         this.carRegistrationNumber = carRegistrationNumber;
         this.carColor = carColor;
+        this.isAddedToFox = isAddedToFox;
     }
 
     public String isSent() {
@@ -136,5 +139,18 @@ public class Volunteer {
 
     public void setCarColor(String carColor) {
         this.carColor = carColor;
+    }
+
+    public String getIsAddedToFox() {
+        return isAddedToFox;
+    }
+
+    public void setIsAddedToFox(String isAddedToFox) {
+        this.isAddedToFox = isAddedToFox;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%s %s (%s)", name, surname, callSign);
     }
 }

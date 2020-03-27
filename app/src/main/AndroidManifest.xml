@@ -11,21 +11,29 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".AddNewFoxActivity"
+            android:windowSoftInputMode="stateVisible|adjustPan"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".FoxesMainActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".TabbedMainActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".BarCodeScannerActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".AddManuallyActivity"
-            android:screenOrientation="portrait"/>
-
+        <activity
+            android:name=".BarCodeScannerActivity"
+            android:label="Сканирование QR"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".AddManuallyActivity"
+            android:label="Добавить вручную"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

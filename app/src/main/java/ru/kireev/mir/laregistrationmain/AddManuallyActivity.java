@@ -1,10 +1,15 @@
 package ru.kireev.mir.laregistrationmain;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -35,7 +40,7 @@ public class AddManuallyActivity extends AppCompatActivity {
     private String carRegistrationNumber;
     private String carColor;
     private MainViewModel mainViewModel;
-    int index;
+    private int index;
 
 
     @Override
@@ -52,7 +57,7 @@ public class AddManuallyActivity extends AppCompatActivity {
         editTextCarModel = findViewById(R.id.editTextCarModel);
         editTextCarRegistrationNumber = findViewById(R.id.editTextCarRegistrationNumber);
         editTextCarColor = findViewById(R.id.editTextCarColor);
-        mainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+        mainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
 
         checkBoxHaveACar.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -94,18 +99,37 @@ public class AddManuallyActivity extends AppCompatActivity {
             Toast.makeText(this, "Заполните все данные об автомобиле!", Toast.LENGTH_SHORT).show();
         }
         else {
-            Volunteer volunteer;
-            if (index == 0) {
-                volunteer = new Volunteer(0, name, surname, callSign, phoneNumber, "false",
-                        carMark, carModel, carRegistrationNumber, carColor);
-            }
-            else {
-                volunteer = new Volunteer(index, name, surname, callSign, phoneNumber, "false",
-                        carMark, carModel, carRegistrationNumber, carColor);
-            }
+            Volunteer volunteer = new Volunteer(index, name, surname, callSign, phoneNumber, "false",
+                        carMark, carModel, carRegistrationNumber, carColor, "false");
+
             mainViewModel.insertVolunteer(volunteer);
             onBackPressed();
         }
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.menu_item_foxes:
+                Intent intentFoxes = new Intent(this, FoxesMainActivity.class);
+                startActivity(intentFoxes);
+                break;
+            case R.id.menu_item_volunteers:
+                Intent intentVolunteers = new Intent(this, TabbedMainActivity.class);
+                startActivity(intentVolunteers);
+                break;
+        }
+
+
+        return super.onOptionsItemSelected(item);
     }
 }

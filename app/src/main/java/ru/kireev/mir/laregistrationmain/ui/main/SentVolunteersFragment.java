@@ -49,7 +49,7 @@ public class SentVolunteersFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
         volunteers = mainViewModel.getSentVolunteers();
-        volunteers.observe(this, new Observer<List<Volunteer>>() {
+        volunteers.observe(getViewLifecycleOwner(), new Observer<List<Volunteer>>() {
             @Override
             public void onChanged(List<Volunteer> volunteers) {
                 adapter.setVolunteers(volunteers);
