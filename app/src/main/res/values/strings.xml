@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">LA Registration Main</string>
+    <string name="app_name">Registrar Liza Alert</string>
     <string name="add_volunteer_manually">Add volunteer\nmanually</string>
     <string name="add_volunteer_by_qrcode_scanner">Add volunteer\nby QRCode scanner</string>
     <string name="name">Name:</string>

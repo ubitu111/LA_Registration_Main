@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Регистрация</string>
+    <string name="app_name">Регистратор Лиза Алерт</string>
     <string name="add_volunteer_by_qrcode_scanner">Добавить\nсканером QRCode</string>
     <string name="add_volunteer_manually">Добавить\nвручную</string>
     <string name="call_sign">Позывной:</string>

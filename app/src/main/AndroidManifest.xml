@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="ru.kireev.mir.laregistrationmain">
+    package="ru.kireev.mir.registrarlizaalert">
 
     <uses-permission android:name="android.permission.CAMERA" />
 
@@ -11,27 +11,32 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".AddNewFoxActivity"
+        <activity
+            android:name="ru.kireev.mir.registrarlizaalert.SplashActivity"
+            android:theme="@style/SplashTheme">
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+        </activity>
+        <activity android:name="ru.kireev.mir.registrarlizaalert.AddNewFoxActivity"
             android:windowSoftInputMode="stateVisible|adjustPan"
             android:screenOrientation="portrait"/>
-        <activity android:name=".FoxesMainActivity"
+        <activity android:name="ru.kireev.mir.registrarlizaalert.FoxesMainActivity"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".TabbedMainActivity"
+            android:name="ru.kireev.mir.registrarlizaalert.TabbedMainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
-            android:name=".BarCodeScannerActivity"
+            android:name="ru.kireev.mir.registrarlizaalert.BarCodeScannerActivity"
             android:label="Сканирование QR"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".AddManuallyActivity"
+            android:name="ru.kireev.mir.registrarlizaalert.AddManuallyActivity"
             android:label="Добавить вручную"
             android:screenOrientation="portrait" />
     </application>
