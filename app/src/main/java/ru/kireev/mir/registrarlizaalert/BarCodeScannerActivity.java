@@ -239,7 +239,7 @@ public class BarCodeScannerActivity extends AppCompatActivity {
     }
 
     private void insertVolunteer() {
-        Volunteer volunteer = new Volunteer(index, name, surname, callSign, phoneNumber, "false",
+        Volunteer volunteer = new Volunteer(0, index, name, surname, callSign, phoneNumber, "false",
                 carMark, carModel, carRegistrationNumber, carColor, "false");
 
         mainViewModel.insertVolunteer(volunteer);

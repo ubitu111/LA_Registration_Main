@@ -41,7 +41,7 @@ public class AddNewFoxActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Volunteer volunteer = (Volunteer) parent.getItemAtPosition(position);
-                volunteer.setIsAddedToFox("true");
+                volunteer.setAddedToFox("true");
                 viewModel.insertVolunteer(volunteer);
             }
         });
@@ -49,7 +49,7 @@ public class AddNewFoxActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Volunteer volunteer = (Volunteer) parent.getItemAtPosition(position);
-                volunteer.setIsAddedToFox("true");
+                volunteer.setAddedToFox("true");
                 viewModel.insertVolunteer(volunteer);
             }
         });

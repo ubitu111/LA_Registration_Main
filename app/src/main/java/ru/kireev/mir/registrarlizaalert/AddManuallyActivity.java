@@ -98,7 +98,7 @@ public class AddManuallyActivity extends AppCompatActivity {
             Toast.makeText(this, "Заполните все данные об автомобиле!", Toast.LENGTH_SHORT).show();
         }
         else {
-            Volunteer volunteer = new Volunteer(index, name, surname, callSign, phoneNumber, "false",
+            Volunteer volunteer = new Volunteer(0, index, name, surname, callSign, phoneNumber, "false",
                         carMark, carModel, carRegistrationNumber, carColor, "false");
 
             mainViewModel.insertVolunteer(volunteer);
