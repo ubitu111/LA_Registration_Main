@@ -14,10 +14,10 @@ import java.util.List;
 import ru.kireev.mir.registrarlizaalert.R;
 import ru.kireev.mir.registrarlizaalert.data.Fox;
 
-public class FoxesAdapter extends RecyclerView.Adapter<FoxesAdapter.FoxesViewHolder> {
+public class FoxesAdapter_old_java extends RecyclerView.Adapter<FoxesAdapter_old_java.FoxesViewHolder_old_java> {
     private List<Fox> foxes;
 
-    public FoxesAdapter() {
+    public FoxesAdapter_old_java() {
         this.foxes = new ArrayList<>();
     }
 
@@ -31,13 +31,13 @@ public class FoxesAdapter extends RecyclerView.Adapter<FoxesAdapter.FoxesViewHol
 
     @NonNull
     @Override
-    public FoxesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public FoxesViewHolder_old_java onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.foxes_item, parent, false);
-        return new FoxesViewHolder(view);
+        return new FoxesViewHolder_old_java(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull FoxesViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull FoxesViewHolder_old_java holder, int position) {
         Fox fox = foxes.get(position);
         holder.tvFoxesItemNumberTitle.setText(fox.getNumberOfFox());
         String name = fox.getElderOfFox().getName();
@@ -52,11 +52,11 @@ public class FoxesAdapter extends RecyclerView.Adapter<FoxesAdapter.FoxesViewHol
         return foxes.size();
     }
 
-    class FoxesViewHolder extends RecyclerView.ViewHolder{
+    class FoxesViewHolder_old_java extends RecyclerView.ViewHolder{
         private TextView tvFoxesItemNumberTitle;
         private TextView tvFoxesItemElder;
 
-        public FoxesViewHolder(@NonNull View itemView) {
+        public FoxesViewHolder_old_java(@NonNull View itemView) {
             super(itemView);
             tvFoxesItemNumberTitle = itemView.findViewById(R.id.tvFoxesItemNumberTitle);
             tvFoxesItemElder = itemView.findViewById(R.id.tvFoxesItemElder);

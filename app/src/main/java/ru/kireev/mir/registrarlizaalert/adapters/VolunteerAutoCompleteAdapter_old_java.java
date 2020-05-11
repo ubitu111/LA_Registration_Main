@@ -15,12 +15,12 @@ import java.util.List;
 import ru.kireev.mir.registrarlizaalert.R;
 import ru.kireev.mir.registrarlizaalert.data.Volunteer;
 
-public class VolunteerAutoCompleteAdapter extends BaseAdapter implements Filterable {
+public class VolunteerAutoCompleteAdapter_old_java extends BaseAdapter implements Filterable {
     private Context context;
     private List<Volunteer> results;
     private List<Volunteer> fullList;
 
-    public VolunteerAutoCompleteAdapter(Context context, List<Volunteer> fullList) {
+    public VolunteerAutoCompleteAdapter_old_java(Context context, List<Volunteer> fullList) {
         this.context = context;
         results = new ArrayList<>();
         this.fullList = fullList;
@@ -77,7 +77,7 @@ public class VolunteerAutoCompleteAdapter extends BaseAdapter implements Filtera
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
                 if (results != null && results.count > 0) {
-                    VolunteerAutoCompleteAdapter.this.results = (List<Volunteer>) results.values;
+                    VolunteerAutoCompleteAdapter_old_java.this.results = (List<Volunteer>) results.values;
                     notifyDataSetChanged();
                 } else {
                     notifyDataSetInvalidated();

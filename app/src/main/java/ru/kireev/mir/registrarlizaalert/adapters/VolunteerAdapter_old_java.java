@@ -15,7 +15,7 @@ import java.util.List;
 import ru.kireev.mir.registrarlizaalert.R;
 import ru.kireev.mir.registrarlizaalert.data.Volunteer;
 
-public class VolunteerAdapter extends RecyclerView.Adapter<VolunteerAdapter.VolunteerViewHolder> {
+public class VolunteerAdapter_old_java extends RecyclerView.Adapter<VolunteerAdapter_old_java.VolunteerViewHolder> {
     private List<Volunteer> volunteers;
     private OnVolunteerLongClickListener onVolunteerLongClickListener;
 
@@ -27,7 +27,7 @@ public class VolunteerAdapter extends RecyclerView.Adapter<VolunteerAdapter.Volu
         void onLongClick(int position);
     }
 
-    public VolunteerAdapter() {
+    public VolunteerAdapter_old_java() {
         volunteers = new ArrayList<>();
     }
 

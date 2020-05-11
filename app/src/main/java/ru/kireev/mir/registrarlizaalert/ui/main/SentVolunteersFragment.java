@@ -42,8 +42,8 @@ public class SentVolunteersFragment extends Fragment {
         adapter = new VolunteerAdapter();
         adapter.setOnVolunteerLongClickListener(new VolunteerAdapter.OnVolunteerLongClickListener() {
             @Override
-            public void onLongClick(int position) {
-                onClickDeleteVolunteer(adapter.getVolunteers().get(position));
+            public void onLongClick(Volunteer volunteer) {
+                onClickDeleteVolunteer(volunteer);
             }
         });
         recyclerView.setAdapter(adapter);
