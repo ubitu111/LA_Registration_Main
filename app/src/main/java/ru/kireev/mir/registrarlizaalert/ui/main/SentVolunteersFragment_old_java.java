@@ -26,7 +26,7 @@ import ru.kireev.mir.registrarlizaalert.data.Volunteer;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class SentVolunteersFragment extends Fragment {
+public class SentVolunteersFragment_old_java extends Fragment {
 
     private MainViewModel mainViewModel;
     private VolunteerAdapter adapter;

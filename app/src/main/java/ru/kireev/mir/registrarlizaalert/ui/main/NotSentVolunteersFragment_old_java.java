@@ -32,7 +32,7 @@ import ru.kireev.mir.registrarlizaalert.data.Volunteer;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class NotSentVolunteersFragment extends Fragment implements View.OnClickListener {
+public class NotSentVolunteersFragment_old_java extends Fragment implements View.OnClickListener {
 
     private MainViewModel mainViewModel;
     private VolunteerAdapter adapter;
