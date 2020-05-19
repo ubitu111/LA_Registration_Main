@@ -2,6 +2,7 @@ package ru.kireev.mir.registrarlizaalert.ui.main
 
 import android.app.AlertDialog
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -37,6 +38,12 @@ class NotSentVolunteersFragment : Fragment(), View.OnClickListener {
         adapter.onVolunteerLongClickListener = object : VolunteerAdapter.OnVolunteerLongClickListener {
             override fun onLongClick(volunteer: Volunteer) {
                 onClickDeleteVolunteer(volunteer)
+            }
+        }
+        adapter.onVolunteerPhoneNumberClickListener = object : VolunteerAdapter.OnVolunteerPhoneNumberClickListener {
+            override fun onVolunteerPhoneNumberClick(phone: String) {
+                val toDial = "tel:$phone"
+                startActivity(Intent(Intent.ACTION_DIAL, Uri.parse(toDial)))
             }
         }
         recyclerView.adapter = adapter

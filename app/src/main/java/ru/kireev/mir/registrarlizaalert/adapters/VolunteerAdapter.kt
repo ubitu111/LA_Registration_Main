@@ -19,6 +19,7 @@ class VolunteerAdapter : RecyclerView.Adapter<VolunteerAdapter.VolunteerViewHold
     }
 
     var onVolunteerLongClickListener: OnVolunteerLongClickListener? = null
+    var onVolunteerPhoneNumberClickListener: OnVolunteerPhoneNumberClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VolunteerViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.volunteer_item, parent, false)
@@ -50,6 +51,9 @@ class VolunteerAdapter : RecyclerView.Adapter<VolunteerAdapter.VolunteerViewHold
                 onVolunteerLongClickListener?.onLongClick(volunteer)
                 return@setOnLongClickListener true
             }
+            textViewPhoneNumber.setOnClickListener {
+                onVolunteerPhoneNumberClickListener?.onVolunteerPhoneNumberClick(textViewPhoneNumber.text.toString())
+            }
         }
 
     }
@@ -70,5 +74,9 @@ class VolunteerAdapter : RecyclerView.Adapter<VolunteerAdapter.VolunteerViewHold
 
     interface OnVolunteerLongClickListener {
         fun onLongClick(volunteer: Volunteer)
+    }
+
+    interface OnVolunteerPhoneNumberClickListener {
+        fun onVolunteerPhoneNumberClick(phone: String)
     }
 }
