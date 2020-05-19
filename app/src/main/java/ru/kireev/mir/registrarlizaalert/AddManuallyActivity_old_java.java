@@ -18,7 +18,7 @@ import android.widget.Toast;
 import ru.kireev.mir.registrarlizaalert.data.MainViewModel;
 import ru.kireev.mir.registrarlizaalert.data.Volunteer;
 
-public class AddManuallyActivity extends AppCompatActivity {
+public class AddManuallyActivity_old_java extends AppCompatActivity {
 
     private EditText editTextName;
     private EditText editTextSurname;

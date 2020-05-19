@@ -10,7 +10,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
-public class FoxesMainActivity extends AppCompatActivity {
+public class FoxesMainActivity_old_java extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

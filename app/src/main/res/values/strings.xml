@@ -25,7 +25,7 @@
     <string name="cancel">Cancel</string>
     <string name="attention">Attention</string>
     <string name="message_confirm_sent_to_inforg">Confirm sent data to inforg</string>
-    <string name="sent_successfully">Sent succesfully</string>
+    <string name="sent_successfully">Sent successfully</string>
     <string name="not_sent">Not sent</string>
     <string name="message_confirm_delete_all">Confirm delete all data</string>
     <string name="have_a_car">Have a car</string>
@@ -34,4 +34,8 @@
     <string name="registration_number_of_a_car">Registration number:</string>
     <string name="color_of_a_car">Color of a car:</string>
     <string name="elder_template" translatable="false">%s %s (%s)</string>
+    <string name="success_qr_code_scan_message">Scan was successful</string>
+    <string name="error_qr_code_scan_message">There was an error while scanning, try again</string>
+    <string name="volunteers">Volunteers</string>
+    <string name="foxes">Foxes</string>
 </resources>

@@ -34,4 +34,8 @@
     <string name="mark_of_a_car">Марка авто:</string>
     <string name="have_a_car">Есть автомобиль</string>
     <string name="color_of_a_car">Цвет авто:</string>
+    <string name="success_qr_code_scan_message">Сканирование прошло успешно</string>
+    <string name="error_qr_code_scan_message">Произошла ошибка при сканировании, попробуйте еще раз</string>
+    <string name="volunteers">Волонтеры</string>
+    <string name="foxes">Лисы</string>
 </resources>

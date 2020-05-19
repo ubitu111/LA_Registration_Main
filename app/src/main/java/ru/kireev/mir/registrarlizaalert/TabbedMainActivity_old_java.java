@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import ru.kireev.mir.registrarlizaalert.ui.main.SectionsPagerAdapter;
 
-public class TabbedMainActivity extends AppCompatActivity {
+public class TabbedMainActivity_old_java extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

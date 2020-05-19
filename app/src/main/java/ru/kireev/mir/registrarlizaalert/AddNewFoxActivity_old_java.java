@@ -16,7 +16,7 @@ import ru.kireev.mir.registrarlizaalert.data.MainViewModel;
 import ru.kireev.mir.registrarlizaalert.data.Volunteer;
 import ru.kireev.mir.registrarlizaalert.databinding.ActivityAddNewFoxBinding;
 
-public class AddNewFoxActivity extends AppCompatActivity {
+public class AddNewFoxActivity_old_java extends AppCompatActivity {
     private ActivityAddNewFoxBinding binding;
     private MainViewModel viewModel;
 
@@ -26,7 +26,7 @@ public class AddNewFoxActivity extends AppCompatActivity {
         binding = ActivityAddNewFoxBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
-        final VolunteerAutoCompleteAdapter autoCompleteAdapter = new VolunteerAutoCompleteAdapter(this, new ArrayList<Volunteer>());
+        final VolunteerAutoCompleteAdapter autoCompleteAdapter = new VolunteerAutoCompleteAdapter(this, new ArrayList<>());
 
         viewModel = new ViewModelProvider(this).get(MainViewModel.class);
         viewModel.getNotAddedToFoxVolunteers().observe(this, new Observer<List<Volunteer>>() {

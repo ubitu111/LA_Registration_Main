@@ -31,7 +31,7 @@ import ru.kireev.mir.registrarlizaalert.data.MainViewModel;
 import ru.kireev.mir.registrarlizaalert.data.Volunteer;
 import ru.kireev.mir.registrarlizaalert.util.CameraPreview;
 
-public class BarCodeScannerActivity extends AppCompatActivity {
+public class BarCodeScannerActivity_old_java extends AppCompatActivity {
     private CameraPreview mPreview;
     private Camera mCamera;
     private Handler autoFocusHandler;
@@ -69,7 +69,7 @@ public class BarCodeScannerActivity extends AppCompatActivity {
 
             @Override
             public void onPermissionDenied(List<String> deniedPermissions) {
-                Toast.makeText(BarCodeScannerActivity.this,  getString(R.string.permission_denied) + deniedPermissions.toString() , Toast.LENGTH_SHORT).show();
+                Toast.makeText(BarCodeScannerActivity_old_java.this,  getString(R.string.permission_denied) + deniedPermissions.toString() , Toast.LENGTH_SHORT).show();
             }
         };
         //добавление запроса разрешения
@@ -93,7 +93,7 @@ public class BarCodeScannerActivity extends AppCompatActivity {
         scanner.setConfig(0, Config.X_DENSITY, 3);
         scanner.setConfig(0, Config.Y_DENSITY, 3);
 
-        mPreview = new CameraPreview(BarCodeScannerActivity.this, mCamera, previewCb,
+        mPreview = new CameraPreview(BarCodeScannerActivity_old_java.this, mCamera, previewCb,
                 autoFocusCB);
         frameLayout = findViewById(R.id.camera_preview);
         frameLayout.addView(mPreview);

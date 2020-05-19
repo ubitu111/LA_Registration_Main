@@ -18,4 +18,8 @@ data class Volunteer(
         var carRegistrationNumber: String,
         var carColor: String,
         var isAddedToFox: String
-)
+) {
+        override fun toString(): String {
+                return "$name $surname ($callSign)"
+        }
+}
