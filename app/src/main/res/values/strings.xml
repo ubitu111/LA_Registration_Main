@@ -36,6 +36,9 @@
     <string name="elder_template" translatable="false">%s %s (%s)</string>
     <string name="success_qr_code_scan_message">Scan was successful</string>
     <string name="error_qr_code_scan_message">There was an error while scanning, try again</string>
-    <string name="volunteers">Volunteers</string>
-    <string name="foxes">Foxes</string>
+    <string name="actionbar_label_volunteers">Volunteers</string>
+    <string name="actionbar_label_foxes">Foxes</string>
+    <string name="actionbar_label_scan_QR">Scan QR</string>
+    <string name="actionbar_label_add_manually">Add manually</string>
+
 </resources>

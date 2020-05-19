@@ -36,6 +36,8 @@
     <string name="color_of_a_car">Цвет авто:</string>
     <string name="success_qr_code_scan_message">Сканирование прошло успешно</string>
     <string name="error_qr_code_scan_message">Произошла ошибка при сканировании, попробуйте еще раз</string>
-    <string name="volunteers">Волонтеры</string>
-    <string name="foxes">Лисы</string>
+    <string name="actionbar_label_volunteers">Волонтеры</string>
+    <string name="actionbar_label_foxes">Лисы</string>
+    <string name="actionbar_label_scan_QR">Сканирование QR</string>
+    <string name="actionbar_label_add_manually">Добавить вручную</string>
 </resources>

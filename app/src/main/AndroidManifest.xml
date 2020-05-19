@@ -23,6 +23,7 @@
             android:windowSoftInputMode="stateVisible|adjustPan"
             android:screenOrientation="portrait"/>
         <activity android:name="ru.kireev.mir.registrarlizaalert.FoxesMainActivity"
+            android:label="@string/actionbar_label_foxes"
             android:screenOrientation="portrait"/>
         <activity
             android:name="ru.kireev.mir.registrarlizaalert.TabbedMainActivity"
@@ -30,11 +31,11 @@
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name="ru.kireev.mir.registrarlizaalert.BarCodeScannerActivity"
-            android:label="Сканирование QR"
+            android:label="@string/actionbar_label_scan_QR"
             android:screenOrientation="portrait" />
         <activity
             android:name="ru.kireev.mir.registrarlizaalert.AddManuallyActivity"
-            android:label="Добавить вручную"
+            android:label="@string/actionbar_label_add_manually"
             android:screenOrientation="portrait" />
     </application>
 

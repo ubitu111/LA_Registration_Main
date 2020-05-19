@@ -12,7 +12,6 @@ class FoxesMainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_foxes_main)
-        supportActionBar?.title = getString(R.string.foxes)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

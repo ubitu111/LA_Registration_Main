@@ -17,7 +17,7 @@ class TabbedMainActivity : AppCompatActivity() {
         main_view_pager.adapter = sectionsPagerAdapter
         main_tabs.setupWithViewPager(main_view_pager)
         setSupportActionBar(main_toolbar)
-        supportActionBar?.title = getString(R.string.volunteers)
+        supportActionBar?.title = getString(R.string.actionbar_label_volunteers)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
