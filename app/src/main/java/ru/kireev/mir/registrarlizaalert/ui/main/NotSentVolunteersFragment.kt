@@ -4,9 +4,8 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -20,7 +19,7 @@ import ru.kireev.mir.registrarlizaalert.adapters.VolunteerAdapter
 import ru.kireev.mir.registrarlizaalert.data.MainViewModel
 import ru.kireev.mir.registrarlizaalert.data.Volunteer
 
-class NotSentVolunteersFragment : Fragment(), View.OnClickListener {
+class NotSentVolunteersFragment : Fragment(), View.OnClickListener, SearchView.OnQueryTextListener {
     companion object {
         private const val EXTRA_SIZE = "size"
     }
@@ -29,6 +28,7 @@ class NotSentVolunteersFragment : Fragment(), View.OnClickListener {
     private lateinit var adapter: VolunteerAdapter
     private lateinit var famMenu: FloatingActionMenu
     private var isSentToInforg = false
+    private var fullList = listOf<Volunteer>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val root = inflater.inflate(R.layout.fragment_tabbed_not_sent_volunteers, container, false)
@@ -52,10 +52,12 @@ class NotSentVolunteersFragment : Fragment(), View.OnClickListener {
         viewModel = model
         viewModel.notSentVolunteers.observe(viewLifecycleOwner, Observer {
             adapter.volunteers = it
+            fullList = it
         })
         root.fab_buttonAddManuallyTab.setOnClickListener(this)
         root.fab_buttonAddByScannerTab.setOnClickListener(this)
         root.fab_buttonSentNewTab.setOnClickListener(this)
+        setHasOptionsMenu(true)
         return root
     }
 
@@ -143,5 +145,34 @@ class NotSentVolunteersFragment : Fragment(), View.OnClickListener {
             isSentToInforg = false
         }
         super.onResume()
+    }
+
+    override fun onQueryTextSubmit(query: String?): Boolean {
+        adapter.volunteers = adapter.filterVolunteers(query, fullList)
+        return false
+    }
+
+    override fun onQueryTextChange(newText: String?): Boolean {
+        adapter.volunteers = adapter.filterVolunteers(newText, fullList)
+        return false
+    }
+
+    override fun onPause() {
+        adapter.volunteers = fullList
+        super.onPause()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        val searchView = menu.findItem(R.id.search_view).actionView as SearchView
+        with(searchView) {
+            isFocusable = false
+            queryHint = getString(R.string.search_searching)
+            setOnQueryTextListener(this@NotSentVolunteersFragment)
+            setOnCloseListener {
+                adapter.volunteers = fullList
+                false
+            }
+        }
     }
 }

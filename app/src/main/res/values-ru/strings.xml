@@ -40,4 +40,5 @@
     <string name="actionbar_label_foxes">Лисы</string>
     <string name="actionbar_label_scan_QR">Сканирование QR</string>
     <string name="actionbar_label_add_manually">Добавить вручную</string>
+    <string name="search_searching">Поиск</string>
 </resources>

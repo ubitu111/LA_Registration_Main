@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.volunteer_item.view.*
 import ru.kireev.mir.registrarlizaalert.R
 import ru.kireev.mir.registrarlizaalert.data.Volunteer
+import java.util.*
 
 class VolunteerAdapter : RecyclerView.Adapter<VolunteerAdapter.VolunteerViewHolder>() {
 
@@ -16,6 +17,22 @@ class VolunteerAdapter : RecyclerView.Adapter<VolunteerAdapter.VolunteerViewHold
     set(value) {
         field = value
         notifyDataSetChanged()
+    }
+
+    fun filterVolunteers(query: String?, fullList: List<Volunteer>): List<Volunteer> {
+        val results = mutableListOf<Volunteer>()
+        val queryString = query?.toLowerCase(Locale.getDefault())?.trim()
+        queryString?.let {
+            for (volunteer in fullList) {
+                if (volunteer.name.toLowerCase(Locale.getDefault()).contains(it)
+                        || volunteer.surname.toLowerCase(Locale.getDefault()).contains(it)
+                        || volunteer.callSign.toLowerCase(Locale.getDefault()).contains(it)
+                        || volunteer.carRegistrationNumber.toLowerCase(Locale.getDefault()).contains(it)) {
+                    results.add(volunteer)
+                }
+            }
+        }
+        return results
     }
 
     var onVolunteerLongClickListener: OnVolunteerLongClickListener? = null

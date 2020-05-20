@@ -40,5 +40,5 @@
     <string name="actionbar_label_foxes">Foxes</string>
     <string name="actionbar_label_scan_QR">Scan QR</string>
     <string name="actionbar_label_add_manually">Add manually</string>
-
+    <string name="search_searching">Search</string>
 </resources>

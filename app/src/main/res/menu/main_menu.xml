@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:title="Лисы" android:id="@+id/menu_item_foxes"/>
-    <item android:title="Волонтеры" android:id="@+id/menu_item_volunteers"/>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/menu_item_foxes"
+        android:title="@string/actionbar_label_foxes" />
+    <item
+        android:id="@+id/menu_item_volunteers"
+        android:title="@string/actionbar_label_volunteers" />
+    <item
+        android:id="@+id/search_view"
+        android:title="@string/search_searching"
+        app:actionViewClass="android.widget.SearchView"
+        app:showAsAction="always" />
 </menu>
