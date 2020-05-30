@@ -16,10 +16,10 @@ class VolunteerAutoCompleteAdapter(private val context: Context, fullList: List<
 
     private var results: List<Volunteer> = arrayListOf()
     var fullList = fullList
-    set(value) {
-        field = value
-        notifyDataSetChanged()
-    }
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
 
     init {
         this.fullList = fullList

@@ -9,60 +9,60 @@
 
     <TextView
         android:id="@+id/textViewContent"
-        android:textColor="@color/white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/enter_your_data_below"
         android:padding="8dp"
+        android:text="@string/enter_your_data_below"
+        android:textColor="@color/white"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        style="@style/EditTextStyle"
         android:id="@+id/editTextName"
+        style="@style/EditTextStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="15sp"
         android:layout_margin="8dp"
         android:hint="@string/name"
         android:inputType="textPersonName"
+        android:textSize="15sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewContent" />
 
     <EditText
-        style="@style/EditTextStyle"
         android:id="@+id/editTextSurname"
+        style="@style/EditTextStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        android:textSize="15sp"
-        android:inputType="textPersonName"
         android:hint="@string/surname"
+        android:inputType="textPersonName"
+        android:textSize="15sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextName" />
 
     <EditText
-        style="@style/EditTextStyle"
         android:id="@+id/editTextCallSign"
+        style="@style/EditTextStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        android:textSize="15sp"
-        android:inputType="textPersonName"
         android:hint="@string/call_sign"
+        android:inputType="textPersonName"
+        android:textSize="15sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextSurname" />
 
     <EditText
-        style="@style/EditTextStyle"
         android:id="@+id/editTextPhoneNumber"
+        style="@style/EditTextStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:hint="@string/phone_number"
-        android:textSize="15sp"
         android:inputType="phone"
+        android:textSize="15sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextCallSign" />
 
@@ -90,11 +90,11 @@
         android:id="@+id/editTextCarMark"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:visibility="gone"
-        android:textSize="15sp"
         android:layout_margin="8dp"
         android:hint="@string/mark_of_a_car"
+        android:inputType="textPersonName"
+        android:textSize="15sp"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/checkBoxHaveACar" />
 
@@ -102,11 +102,11 @@
         android:id="@+id/editTextCarModel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:visibility="gone"
-        android:textSize="15sp"
         android:layout_margin="8dp"
         android:hint="@string/model_of_a_car"
+        android:inputType="textPersonName"
+        android:textSize="15sp"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextCarMark" />
 
@@ -114,11 +114,11 @@
         android:id="@+id/editTextCarRegistrationNumber"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="15sp"
-        android:visibility="gone"
         android:layout_margin="8dp"
         android:hint="@string/registration_number_of_a_car"
         android:inputType="textPersonName"
+        android:textSize="15sp"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextCarModel" />
 
@@ -126,11 +126,11 @@
         android:id="@+id/editTextCarColor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="15sp"
-        android:visibility="gone"
         android:layout_margin="8dp"
         android:hint="@string/color_of_a_car"
         android:inputType="textPersonName"
+        android:textSize="15sp"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextCarRegistrationNumber" />
 

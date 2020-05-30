@@ -9,15 +9,17 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.volunteer_item.view.*
 import ru.kireev.mir.registrarlizaalert.R
 import ru.kireev.mir.registrarlizaalert.data.Volunteer
+import ru.kireev.mir.registrarlizaalert.listeners.OnVolunteerLongClickListener
+import ru.kireev.mir.registrarlizaalert.listeners.OnVolunteerPhoneNumberClickListener
 import java.util.*
 
 class VolunteerAdapter : RecyclerView.Adapter<VolunteerAdapter.VolunteerViewHolder>() {
 
     var volunteers: List<Volunteer> = listOf()
-    set(value) {
-        field = value
-        notifyDataSetChanged()
-    }
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
 
     fun filterVolunteers(query: String?, fullList: List<Volunteer>): List<Volunteer> {
         val results = mutableListOf<Volunteer>()
@@ -65,7 +67,7 @@ class VolunteerAdapter : RecyclerView.Adapter<VolunteerAdapter.VolunteerViewHold
                 linearLayoutFirstGroupInfoCar.visibility = View.GONE
             }
             itemView.setOnLongClickListener {
-                onVolunteerLongClickListener?.onLongClick(volunteer)
+                onVolunteerLongClickListener?.onLongVolunteerClick(volunteer)
                 return@setOnLongClickListener true
             }
             textViewPhoneNumber.setOnClickListener {
@@ -87,13 +89,5 @@ class VolunteerAdapter : RecyclerView.Adapter<VolunteerAdapter.VolunteerViewHold
         val textViewCarColor: TextView = itemView.textViewCarColor
         val linearLayoutFirstGroupInfoCar: LinearLayout = itemView.linearLayoutFirstGroupInfoCar
         val linearLayoutSecondGroupInfoCar: LinearLayout = itemView.linearLayoutSecondGroupInfoCar
-    }
-
-    interface OnVolunteerLongClickListener {
-        fun onLongClick(volunteer: Volunteer)
-    }
-
-    interface OnVolunteerPhoneNumberClickListener {
-        fun onVolunteerPhoneNumberClick(phone: String)
     }
 }

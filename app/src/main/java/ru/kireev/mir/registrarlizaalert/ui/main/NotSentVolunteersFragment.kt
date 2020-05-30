@@ -16,15 +16,17 @@ import ru.kireev.mir.registrarlizaalert.AddManuallyActivity
 import ru.kireev.mir.registrarlizaalert.BarCodeScannerActivity
 import ru.kireev.mir.registrarlizaalert.R
 import ru.kireev.mir.registrarlizaalert.adapters.VolunteerAdapter
-import ru.kireev.mir.registrarlizaalert.data.MainViewModel
 import ru.kireev.mir.registrarlizaalert.data.Volunteer
+import ru.kireev.mir.registrarlizaalert.data.VolunteersViewModel
+import ru.kireev.mir.registrarlizaalert.listeners.OnVolunteerLongClickListener
+import ru.kireev.mir.registrarlizaalert.listeners.OnVolunteerPhoneNumberClickListener
 
 class NotSentVolunteersFragment : Fragment(), View.OnClickListener, SearchView.OnQueryTextListener {
     companion object {
         private const val EXTRA_SIZE = "size"
     }
 
-    private lateinit var viewModel: MainViewModel
+    private lateinit var viewModel: VolunteersViewModel
     private lateinit var adapter: VolunteerAdapter
     private lateinit var famMenu: FloatingActionMenu
     private var isSentToInforg = false
@@ -35,12 +37,12 @@ class NotSentVolunteersFragment : Fragment(), View.OnClickListener, SearchView.O
         val recyclerView = root.recyclerViewNotSentVolunteersTab
         famMenu = root.fam_menu_tab
         adapter = VolunteerAdapter()
-        adapter.onVolunteerLongClickListener = object : VolunteerAdapter.OnVolunteerLongClickListener {
-            override fun onLongClick(volunteer: Volunteer) {
+        adapter.onVolunteerLongClickListener = object : OnVolunteerLongClickListener {
+            override fun onLongVolunteerClick(volunteer: Volunteer) {
                 onClickDeleteVolunteer(volunteer)
             }
         }
-        adapter.onVolunteerPhoneNumberClickListener = object : VolunteerAdapter.OnVolunteerPhoneNumberClickListener {
+        adapter.onVolunteerPhoneNumberClickListener = object : OnVolunteerPhoneNumberClickListener {
             override fun onVolunteerPhoneNumberClick(phone: String) {
                 val toDial = "tel:$phone"
                 startActivity(Intent(Intent.ACTION_DIAL, Uri.parse(toDial)))
@@ -48,7 +50,7 @@ class NotSentVolunteersFragment : Fragment(), View.OnClickListener, SearchView.O
         }
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(context)
-        val model by viewModels<MainViewModel>()
+        val model by viewModels<VolunteersViewModel>()
         viewModel = model
         viewModel.notSentVolunteers.observe(viewLifecycleOwner, Observer {
             adapter.volunteers = it
@@ -135,7 +137,6 @@ class NotSentVolunteersFragment : Fragment(), View.OnClickListener, SearchView.O
             alertDialog.setMessage(getString(R.string.message_confirm_sent_to_inforg))
             alertDialog.setPositiveButton(getString(R.string.sent_successfully)) { _, _ ->
                 for (volunteer in adapter.volunteers) {
-                    viewModel.deleteVolunteer(volunteer)
                     volunteer.isSent = "true"
                     viewModel.insertVolunteer(volunteer)
                 }

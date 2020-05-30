@@ -13,12 +13,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_tabbed_sent_volunteers.view.*
 import ru.kireev.mir.registrarlizaalert.R
 import ru.kireev.mir.registrarlizaalert.adapters.VolunteerAdapter
-import ru.kireev.mir.registrarlizaalert.data.MainViewModel
 import ru.kireev.mir.registrarlizaalert.data.Volunteer
+import ru.kireev.mir.registrarlizaalert.data.VolunteersViewModel
+import ru.kireev.mir.registrarlizaalert.listeners.OnVolunteerLongClickListener
+import ru.kireev.mir.registrarlizaalert.listeners.OnVolunteerPhoneNumberClickListener
 
 class SentVolunteersFragment : Fragment(), SearchView.OnQueryTextListener {
 
-    private lateinit var viewModel: MainViewModel
+    private lateinit var viewModel: VolunteersViewModel
     private lateinit var adapter: VolunteerAdapter
     private var fullList = listOf<Volunteer>()
 
@@ -26,12 +28,12 @@ class SentVolunteersFragment : Fragment(), SearchView.OnQueryTextListener {
         val root = inflater.inflate(R.layout.fragment_tabbed_sent_volunteers, container, false)
         val recyclerView = root.recyclerViewSentVolunteersTab
         adapter = VolunteerAdapter()
-        adapter.onVolunteerLongClickListener = object : VolunteerAdapter.OnVolunteerLongClickListener {
-            override fun onLongClick(volunteer: Volunteer) {
+        adapter.onVolunteerLongClickListener = object : OnVolunteerLongClickListener {
+            override fun onLongVolunteerClick(volunteer: Volunteer) {
                 onClickDeleteVolunteer(volunteer)
             }
         }
-        adapter.onVolunteerPhoneNumberClickListener = object : VolunteerAdapter.OnVolunteerPhoneNumberClickListener {
+        adapter.onVolunteerPhoneNumberClickListener = object : OnVolunteerPhoneNumberClickListener {
             override fun onVolunteerPhoneNumberClick(phone: String) {
                 val toDial = "tel:$phone"
                 startActivity(Intent(Intent.ACTION_DIAL, Uri.parse(toDial)))
@@ -39,7 +41,7 @@ class SentVolunteersFragment : Fragment(), SearchView.OnQueryTextListener {
         }
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(context)
-        val model by viewModels<MainViewModel>()
+        val model by viewModels<VolunteersViewModel>()
         viewModel = model
         viewModel.sentVolunteers.observe(viewLifecycleOwner, Observer {
             adapter.volunteers = it
@@ -53,7 +55,7 @@ class SentVolunteersFragment : Fragment(), SearchView.OnQueryTextListener {
         val alertDialog = AlertDialog.Builder(context)
         alertDialog.setTitle(getString(R.string.warning))
         alertDialog.setMessage(getString(R.string.message_confirm_delete_one))
-        alertDialog.setPositiveButton(getString(R.string.delete_all)) { _, _->
+        alertDialog.setPositiveButton(getString(R.string.delete_all)) { _, _ ->
             viewModel.deleteVolunteer(volunteer)
         }
         alertDialog.setNegativeButton(getString(R.string.cancel), null)

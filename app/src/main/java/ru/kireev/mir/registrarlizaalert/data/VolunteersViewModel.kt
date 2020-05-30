@@ -1,17 +1,14 @@
 package ru.kireev.mir.registrarlizaalert.data
 
 import android.app.Application
-import android.content.Context
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import io.reactivex.disposables.CompositeDisposable
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-class MainViewModel(application: Application) : AndroidViewModel(application) {
-    private val db = VolunteersDatabase.getInstance(application)
+class VolunteersViewModel(application: Application) : AndroidViewModel(application) {
+    private val db = MainDatabase.getInstance(application)
 
     val allVolunteers = db.volunteersDao().getAllVolunteers()
     val sentVolunteers = db.volunteersDao().getSentVolunteers()
@@ -19,21 +16,27 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     val addedToFoxVolunteers = db.volunteersDao().getAddedToFoxVolunteers()
     val notAddedToFoxVolunteers = db.volunteersDao().getNotAddedToFoxVolunteers()
 
-    fun insertVolunteer (volunteer: Volunteer) {
-        viewModelScope.launch (Dispatchers.IO) {
+    fun insertVolunteer(volunteer: Volunteer) {
+        viewModelScope.launch(Dispatchers.IO) {
             db.volunteersDao().insertVolunteer(volunteer)
         }
     }
 
-    fun deleteVolunteer (volunteer: Volunteer) {
-        viewModelScope.launch (Dispatchers.IO) {
+    fun deleteVolunteer(volunteer: Volunteer) {
+        viewModelScope.launch(Dispatchers.IO) {
             db.volunteersDao().deleteVolunteer(volunteer)
         }
     }
 
     fun deleteAllVolunteers() {
-        viewModelScope.launch (Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.IO) {
             db.volunteersDao().deleteAllVolunteers()
+        }
+    }
+
+    suspend fun getVolunteerById(id: Int?): Volunteer {
+        return withContext(viewModelScope.coroutineContext + Dispatchers.IO) {
+            db.volunteersDao().getVolunteerById(id)
         }
     }
 }

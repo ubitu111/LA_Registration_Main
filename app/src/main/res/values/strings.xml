@@ -41,4 +41,15 @@
     <string name="actionbar_label_scan_QR">Scan QR</string>
     <string name="actionbar_label_add_manually">Add manually</string>
     <string name="search_searching">Search</string>
+    <string name="foxes_item_number_of_fox">Fox %s</string>
+    <string name="fill_in_fields_volunteer">Fill in the fields - First Name, Last Name and Phone Number!</string>
+    <string name="fill_in_fields_volunteer_car">Fill in all the data about the car!</string>
+    <string name="select_elder_and_searchers_from_list">You must select a elder of fox and searchers from the list</string>
+    <string name="elder_of_fox">Elder of Fox</string>
+    <string name="select_elder_of_fox">Select elder of Fox</string>
+    <string name="searchers">Searchers</string>
+    <string name="save_the_fox">Save the Fox</string>
+    <string name="select_a_searcher">Select a searcher</string>
+    <string name="elder">Elder:</string>
+    <string name="elder_phone_number">Phone number:</string>
 </resources>

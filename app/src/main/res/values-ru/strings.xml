@@ -41,4 +41,15 @@
     <string name="actionbar_label_scan_QR">Сканирование QR</string>
     <string name="actionbar_label_add_manually">Добавить вручную</string>
     <string name="search_searching">Поиск</string>
+    <string name="foxes_item_number_of_fox">Лиса %s</string>
+    <string name="fill_in_fields_volunteer">Заполните поля - Имя, Фамилия и Номер телефона!</string>
+    <string name="fill_in_fields_volunteer_car">Заполните все данные об автомобиле!</string>
+    <string name="select_elder_and_searchers_from_list">Необходимо выбрать старшего группы и поисковиков из списка</string>
+    <string name="elder_of_fox">Старший группы</string>
+    <string name="select_elder_of_fox">Выбрать старшего группы</string>
+    <string name="searchers">Поисковики</string>
+    <string name="save_the_fox">Сохранить лису</string>
+    <string name="select_a_searcher">Выбрать поисковика</string>
+    <string name="elder">Старший:</string>
+    <string name="elder_phone_number">Номер телефона:</string>
 </resources>

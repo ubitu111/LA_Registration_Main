@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -11,26 +10,25 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="8dp"
-        >
+        android:padding="8dp">
 
         <TextView
             android:id="@+id/textViewPosition"
-            tools:text="position"
-            android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="position" />
 
         <TextView
             android:id="@+id/textViewLabelName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:text="@string/name"
             android:layout_margin="4dp"
+            android:text="@string/name"
+            android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@id/textViewPosition"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -38,18 +36,18 @@
             android:id="@+id/textViewName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="TextView"
             android:layout_margin="4dp"
             app:layout_constraintStart_toEndOf="@+id/textViewLabelName"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="TextView" />
 
         <TextView
             android:id="@+id/textViewLabelSurname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:text="@string/surname"
             android:layout_margin="4dp"
+            android:text="@string/surname"
+            android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@id/textViewName"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -57,18 +55,18 @@
             android:id="@+id/textViewSurname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="TextView"
             android:layout_margin="4dp"
             app:layout_constraintStart_toEndOf="@+id/textViewLabelSurname"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="TextView" />
 
         <TextView
             android:id="@+id/textViewLabelCallSign"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:text="@string/call_sign"
             android:layout_margin="4dp"
+            android:text="@string/call_sign"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewPosition" />
 
@@ -76,18 +74,18 @@
             android:id="@+id/textViewCallSign"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="TextView"
             android:layout_margin="4dp"
             app:layout_constraintStart_toEndOf="@+id/textViewLabelCallSign"
-            app:layout_constraintTop_toBottomOf="@+id/textViewPosition" />
+            app:layout_constraintTop_toBottomOf="@+id/textViewPosition"
+            tools:text="TextView" />
 
         <TextView
             android:id="@+id/textViewLabelPhoneNumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:text="@string/phone_number"
             android:layout_margin="4dp"
+            android:text="@string/phone_number"
+            android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@id/textViewCallSign"
             app:layout_constraintTop_toBottomOf="@+id/textViewPosition" />
 
@@ -95,28 +93,28 @@
             android:id="@+id/textViewPhoneNumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="TextView"
-            android:textColor="@color/blue"
             android:layout_margin="4dp"
+            android:textColor="@color/blue"
             app:layout_constraintStart_toEndOf="@+id/textViewLabelPhoneNumber"
-            app:layout_constraintTop_toBottomOf="@+id/textViewPosition" />
+            app:layout_constraintTop_toBottomOf="@+id/textViewPosition"
+            tools:text="TextView" />
 
         <LinearLayout
             android:id="@+id/linearLayoutFirstGroupInfoCar"
-            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewLabelCallSign"
-            android:orientation="horizontal">
+            app:layout_constraintTop_toBottomOf="@+id/textViewLabelCallSign">
 
             <TextView
                 android:id="@+id/textViewLabelCarMark"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
-                android:textStyle="bold"
-                android:text="@string/mark_of_a_car"/>
+                android:text="@string/mark_of_a_car"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/textViewCarMark"
@@ -130,8 +128,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
-                android:textStyle="bold"
-                android:text="@string/model_of_a_car" />
+                android:text="@string/model_of_a_car"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/textViewCarModel"
@@ -146,18 +144,18 @@
             android:id="@+id/linearLayoutSecondGroupInfoCar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayoutFirstGroupInfoCar"
-            android:orientation="horizontal">
+            app:layout_constraintTop_toBottomOf="@+id/linearLayoutFirstGroupInfoCar">
 
             <TextView
                 android:id="@+id/textViewLabelCarRegistrationNumber"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
-                android:textStyle="bold"
-                android:text="@string/registration_number_of_a_car" />
+                android:text="@string/registration_number_of_a_car"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/textViewCarRegistrationNumber"
@@ -171,8 +169,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
-                android:textStyle="bold"
-                android:text="@string/color_of_a_car"/>
+                android:text="@string/color_of_a_car"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/textViewCarColor"

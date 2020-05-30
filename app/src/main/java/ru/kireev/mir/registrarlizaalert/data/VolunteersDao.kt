@@ -28,4 +28,7 @@ interface VolunteersDao {
 
     @Query("DELETE FROM volunteers")
     fun deleteAllVolunteers()
+
+    @Query("SELECT * FROM volunteers WHERE uniqueId == :id")
+    fun getVolunteerById(id: Int?): Volunteer
 }

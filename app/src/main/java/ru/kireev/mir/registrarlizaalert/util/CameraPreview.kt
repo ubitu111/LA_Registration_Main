@@ -7,7 +7,7 @@ import android.view.SurfaceView
 
 class CameraPreview(context: Context, private val camera: Camera,
                     private val previewCb: Camera.PreviewCallback,
-                    private val autoFocusCb: Camera.AutoFocusCallback): SurfaceView(context), SurfaceHolder.Callback {
+                    private val autoFocusCb: Camera.AutoFocusCallback) : SurfaceView(context), SurfaceHolder.Callback {
 
     private val mHolder: SurfaceHolder = holder
 
@@ -32,7 +32,5 @@ class CameraPreview(context: Context, private val camera: Camera,
     override fun surfaceDestroyed(holder: SurfaceHolder?) {
 
     }
-
-
 
 }

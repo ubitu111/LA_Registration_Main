@@ -5,20 +5,21 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [Volunteer::class], version = 1, exportSchema = false)
-abstract class VolunteersDatabase : RoomDatabase() {
+@Database(entities = [Volunteer::class, Fox::class], version = 3, exportSchema = false)
+abstract class MainDatabase : RoomDatabase() {
     companion object {
-        private var db: VolunteersDatabase? = null
+        private var db: MainDatabase? = null
         private const val DB_NAME = "main.db"
         private val LOCK = Any()
 
-        fun getInstance(context: Context): VolunteersDatabase {
+        fun getInstance(context: Context): MainDatabase {
             synchronized(LOCK) {
                 db?.let { return it }
                 val instance = Room.databaseBuilder(
                         context,
-                        VolunteersDatabase::class.java,
+                        MainDatabase::class.java,
                         DB_NAME)
+                        .fallbackToDestructiveMigration()
                         .build()
                 db = instance
                 return instance
@@ -27,5 +28,5 @@ abstract class VolunteersDatabase : RoomDatabase() {
     }
 
     abstract fun volunteersDao(): VolunteersDao
-
+    abstract fun foxesDao(): FoxesDao
 }

@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/la_background"
+    android:padding="8dp"
     tools:context=".AddNewFoxActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -16,7 +17,8 @@
             android:id="@+id/tvAddFoxElderTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Старший группы"
+            android:paddingBottom="10dp"
+            android:text="@string/elder_of_fox"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
@@ -27,7 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:completionThreshold="0"
-            android:hint="Выбрать старшего группы"
+            android:hint="@string/select_elder_of_fox"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvAddFoxElderTitle" />
 
@@ -35,7 +37,9 @@
             android:id="@+id/tvAddFoxMembersTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Поисковики"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="@string/searchers"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
@@ -45,29 +49,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="onClickAddNewMember"
+            android:paddingStart="10dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
             app:layout_constraintStart_toEndOf="@id/tvAddFoxMembersTitle"
             app:layout_constraintTop_toBottomOf="@+id/actvAddFoxElder"
             app:srcCompat="@android:drawable/ic_input_add" />
-
-<!--        <TextView-->
-<!--            android:id="@+id/tvAddFoxAddNewField"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginEnd="8dp"-->
-<!--            android:background="@color/gray"-->
-<!--            android:onClick="onClickAddNewMember"-->
-<!--            android:text="Добавить поле"-->
-<!--            app:layout_constraintBottom_toTopOf="@+id/rvAddFox"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintTop_toBottomOf="@+id/actvAddFoxElder" />-->
 
         <Button
             android:id="@+id/bAddFoxSaveFox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Сохранить лису"
-            android:onClick="onClickSaveFox"
             android:layout_marginTop="16dp"
+            android:onClick="onClickSaveFox"
+            android:text="@string/save_the_fox"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/rvAddFox" />
@@ -76,30 +71,19 @@
             android:id="@+id/actvAddFoxSearcher"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:completionHint="Выбрать поисковика"
             android:completionThreshold="0"
-            android:hint="Выбрать поисковика"
+            android:hint="@string/select_a_searcher"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvAddFoxMembersTitle" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvAddFox"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/actvAddFoxSearcher" />
 
-<!--        <CheckBox-->
-<!--            android:id="@+id/cbAddFoxAcceptElder"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="Выбран"-->
-<!--            app:layout_constraintBottom_toBottomOf="@+id/actvAddFoxElder"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toEndOf="@+id/actvAddFoxElder"-->
-<!--            app:layout_constraintTop_toTopOf="@+id/actvAddFoxElder" />-->
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>
+</androidx.core.widget.NestedScrollView>

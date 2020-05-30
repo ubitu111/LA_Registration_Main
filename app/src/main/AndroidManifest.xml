@@ -14,21 +14,25 @@
         <activity
             android:name="ru.kireev.mir.registrarlizaalert.SplashActivity"
             android:theme="@style/SplashTheme">
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
-        <activity android:name="ru.kireev.mir.registrarlizaalert.AddNewFoxActivity"
-            android:windowSoftInputMode="stateVisible|adjustPan"
-            android:screenOrientation="portrait"/>
-        <activity android:name="ru.kireev.mir.registrarlizaalert.FoxesMainActivity"
+        <activity
+            android:name="ru.kireev.mir.registrarlizaalert.AddNewFoxActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+        <activity
+            android:name="ru.kireev.mir.registrarlizaalert.FoxesMainActivity"
             android:label="@string/actionbar_label_foxes"
-            android:screenOrientation="portrait"/>
+            android:launchMode="singleInstance"
+            android:screenOrientation="portrait" />
         <activity
             android:name="ru.kireev.mir.registrarlizaalert.TabbedMainActivity"
+            android:launchMode="singleInstance"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name="ru.kireev.mir.registrarlizaalert.BarCodeScannerActivity"
             android:label="@string/actionbar_label_scan_QR"

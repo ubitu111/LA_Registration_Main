@@ -17,8 +17,8 @@ import com.yanzhenjie.zbar.Config
 import com.yanzhenjie.zbar.Image
 import com.yanzhenjie.zbar.ImageScanner
 import kotlinx.android.synthetic.main.activity_bar_code_scanner.*
-import ru.kireev.mir.registrarlizaalert.data.MainViewModel
 import ru.kireev.mir.registrarlizaalert.data.Volunteer
+import ru.kireev.mir.registrarlizaalert.data.VolunteersViewModel
 import ru.kireev.mir.registrarlizaalert.util.CameraPreview
 
 class BarCodeScannerActivity : AppCompatActivity() {
@@ -36,13 +36,13 @@ class BarCodeScannerActivity : AppCompatActivity() {
     private var carModel = ""
     private var carRegistrationNumber = ""
     private var carColor = ""
-    private lateinit var viewModel: MainViewModel
+    private lateinit var viewModel: VolunteersViewModel
     private var index = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_bar_code_scanner)
-        val model by viewModels<MainViewModel>()
+        val model by viewModels<VolunteersViewModel>()
         viewModel = model
         index = intent.getIntExtra("size", 0)
 
@@ -139,7 +139,7 @@ class BarCodeScannerActivity : AppCompatActivity() {
                 val scanResult = sym.data.trim()
                 val scanResultArray = scanResult.split("\n")
 
-                when(scanResultArray.size) {
+                when (scanResultArray.size) {
                     3 -> {
                         name = scanResultArray[0]
                         surname = scanResultArray[1]
@@ -196,13 +196,13 @@ class BarCodeScannerActivity : AppCompatActivity() {
                 .setTitle(getString(R.string.app_name))
                 .setCancelable(false)
                 .setMessage(message)
-                .setPositiveButton("OK", DialogInterface.OnClickListener { _, _ ->  })
+                .setPositiveButton("OK") { _, _ -> }
                 .show()
     }
 
     private fun insertVolunteer() {
         val volunteer = Volunteer(0, index, name, surname, callSign, phoneNumber, "false",
-        carMark, carModel, carRegistrationNumber, carColor, "false")
+                carMark, carModel, carRegistrationNumber, carColor, "false")
         viewModel.insertVolunteer(volunteer)
         showAlertDialog(getString(R.string.success_qr_code_scan_message))
         barcodeScanned = true
