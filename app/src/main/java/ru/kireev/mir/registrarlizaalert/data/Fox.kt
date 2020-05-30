@@ -20,5 +20,6 @@ data class Fox(
         var others: String = "",
         var task: String = "",
         var leavingTime: String = "",
-        var returnTime: String = ""
+        var returnTime: String = "",
+        var dateOfCreation: String
 )

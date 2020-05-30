@@ -20,4 +20,7 @@ interface FoxesDao {
     @Query("SELECT numberOfFox FROM foxes WHERE ID = (SELECT MAX(ID) FROM foxes)")
     fun getLastNumberOfFox(): Int
 
+    @Query("SELECT * FROM foxes WHERE ID = :id")
+    fun getFoxById(id: Int): Fox
+
 }

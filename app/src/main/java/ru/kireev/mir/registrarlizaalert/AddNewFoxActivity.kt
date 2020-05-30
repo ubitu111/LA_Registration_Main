@@ -22,6 +22,8 @@ import ru.kireev.mir.registrarlizaalert.data.Volunteer
 import ru.kireev.mir.registrarlizaalert.data.VolunteersViewModel
 import ru.kireev.mir.registrarlizaalert.listeners.OnClickDeleteNewMemberOfFoxListener
 import ru.kireev.mir.registrarlizaalert.listeners.OnVolunteerItemClickListener
+import java.text.SimpleDateFormat
+import java.util.*
 
 class AddNewFoxActivity : AppCompatActivity() {
     private lateinit var volunteersViewModel: VolunteersViewModel
@@ -221,12 +223,16 @@ class AddNewFoxActivity : AppCompatActivity() {
                     searcher.isAddedToFox = "true"
                     volunteersViewModel.insertVolunteer(searcher)
                 }
+                val currentDate = Date()
+                val dateFormat = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
+                val dateOfCreation = dateFormat.format(currentDate)
 
                 foxesViewModel.insertFox(Fox(
                         0,
                         numberOfFox,
                         it,
-                        searchersList))
+                        searchersList,
+                        dateOfCreation = dateOfCreation))
 
                 onBackPressed()
             }

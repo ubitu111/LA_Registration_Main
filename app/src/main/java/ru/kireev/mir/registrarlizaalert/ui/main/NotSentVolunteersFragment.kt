@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.github.clans.fab.FloatingActionMenu
 import kotlinx.android.synthetic.main.fragment_tabbed_not_sent_volunteers.view.*
 import ru.kireev.mir.registrarlizaalert.AddManuallyActivity
@@ -55,6 +56,16 @@ class NotSentVolunteersFragment : Fragment(), View.OnClickListener, SearchView.O
         viewModel.notSentVolunteers.observe(viewLifecycleOwner, Observer {
             adapter.volunteers = it
             fullList = it
+        })
+        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                if (dy > 0 && famMenu.visibility == View.VISIBLE) {
+                    famMenu.hideMenu(true)
+                } else if (dy < 0 && famMenu.visibility != View.VISIBLE) {
+                    famMenu.showMenu(true)
+                }
+            }
         })
         root.fab_buttonAddManuallyTab.setOnClickListener(this)
         root.fab_buttonAddByScannerTab.setOnClickListener(this)

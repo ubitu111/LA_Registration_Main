@@ -34,4 +34,8 @@ class FoxesViewModel(application: Application) : AndroidViewModel(application) {
         return withContext(viewModelScope.coroutineContext + Dispatchers.IO) { db.foxesDao().getLastNumberOfFox() }
     }
 
+    suspend fun getFoxById(id: Int): Fox {
+        return withContext(viewModelScope.coroutineContext + Dispatchers.IO) { db.foxesDao().getFoxById(id)}
+    }
+
 }

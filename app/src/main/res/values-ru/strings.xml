@@ -52,4 +52,10 @@
     <string name="select_a_searcher">Выбрать поисковика</string>
     <string name="elder">Старший:</string>
     <string name="elder_phone_number">Номер телефона:</string>
+    <string name="label_fox_detail">Подробно</string>
+    <string name="label_fox_detail_task">Задача:</string>
+    <string name="enter_fox_task_hint">Введите задачу Лисы</string>
+    <string name="label_fox_detail_equipment">Оборудование:</string>
+    <string name="enter_navigators_hint">Введите навигаторы, выданные лисе</string>
+    <string name="label_detail_fox_navigators">Навигаторы:</string>
 </resources>

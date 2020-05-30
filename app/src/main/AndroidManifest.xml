@@ -12,34 +12,37 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="ru.kireev.mir.registrarlizaalert.SplashActivity"
+            android:name=".SplashActivity"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name="ru.kireev.mir.registrarlizaalert.AddNewFoxActivity"
+            android:name=".AddNewFoxActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateVisible|adjustResize" />
         <activity
-            android:name="ru.kireev.mir.registrarlizaalert.FoxesMainActivity"
+            android:name=".FoxesMainActivity"
             android:label="@string/actionbar_label_foxes"
-            android:launchMode="singleInstance"
             android:screenOrientation="portrait" />
         <activity
-            android:name="ru.kireev.mir.registrarlizaalert.TabbedMainActivity"
-            android:launchMode="singleInstance"
+            android:name=".TabbedMainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="ru.kireev.mir.registrarlizaalert.BarCodeScannerActivity"
+            android:name=".BarCodeScannerActivity"
             android:label="@string/actionbar_label_scan_QR"
             android:screenOrientation="portrait" />
         <activity
-            android:name="ru.kireev.mir.registrarlizaalert.AddManuallyActivity"
+            android:name=".AddManuallyActivity"
             android:label="@string/actionbar_label_add_manually"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".FoxDetailActivity"
+            android:label="@string/label_fox_detail"
             android:screenOrientation="portrait" />
     </application>
 

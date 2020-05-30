@@ -52,4 +52,10 @@
     <string name="select_a_searcher">Select a searcher</string>
     <string name="elder">Elder:</string>
     <string name="elder_phone_number">Phone number:</string>
+    <string name="label_fox_detail">In detail</string>
+    <string name="label_fox_detail_task">Task:</string>
+    <string name="enter_fox_task_hint">Enter Fox task</string>
+    <string name="label_fox_detail_equipment">Equipment:</string>
+    <string name="enter_navigators_hint">Enter the fox navigators</string>
+    <string name="label_detail_fox_navigators">Navigators:</string>
 </resources>

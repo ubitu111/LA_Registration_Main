@@ -16,6 +16,7 @@ import ru.kireev.mir.registrarlizaalert.adapters.FoxesAdapter
 import ru.kireev.mir.registrarlizaalert.data.Fox
 import ru.kireev.mir.registrarlizaalert.data.FoxesViewModel
 import ru.kireev.mir.registrarlizaalert.data.VolunteersViewModel
+import ru.kireev.mir.registrarlizaalert.listeners.OnFoxClickListener
 import ru.kireev.mir.registrarlizaalert.listeners.OnFoxLongClickListener
 import ru.kireev.mir.registrarlizaalert.listeners.OnVolunteerPhoneNumberClickListener
 
@@ -43,7 +44,14 @@ class FoxesMainActivity : AppCompatActivity() {
                 onClickDeleteFox(fox)
             }
         }
-
+        foxesAdapter.onFoxClickListener = object : OnFoxClickListener {
+            override fun onFoxClick(position: Int) {
+                val foxId = foxesAdapter.foxes[position].id
+                val intent = Intent(this@FoxesMainActivity, FoxDetailActivity::class.java)
+                intent.putExtra("fox_id", foxId)
+                startActivity(intent)
+            }
+        }
         rvFoxesMain.adapter = foxesAdapter
         rvFoxesMain.layoutManager = LinearLayoutManager(applicationContext)
         foxesViewModel.allFoxes.observe(this, Observer {
@@ -66,7 +74,7 @@ class FoxesMainActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    public fun onClickAddFox(view: View) {
+    fun onClickAddFox(view: View) {
         val intent = Intent(this, AddNewFoxActivity::class.java)
         startActivity(intent)
     }
