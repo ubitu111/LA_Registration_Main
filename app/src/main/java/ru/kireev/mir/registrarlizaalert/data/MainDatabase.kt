@@ -5,7 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [Volunteer::class, Fox::class], version = 4, exportSchema = false)
+@Database(entities = [Volunteer::class, Fox::class], version = 7, exportSchema = false)
 abstract class MainDatabase : RoomDatabase() {
     companion object {
         private var db: MainDatabase? = null

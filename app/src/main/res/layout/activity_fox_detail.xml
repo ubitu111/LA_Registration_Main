@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="4dp"
     android:background="@drawable/la_background"
+    android:padding="4dp"
     tools:context=".FoxDetailActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -46,40 +46,26 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvNumberOfFox" />
 
-        <TextView
-            android:id="@+id/tvElderOfFox"
-            android:layout_width="wrap_content"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvFoxDetailInfoElder"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="8dp"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
-            android:textSize="18sp"
+            android:nestedScrollingEnabled="false"
+            android:padding="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvElderOfFoxLabel"
-            tools:text="Евгений Калиниченко (Командор)" />
-
-        <TextView
-            android:id="@+id/tvElderOfFoxPhoneNumber"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingBottom="8dp"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
-            android:textSize="18sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvElderOfFox"
-            tools:text="89539538282" />
+            app:layout_constraintTop_toBottomOf="@+id/tvElderOfFoxLabel"/>
 
         <TextView
             android:id="@+id/tvSearchersLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Поисковики:"
             android:padding="8dp"
+            android:text="Поисковики:"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvElderOfFoxPhoneNumber"/>
+            app:layout_constraintTop_toBottomOf="@id/rvFoxDetailInfoElder" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvFoxDetailInfoVolunteers"
@@ -244,9 +230,9 @@
             android:id="@+id/bDetailFoxSaveData"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="8dp"
             android:onClick="onClickSaveFoxData"
             android:text="Сохранить изменения"
-            android:layout_margin="8dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/etOthers" />
 

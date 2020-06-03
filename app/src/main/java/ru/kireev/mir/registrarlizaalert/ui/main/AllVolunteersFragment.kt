@@ -15,7 +15,6 @@ import ru.kireev.mir.registrarlizaalert.R
 import ru.kireev.mir.registrarlizaalert.adapters.VolunteerAdapter
 import ru.kireev.mir.registrarlizaalert.data.Volunteer
 import ru.kireev.mir.registrarlizaalert.data.VolunteersViewModel
-import ru.kireev.mir.registrarlizaalert.listeners.OnVolunteerLongClickListener
 import ru.kireev.mir.registrarlizaalert.listeners.OnVolunteerPhoneNumberClickListener
 
 class AllVolunteersFragment : Fragment(), View.OnClickListener, SearchView.OnQueryTextListener {
@@ -27,12 +26,9 @@ class AllVolunteersFragment : Fragment(), View.OnClickListener, SearchView.OnQue
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val root = inflater.inflate(R.layout.fragment_tabbed_all_volunteers, container, false)
         val recyclerView = root.recyclerViewAllVolunteersTab
-        adapter = VolunteerAdapter()
-        adapter.onVolunteerLongClickListener = object : OnVolunteerLongClickListener {
-            override fun onLongVolunteerClick(volunteer: Volunteer) {
-                onClickDeleteVolunteer(volunteer)
-            }
-        }
+        val model by viewModels<VolunteersViewModel>()
+        viewModel = model
+        adapter = VolunteerAdapter(requireContext(), model)
         adapter.onVolunteerPhoneNumberClickListener = object : OnVolunteerPhoneNumberClickListener {
             override fun onVolunteerPhoneNumberClick(phone: String) {
                 val toDial = "tel:$phone"
@@ -41,8 +37,7 @@ class AllVolunteersFragment : Fragment(), View.OnClickListener, SearchView.OnQue
         }
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(context)
-        val model by viewModels<VolunteersViewModel>()
-        viewModel = model
+
         viewModel.allVolunteers.observe(viewLifecycleOwner, Observer {
             adapter.volunteers = it
             fullList = it
@@ -59,17 +54,6 @@ class AllVolunteersFragment : Fragment(), View.OnClickListener, SearchView.OnQue
         alertDialog.setMessage(getString(R.string.message_confirm_delete_all))
         alertDialog.setPositiveButton(getString(R.string.delete_all)) { _, _ ->
             viewModel.deleteAllVolunteers()
-        }
-        alertDialog.setNegativeButton(getString(R.string.cancel), null)
-        alertDialog.show()
-    }
-
-    private fun onClickDeleteVolunteer(volunteer: Volunteer) {
-        val alertDialog = AlertDialog.Builder(context)
-        alertDialog.setTitle(getString(R.string.warning))
-        alertDialog.setMessage(getString(R.string.message_confirm_delete_one))
-        alertDialog.setPositiveButton(getString(R.string.delete_all)) { _, _ ->
-            viewModel.deleteVolunteer(volunteer)
         }
         alertDialog.setNegativeButton(getString(R.string.cancel), null)
         alertDialog.show()

@@ -17,8 +17,8 @@ interface VolunteersDao {
     @Query("SELECT * FROM volunteers WHERE isAddedToFox == 'true'")
     fun getAddedToFoxVolunteers(): LiveData<List<Volunteer>>
 
-    @Query("SELECT * FROM volunteers WHERE isAddedToFox == 'false'")
-    fun getNotAddedToFoxVolunteers(): LiveData<List<Volunteer>>
+    @Query("SELECT * FROM volunteers WHERE isAddedToFox == 'false' AND status == :status")
+    fun getNotAddedToFoxAndActiveVolunteers(status: String): LiveData<List<Volunteer>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertVolunteer(volunteer: Volunteer)
@@ -31,4 +31,8 @@ interface VolunteersDao {
 
     @Query("SELECT * FROM volunteers WHERE uniqueId == :id")
     fun getVolunteerById(id: Int?): Volunteer
+
+    @Query("SELECT * FROM volunteers WHERE status == :status AND notifyThatLeft == 'false'")
+    fun getVolunteersWithStatus(status: String): LiveData<List<Volunteer>>
+
 }

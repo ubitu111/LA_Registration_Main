@@ -1,19 +1,25 @@
 package ru.kireev.mir.registrarlizaalert.adapters
 
+import android.app.AlertDialog
+import android.app.TimePickerDialog
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.PopupMenu
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.volunteer_item.view.*
 import ru.kireev.mir.registrarlizaalert.R
 import ru.kireev.mir.registrarlizaalert.data.Volunteer
-import ru.kireev.mir.registrarlizaalert.listeners.OnVolunteerLongClickListener
+import ru.kireev.mir.registrarlizaalert.data.VolunteersViewModel
 import ru.kireev.mir.registrarlizaalert.listeners.OnVolunteerPhoneNumberClickListener
+import ru.kireev.mir.registrarlizaalert.util.TimePickerFragment
 import java.util.*
 
-class VolunteerAdapter : RecyclerView.Adapter<VolunteerAdapter.VolunteerViewHolder>() {
+class VolunteerAdapter(private val context: Context, private val viewModel: VolunteersViewModel) : RecyclerView.Adapter<VolunteerAdapter.VolunteerViewHolder>() {
 
     var volunteers: List<Volunteer> = listOf()
         set(value) {
@@ -37,8 +43,9 @@ class VolunteerAdapter : RecyclerView.Adapter<VolunteerAdapter.VolunteerViewHold
         return results
     }
 
-    var onVolunteerLongClickListener: OnVolunteerLongClickListener? = null
     var onVolunteerPhoneNumberClickListener: OnVolunteerPhoneNumberClickListener? = null
+    var onChangeVolunteerStatusListener: OnChangeVolunteerStatusListener? = null
+    var onVolunteerChangeTimeToSearchListener: OnVolunteerChangeTimeToSearchListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VolunteerViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.volunteer_item, parent, false)
@@ -55,6 +62,19 @@ class VolunteerAdapter : RecyclerView.Adapter<VolunteerAdapter.VolunteerViewHold
             textViewSurname.text = volunteer.surname
             textViewCallSign.text = volunteer.callSign
             textViewPhoneNumber.text = volunteer.phoneNumber
+            tvVolunteerStatus.text = volunteer.status
+            when (volunteer.status) {
+                context.getString(R.string.volunteer_status_active) -> {
+                    tvVolunteerStatus.setTextColor(context.resources.getColor(R.color.green))
+                }
+                context.getString(R.string.volunteer_status_left) -> {
+                    tvVolunteerStatus.setTextColor(context.resources.getColor(R.color.red))
+                }
+                context.getString(R.string.volunteer_status_home) -> {
+                    tvVolunteerStatus.setTextColor(context.resources.getColor(R.color.colorAccent))
+                }
+            }
+            tvVolunteerTimeForSearch.text = volunteer.timeForSearch
             if (volunteer.carMark.isNotEmpty()) {
                 linearLayoutFirstGroupInfoCar.visibility = View.VISIBLE
                 linearLayoutSecondGroupInfoCar.visibility = View.VISIBLE
@@ -66,9 +86,9 @@ class VolunteerAdapter : RecyclerView.Adapter<VolunteerAdapter.VolunteerViewHold
                 linearLayoutSecondGroupInfoCar.visibility = View.GONE
                 linearLayoutFirstGroupInfoCar.visibility = View.GONE
             }
-            itemView.setOnLongClickListener {
-                onVolunteerLongClickListener?.onLongVolunteerClick(volunteer)
-                return@setOnLongClickListener true
+
+            tvOptionsVolunteerItem.setOnClickListener {
+                showPopup(tvOptionsVolunteerItem, volunteer)
             }
             textViewPhoneNumber.setOnClickListener {
                 onVolunteerPhoneNumberClickListener?.onVolunteerPhoneNumberClick(textViewPhoneNumber.text.toString())
@@ -89,5 +109,80 @@ class VolunteerAdapter : RecyclerView.Adapter<VolunteerAdapter.VolunteerViewHold
         val textViewCarColor: TextView = itemView.textViewCarColor
         val linearLayoutFirstGroupInfoCar: LinearLayout = itemView.linearLayoutFirstGroupInfoCar
         val linearLayoutSecondGroupInfoCar: LinearLayout = itemView.linearLayoutSecondGroupInfoCar
+        val tvVolunteerStatus: TextView = itemView.tvVolunteerStatus
+        val tvOptionsVolunteerItem: TextView = itemView.tvOptionsVolunteerItem
+        val tvVolunteerTimeForSearch: TextView = itemView.tvVolunteerTimeForSearch
     }
+
+    private fun showPopup(textView: TextView, volunteer: Volunteer) {
+        val popup = PopupMenu(context, textView)
+        popup.inflate(R.menu.volunter_item_options_menu)
+        popup.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.options_menu_change_status -> {
+                    changeStatus(volunteer)
+                }
+                R.id.options_menu_set_time -> {
+                    setTime(volunteer)
+                }
+            }
+            return@setOnMenuItemClickListener false
+        }
+        popup.show()
+    }
+
+    private fun changeStatus(volunteer: Volunteer) {
+        val dialogBuilder = AlertDialog.Builder(context)
+        dialogBuilder.setTitle(R.string.change_status)
+                .setItems(
+                        arrayOf(
+                                context.getString(R.string.volunteer_status_active),
+                                context.getString(R.string.volunteer_status_left),
+                                context.getString(R.string.volunteer_status_home))
+                ) { _, which ->
+                    when (which) {
+                        0 -> {
+                            volunteer.status = context.getString(R.string.volunteer_status_active)
+                            viewModel.insertVolunteer(volunteer)
+                            onChangeVolunteerStatusListener?.onStatusChanged(volunteer)
+                        }
+                        1 -> {
+                            volunteer.status = context.getString(R.string.volunteer_status_left)
+                            viewModel.insertVolunteer(volunteer)
+                            onChangeVolunteerStatusListener?.onStatusChanged(volunteer)
+                        }
+                        2 -> {
+                            volunteer.status = context.getString(R.string.volunteer_status_home)
+                            viewModel.insertVolunteer(volunteer)
+                            onChangeVolunteerStatusListener?.onStatusChanged(volunteer)
+                        }
+                    }
+                }
+        dialogBuilder.create().show()
+    }
+
+    private fun setTime(volunteer: Volunteer) {
+        val activity = context as AppCompatActivity
+        val timePicker = TimePickerFragment(TimePickerDialog.OnTimeSetListener {
+            _, hourOfDay, minute ->
+
+            val hour = if (hourOfDay.toString().length == 2) hourOfDay.toString()
+            else "0$hourOfDay"
+            val min = if (minute.toString().length == 2) minute.toString()
+            else "0$minute"
+            volunteer.timeForSearch = "$hour:$min"
+            viewModel.insertVolunteer(volunteer)
+            onVolunteerChangeTimeToSearchListener?.onTimeChanged(volunteer)
+        })
+        timePicker.show(activity.supportFragmentManager, "timePicker")
+    }
+
+    interface OnChangeVolunteerStatusListener {
+        fun onStatusChanged(volunteer: Volunteer)
+    }
+
+    interface OnVolunteerChangeTimeToSearchListener {
+        fun onTimeChanged(volunteer: Volunteer)
+    }
+
 }

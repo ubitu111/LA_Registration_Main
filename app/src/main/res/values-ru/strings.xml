@@ -58,4 +58,11 @@
     <string name="label_fox_detail_equipment">Оборудование:</string>
     <string name="enter_navigators_hint">Введите навигаторы, выданные лисе</string>
     <string name="label_detail_fox_navigators">Навигаторы:</string>
+    <string name="volunteer_status_active">Активный</string>
+    <string name="volunteer_status_left">Уехал</string>
+    <string name="volunteer_status_home">Дома</string>
+    <string name="change_status">Изменить статус</string>
+    <string name="change_search_time">Изменить время на поиске</string>
+    <string name="data_saved">Данные сохранены</string>
+    <string name="fab_sent_who_left_label">Отправить\nинфоргу тех\nкто уехал</string>
 </resources>

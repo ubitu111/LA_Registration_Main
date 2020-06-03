@@ -10,29 +10,31 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.github.clans.fab.FloatingActionMenu
 import kotlinx.android.synthetic.main.fragment_tabbed_sent_volunteers.view.*
 import ru.kireev.mir.registrarlizaalert.R
 import ru.kireev.mir.registrarlizaalert.adapters.VolunteerAdapter
 import ru.kireev.mir.registrarlizaalert.data.Volunteer
 import ru.kireev.mir.registrarlizaalert.data.VolunteersViewModel
-import ru.kireev.mir.registrarlizaalert.listeners.OnVolunteerLongClickListener
 import ru.kireev.mir.registrarlizaalert.listeners.OnVolunteerPhoneNumberClickListener
 
-class SentVolunteersFragment : Fragment(), SearchView.OnQueryTextListener {
+class SentVolunteersFragment : Fragment(), SearchView.OnQueryTextListener, View.OnClickListener {
 
     private lateinit var viewModel: VolunteersViewModel
     private lateinit var adapter: VolunteerAdapter
     private var fullList = listOf<Volunteer>()
+    private var isSentToInforg = false
+    private var leftVolunteers = listOf<Volunteer>()
+    private lateinit var famMenu: FloatingActionMenu
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val root = inflater.inflate(R.layout.fragment_tabbed_sent_volunteers, container, false)
         val recyclerView = root.recyclerViewSentVolunteersTab
-        adapter = VolunteerAdapter()
-        adapter.onVolunteerLongClickListener = object : OnVolunteerLongClickListener {
-            override fun onLongVolunteerClick(volunteer: Volunteer) {
-                onClickDeleteVolunteer(volunteer)
-            }
-        }
+        val model by viewModels<VolunteersViewModel>()
+        famMenu = root.fam_menu_sent
+        viewModel = model
+        adapter = VolunteerAdapter(requireContext(), model)
         adapter.onVolunteerPhoneNumberClickListener = object : OnVolunteerPhoneNumberClickListener {
             override fun onVolunteerPhoneNumberClick(phone: String) {
                 val toDial = "tel:$phone"
@@ -41,25 +43,27 @@ class SentVolunteersFragment : Fragment(), SearchView.OnQueryTextListener {
         }
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(context)
-        val model by viewModels<VolunteersViewModel>()
-        viewModel = model
+        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                if (dy > 0 && famMenu.visibility == View.VISIBLE) {
+                    famMenu.hideMenu(true)
+                } else if (dy < 0 && famMenu.visibility != View.VISIBLE) {
+                    famMenu.showMenu(true)
+                }
+            }
+        })
+
         viewModel.sentVolunteers.observe(viewLifecycleOwner, Observer {
             adapter.volunteers = it
             fullList = it
         })
+        viewModel.getVolunteersWithStatus(getString(R.string.volunteer_status_left)).observe(viewLifecycleOwner, Observer {
+            leftVolunteers = it
+        })
         setHasOptionsMenu(true)
+        root.fab_buttonSentLeft.setOnClickListener(this)
         return root
-    }
-
-    private fun onClickDeleteVolunteer(volunteer: Volunteer) {
-        val alertDialog = AlertDialog.Builder(context)
-        alertDialog.setTitle(getString(R.string.warning))
-        alertDialog.setMessage(getString(R.string.message_confirm_delete_one))
-        alertDialog.setPositiveButton(getString(R.string.delete_all)) { _, _ ->
-            viewModel.deleteVolunteer(volunteer)
-        }
-        alertDialog.setNegativeButton(getString(R.string.cancel), null)
-        alertDialog.show()
     }
 
     override fun onQueryTextSubmit(query: String?): Boolean {
@@ -89,5 +93,65 @@ class SentVolunteersFragment : Fragment(), SearchView.OnQueryTextListener {
                 false
             }
         }
+    }
+
+    override fun onClick(v: View?) {
+        when(v?.id) {
+            R.id.fab_buttonSentLeft -> onClickSentLeft()
+        }
+    }
+
+    private fun onClickSentLeft() {
+        isSentToInforg = true
+        val builder = StringBuilder()
+        for (volunteer in leftVolunteers) {
+            builder.append(volunteer.name)
+                    .append("\n")
+                    .append(volunteer.surname)
+                    .append("\n")
+            if (volunteer.callSign.isNotEmpty()) {
+                builder.append(volunteer.callSign)
+                        .append("\n")
+            }
+            builder.append(volunteer.phoneNumber)
+                    .append("\n")
+                    .append(volunteer.carMark)
+                    .append("\n")
+                    .append(volunteer.carModel)
+                    .append("\n")
+                    .append(volunteer.carRegistrationNumber)
+                    .append("\n")
+                    .append(volunteer.carColor)
+                    .append("\n")
+                    .append(volunteer.status)
+                    .append("\n----------------------\n")
+        }
+
+        val message = builder.toString()
+        val intent = Intent(Intent.ACTION_SEND)
+        intent.type = "text/plain"
+        intent.putExtra(Intent.EXTRA_TEXT, message)
+        val chosenIntent = Intent.createChooser(intent, getString(R.string.chooser_title))
+        startActivity(chosenIntent)
+
+        famMenu.close(true)
+    }
+
+    override fun onResume() {
+        if (isSentToInforg) {
+            val alertDialog = AlertDialog.Builder(context)
+            alertDialog.setTitle(getString(R.string.attention))
+            alertDialog.setMessage(getString(R.string.message_confirm_sent_to_inforg))
+            alertDialog.setPositiveButton(getString(R.string.sent_successfully)) { _, _ ->
+                for (volunteer in leftVolunteers) {
+                    volunteer.notifyThatLeft = "true"
+                    viewModel.insertVolunteer(volunteer)
+                }
+            }
+            alertDialog.setNegativeButton(getString(R.string.not_sent), null)
+            alertDialog.show()
+            isSentToInforg = false
+        }
+        super.onResume()
     }
 }

@@ -19,7 +19,6 @@ import ru.kireev.mir.registrarlizaalert.R
 import ru.kireev.mir.registrarlizaalert.adapters.VolunteerAdapter
 import ru.kireev.mir.registrarlizaalert.data.Volunteer
 import ru.kireev.mir.registrarlizaalert.data.VolunteersViewModel
-import ru.kireev.mir.registrarlizaalert.listeners.OnVolunteerLongClickListener
 import ru.kireev.mir.registrarlizaalert.listeners.OnVolunteerPhoneNumberClickListener
 
 class NotSentVolunteersFragment : Fragment(), View.OnClickListener, SearchView.OnQueryTextListener {
@@ -36,13 +35,10 @@ class NotSentVolunteersFragment : Fragment(), View.OnClickListener, SearchView.O
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val root = inflater.inflate(R.layout.fragment_tabbed_not_sent_volunteers, container, false)
         val recyclerView = root.recyclerViewNotSentVolunteersTab
+        val model by viewModels<VolunteersViewModel>()
+        viewModel = model
         famMenu = root.fam_menu_tab
-        adapter = VolunteerAdapter()
-        adapter.onVolunteerLongClickListener = object : OnVolunteerLongClickListener {
-            override fun onLongVolunteerClick(volunteer: Volunteer) {
-                onClickDeleteVolunteer(volunteer)
-            }
-        }
+        adapter = VolunteerAdapter(requireContext(), model)
         adapter.onVolunteerPhoneNumberClickListener = object : OnVolunteerPhoneNumberClickListener {
             override fun onVolunteerPhoneNumberClick(phone: String) {
                 val toDial = "tel:$phone"
@@ -51,8 +47,7 @@ class NotSentVolunteersFragment : Fragment(), View.OnClickListener, SearchView.O
         }
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(context)
-        val model by viewModels<VolunteersViewModel>()
-        viewModel = model
+
         viewModel.notSentVolunteers.observe(viewLifecycleOwner, Observer {
             adapter.volunteers = it
             fullList = it
@@ -128,17 +123,6 @@ class NotSentVolunteersFragment : Fragment(), View.OnClickListener, SearchView.O
         startActivity(chosenIntent)
 
         famMenu.close(true)
-    }
-
-    private fun onClickDeleteVolunteer(volunteer: Volunteer) {
-        val alertDialog = AlertDialog.Builder(context)
-        alertDialog.setTitle(getString(R.string.warning))
-        alertDialog.setMessage(getString(R.string.message_confirm_delete_one))
-        alertDialog.setPositiveButton(getString(R.string.delete_all)) { _, _ ->
-            viewModel.deleteVolunteer(volunteer)
-        }
-        alertDialog.setNegativeButton(getString(R.string.cancel), null)
-        alertDialog.show()
     }
 
     override fun onResume() {

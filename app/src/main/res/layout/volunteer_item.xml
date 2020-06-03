@@ -12,6 +12,26 @@
         android:layout_height="match_parent"
         android:padding="8dp">
 
+        <!--        <ImageView-->
+        <!--            android:id="@+id/ivDeleteVolunteer"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            app:srcCompat="@android:drawable/ic_delete"-->
+        <!--            app:layout_constraintTop_toTopOf="parent"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"/>-->
+
+        <TextView
+            android:id="@+id/tvOptionsVolunteerItem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:padding="6dp"
+            android:text="@string/three_dots_menu"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
             android:id="@+id/textViewPosition"
             android:layout_width="wrap_content"
@@ -68,7 +88,7 @@
             android:text="@string/call_sign"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewPosition" />
+            app:layout_constraintTop_toBottomOf="@+id/textViewSurname" />
 
         <TextView
             android:id="@+id/textViewCallSign"
@@ -76,7 +96,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
             app:layout_constraintStart_toEndOf="@+id/textViewLabelCallSign"
-            app:layout_constraintTop_toBottomOf="@+id/textViewPosition"
+            app:layout_constraintTop_toBottomOf="@+id/textViewSurname"
             tools:text="TextView" />
 
         <TextView
@@ -87,7 +107,7 @@
             android:text="@string/phone_number"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@id/textViewCallSign"
-            app:layout_constraintTop_toBottomOf="@+id/textViewPosition" />
+            app:layout_constraintTop_toBottomOf="@+id/textViewSurname" />
 
         <TextView
             android:id="@+id/textViewPhoneNumber"
@@ -96,7 +116,7 @@
             android:layout_margin="4dp"
             android:textColor="@color/blue"
             app:layout_constraintStart_toEndOf="@+id/textViewLabelPhoneNumber"
-            app:layout_constraintTop_toBottomOf="@+id/textViewPosition"
+            app:layout_constraintTop_toBottomOf="@+id/textViewSurname"
             tools:text="TextView" />
 
         <LinearLayout
@@ -181,6 +201,23 @@
 
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/tvVolunteerStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:textColor="@color/green"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayoutSecondGroupInfoCar"
+            tools:text="активный" />
+
+        <TextView
+            android:id="@+id/tvVolunteerTimeForSearch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="08-30 01/06/2020"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayoutSecondGroupInfoCar" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

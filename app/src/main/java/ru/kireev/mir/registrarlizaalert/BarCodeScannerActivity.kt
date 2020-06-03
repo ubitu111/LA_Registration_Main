@@ -1,7 +1,6 @@
 package ru.kireev.mir.registrarlizaalert
 
 import android.Manifest
-import android.content.DialogInterface
 import android.content.pm.ActivityInfo
 import android.hardware.Camera
 import android.os.Bundle
@@ -201,8 +200,9 @@ class BarCodeScannerActivity : AppCompatActivity() {
     }
 
     private fun insertVolunteer() {
-        val volunteer = Volunteer(0, index, name, surname, callSign, phoneNumber, "false",
-                carMark, carModel, carRegistrationNumber, carColor, "false")
+        val status = getString(R.string.volunteer_status_active)
+        val volunteer = Volunteer(0, index, name, surname, callSign, phoneNumber,
+                carMark = carMark, carModel =  carModel, carRegistrationNumber =  carRegistrationNumber, carColor =  carColor, status =  status)
         viewModel.insertVolunteer(volunteer)
         showAlertDialog(getString(R.string.success_qr_code_scan_message))
         barcodeScanned = true

@@ -1,6 +1,5 @@
 package ru.kireev.mir.registrarlizaalert.adapters
 
-import android.annotation.SuppressLint
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
@@ -75,7 +74,7 @@ class NewMemberOfFoxAdapter(private val adapter: VolunteerAutoCompleteAdapter) :
 
     override fun getItemCount() = newMembers.size
 
-    @SuppressLint("ClickableViewAccessibility")
+
     override fun onBindViewHolder(holder: NewMemberViewHolder, position: Int) {
         val text = newMembers[position]
         holder.actvNewMemberItem.setText(text)

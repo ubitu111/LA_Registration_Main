@@ -34,8 +34,23 @@ class FoxesViewModel(application: Application) : AndroidViewModel(application) {
         return withContext(viewModelScope.coroutineContext + Dispatchers.IO) { db.foxesDao().getLastNumberOfFox() }
     }
 
+    //метод сразу обновляет данные из БД волонтеров, если статус или время поменялись
     suspend fun getFoxById(id: Int): Fox {
-        return withContext(viewModelScope.coroutineContext + Dispatchers.IO) { db.foxesDao().getFoxById(id)}
+        return withContext(viewModelScope.coroutineContext + Dispatchers.IO) {
+            val fox = db.foxesDao().getFoxById(id)
+            val elderId = fox.elderOfFox.uniqueId
+            val elderVolunteer = db.volunteersDao().getVolunteerById(elderId)
+            fox.elderOfFox = elderVolunteer
+
+            val mutableMembers = fox.membersOfFox.toMutableList()
+            for ((index, member) in mutableMembers.withIndex()) {
+                val volunteer = db.volunteersDao().getVolunteerById(member.uniqueId)
+                mutableMembers[index] = volunteer
+            }
+            fox.membersOfFox = mutableMembers
+            db.foxesDao().insertFox(fox)
+            return@withContext fox
+        }
     }
 
 }

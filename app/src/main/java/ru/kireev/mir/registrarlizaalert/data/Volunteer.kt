@@ -12,12 +12,15 @@ data class Volunteer(
         var surname: String,
         var callSign: String = "",
         var phoneNumber: String,
-        var isSent: String,
+        var isSent: String = "false",
         var carMark: String = "",
         var carModel: String = "",
         var carRegistrationNumber: String = "",
         var carColor: String = "",
-        var isAddedToFox: String
+        var isAddedToFox: String = "false",
+        var status: String,
+        var notifyThatLeft: String = "false",
+        var timeForSearch: String = ""
 ) {
     override fun toString(): String {
         return "$name $surname ($callSign)"

@@ -51,8 +51,9 @@ class AddManuallyActivity : AppCompatActivity() {
         } else if (haveACar && (carMark.isEmpty() || carModel.isEmpty() || carRegistrationNumber.isEmpty() || carColor.isEmpty())) {
             Toast.makeText(this, getString(R.string.fill_in_fields_volunteer_car), Toast.LENGTH_SHORT).show()
         } else {
+            val status = getString(R.string.volunteer_status_active)
             val volunteer = Volunteer(0, index, name, surname, callSign, phoneNumber,
-                    "false", carMark, carModel, carRegistrationNumber, carColor, "false")
+                    carMark =  carMark, carModel =  carModel, carRegistrationNumber =  carRegistrationNumber, carColor =  carColor, status = status)
             viewModel.insertVolunteer(volunteer)
             onBackPressed()
         }

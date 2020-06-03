@@ -53,7 +53,7 @@ class AddNewFoxActivity : AppCompatActivity() {
             numberOfFox = foxesViewModel.getLastNumberOfFox() + 1
         }
 
-        volunteersViewModel.notAddedToFoxVolunteers.observe(this, Observer {
+        volunteersViewModel.getNotAddedToFoxAndActiveVolunteers(getString(R.string.volunteer_status_active)).observe(this, Observer {
             autoCompleteAdapter.fullList = it
             volunteersForUpdate = it.toMutableList()
         })

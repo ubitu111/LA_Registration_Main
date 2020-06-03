@@ -12,12 +12,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_foxes_main.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import ru.kireev.mir.registrarlizaalert.adapters.FoxesAdapter
 import ru.kireev.mir.registrarlizaalert.data.Fox
 import ru.kireev.mir.registrarlizaalert.data.FoxesViewModel
 import ru.kireev.mir.registrarlizaalert.data.VolunteersViewModel
+import ru.kireev.mir.registrarlizaalert.listeners.OnDeleteFoxClickListener
 import ru.kireev.mir.registrarlizaalert.listeners.OnFoxClickListener
-import ru.kireev.mir.registrarlizaalert.listeners.OnFoxLongClickListener
 import ru.kireev.mir.registrarlizaalert.listeners.OnVolunteerPhoneNumberClickListener
 
 class FoxesMainActivity : AppCompatActivity() {
@@ -39,8 +42,8 @@ class FoxesMainActivity : AppCompatActivity() {
                 startActivity(Intent(Intent.ACTION_DIAL, Uri.parse(toDial)))
             }
         }
-        foxesAdapter.onFoxLongClickListener = object : OnFoxLongClickListener {
-            override fun onLongFoxClick(fox: Fox) {
+        foxesAdapter.onDeleteFoxClickListener = object : OnDeleteFoxClickListener {
+            override fun onDeleteFoxClick(fox: Fox) {
                 onClickDeleteFox(fox)
             }
         }
@@ -57,6 +60,7 @@ class FoxesMainActivity : AppCompatActivity() {
         foxesViewModel.allFoxes.observe(this, Observer {
             foxesAdapter.foxes = it
         })
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -80,19 +84,22 @@ class FoxesMainActivity : AppCompatActivity() {
     }
 
     private fun onClickDeleteFox(fox: Fox) {
-        val alertDialog = AlertDialog.Builder(this)
-        alertDialog.setTitle(getString(R.string.warning))
-        alertDialog.setMessage(getString(R.string.message_confirm_delete_one))
-        alertDialog.setPositiveButton(getString(R.string.delete_all)) { _, _ ->
-            fox.elderOfFox.isAddedToFox = "false"
-            volunteersViewModel.insertVolunteer(fox.elderOfFox)
-            for (volunteer in fox.membersOfFox) {
-                volunteer.isAddedToFox = "false"
-                volunteersViewModel.insertVolunteer(volunteer)
+        CoroutineScope(Dispatchers.Main).launch {
+            val freshFox = foxesViewModel.getFoxById(fox.id)
+            val alertDialog = AlertDialog.Builder(this@FoxesMainActivity)
+            alertDialog.setTitle(getString(R.string.warning))
+            alertDialog.setMessage(getString(R.string.message_confirm_delete_one))
+            alertDialog.setPositiveButton(getString(R.string.delete_all)) { _, _ ->
+                freshFox.elderOfFox.isAddedToFox = "false"
+                volunteersViewModel.insertVolunteer(freshFox.elderOfFox)
+                for (volunteer in freshFox.membersOfFox) {
+                    volunteer.isAddedToFox = "false"
+                    volunteersViewModel.insertVolunteer(volunteer)
+                }
+                foxesViewModel.deleteFox(freshFox)
             }
-            foxesViewModel.deleteFox(fox)
+            alertDialog.setNegativeButton(getString(R.string.cancel), null)
+            alertDialog.show()
         }
-        alertDialog.setNegativeButton(getString(R.string.cancel), null)
-        alertDialog.show()
     }
 }

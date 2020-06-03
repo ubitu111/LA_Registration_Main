@@ -14,7 +14,8 @@ class VolunteersViewModel(application: Application) : AndroidViewModel(applicati
     val sentVolunteers = db.volunteersDao().getSentVolunteers()
     val notSentVolunteers = db.volunteersDao().getNotSentVolunteers()
     val addedToFoxVolunteers = db.volunteersDao().getAddedToFoxVolunteers()
-    val notAddedToFoxVolunteers = db.volunteersDao().getNotAddedToFoxVolunteers()
+
+    fun getNotAddedToFoxAndActiveVolunteers(status: String) = db.volunteersDao().getNotAddedToFoxAndActiveVolunteers(status)
 
     fun insertVolunteer(volunteer: Volunteer) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -39,4 +40,6 @@ class VolunteersViewModel(application: Application) : AndroidViewModel(applicati
             db.volunteersDao().getVolunteerById(id)
         }
     }
+
+    fun getVolunteersWithStatus(status: String) = db.volunteersDao().getVolunteersWithStatus(status)
 }

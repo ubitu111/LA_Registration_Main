@@ -58,4 +58,12 @@
     <string name="label_fox_detail_equipment">Equipment:</string>
     <string name="enter_navigators_hint">Enter the fox navigators</string>
     <string name="label_detail_fox_navigators">Navigators:</string>
+    <string name="volunteer_status_active">Active</string>
+    <string name="volunteer_status_left">Left</string>
+    <string name="volunteer_status_home">Home</string>
+    <string name="three_dots_menu" translatable="false">⋮</string>
+    <string name="change_status">Change status</string>
+    <string name="change_search_time">Change search time</string>
+    <string name="data_saved">Data saved</string>
+    <string name="fab_sent_who_left_label">Send those\nwho left\nto inforg</string>
 </resources>
