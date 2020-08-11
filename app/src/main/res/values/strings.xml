@@ -2,7 +2,7 @@
     <string name="app_name">Registrar Liza Alert</string>
     <string name="add_volunteer_manually">Add volunteer\nmanually</string>
     <string name="add_volunteer_by_qrcode_scanner">Add volunteer\nby QRCode scanner</string>
-    <string name="name">Name:</string>
+    <string name="fullName">Full Name:</string>
     <string name="surname">Surname:</string>
     <string name="call_sign">Call sign:</string>
     <string name="phone_number">Phone number:</string>
@@ -33,7 +33,7 @@
     <string name="model_of_a_car">Model of a car:</string>
     <string name="registration_number_of_a_car">Registration number:</string>
     <string name="color_of_a_car">Color of a car:</string>
-    <string name="elder_template" translatable="false">%s %s (%s)</string>
+    <string name="elder_template" translatable="false">%s (%s)</string>
     <string name="success_qr_code_scan_message">Scan was successful</string>
     <string name="error_qr_code_scan_message">There was an error while scanning, try again</string>
     <string name="actionbar_label_volunteers">Volunteers</string>
@@ -42,8 +42,7 @@
     <string name="actionbar_label_add_manually">Add manually</string>
     <string name="search_searching">Search</string>
     <string name="foxes_item_number_of_fox">Fox %s</string>
-    <string name="fill_in_fields_volunteer">Fill in the fields - First Name, Last Name and Phone Number!</string>
-    <string name="fill_in_fields_volunteer_car">Fill in all the data about the car!</string>
+    <string name="fill_in_fields_volunteer">Fill in the fields - Full Name and Phone Number!</string>
     <string name="select_elder_and_searchers_from_list">You must select a elder of fox and searchers from the list</string>
     <string name="elder_of_fox">Elder of Fox</string>
     <string name="select_elder_of_fox">Select elder of Fox</string>
@@ -65,4 +64,9 @@
     <string name="change_search_time">Change search time</string>
     <string name="data_saved">Data saved</string>
     <string name="fab_sent_who_left_label">Send those\nwho left\nto inforg</string>
+    <string name="forum_nickname">Forum Nickname:</string>
+    <string name="region">Region:</string>
+    <string name="info_about_car">Car (reg number):</string>
+    <string name="template_for_legacy_fullname" translatable="false">%s %s</string>
+    <string name="template_for_legacy_car" translatable="false">%s (%s)</string>
 </resources>

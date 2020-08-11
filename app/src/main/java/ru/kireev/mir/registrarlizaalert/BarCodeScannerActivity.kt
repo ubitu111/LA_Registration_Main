@@ -27,14 +27,12 @@ class BarCodeScannerActivity : AppCompatActivity() {
     private lateinit var scanner: ImageScanner
     private var barcodeScanned = false
     private var previewing = true
-    private var name = ""
-    private var surname = ""
-    private var callSign = ""
-    private var phoneNumber = ""
-    private var carMark = ""
-    private var carModel = ""
-    private var carRegistrationNumber = ""
-    private var carColor = ""
+    private var fullName = "-"
+    private var callSign = "-"
+    private var nickname = "-"
+    private var region = "-"
+    private var phoneNumber = "-"
+    private var car = "-"
     private lateinit var viewModel: VolunteersViewModel
     private var index = 0
 
@@ -135,49 +133,49 @@ class BarCodeScannerActivity : AppCompatActivity() {
 
             val syms = scanner.results
             for (sym in syms) {
+                val templateFullName = getString(R.string.template_for_legacy_fullname)
+                val templateCar = getString(R.string.template_for_legacy_car)
                 val scanResult = sym.data.trim()
                 val scanResultArray = scanResult.split("\n")
 
                 when (scanResultArray.size) {
                     3 -> {
-                        name = scanResultArray[0]
-                        surname = scanResultArray[1]
+                        fullName = String.format(templateFullName, scanResultArray[0], scanResultArray[1])
                         phoneNumber = scanResultArray[2]
                         insertVolunteer()
                     }
 
                     4 -> {
-                        name = scanResultArray[0]
-                        surname = scanResultArray[1]
+                        fullName = String.format(templateFullName, scanResultArray[0], scanResultArray[1])
                         callSign = scanResultArray[2]
                         phoneNumber = scanResultArray[3]
                         insertVolunteer()
                     }
 
                     6 -> {
-
+                        fullName = scanResultArray[0]
+                        callSign = scanResultArray[1]
+                        nickname = scanResultArray[2]
+                        region = scanResultArray[3]
+                        phoneNumber = scanResultArray[4]
+                        car = scanResultArray[5]
+                        insertVolunteer()
                     }
 
                     7 -> {
-                        name = scanResultArray[0]
-                        surname = scanResultArray[1]
+                        fullName = String.format(templateFullName, scanResultArray[0], scanResultArray[1])
                         phoneNumber = scanResultArray[2]
-                        carMark = scanResultArray[3]
-                        carModel = scanResultArray[4]
-                        carRegistrationNumber = scanResultArray[5]
-                        carColor = scanResultArray[6]
+                        val carModel = scanResultArray[3] + " " +  scanResultArray[4]
+                        car = String.format(templateCar, carModel, scanResultArray[5])
                         insertVolunteer()
                     }
 
                     8 -> {
-                        name = scanResultArray[0]
-                        surname = scanResultArray[1]
+                        fullName = String.format(templateFullName, scanResultArray[0], scanResultArray[1])
                         callSign = scanResultArray[2]
                         phoneNumber = scanResultArray[3]
-                        carMark = scanResultArray[4]
-                        carModel = scanResultArray[5]
-                        carRegistrationNumber = scanResultArray[6]
-                        carColor = scanResultArray[7]
+                        val carModel = scanResultArray[4] + " " +  scanResultArray[5]
+                        car = String.format(templateCar, carModel, scanResultArray[6])
                         insertVolunteer()
                     }
 
@@ -205,19 +203,16 @@ class BarCodeScannerActivity : AppCompatActivity() {
 
     private fun insertVolunteer() {
         val status = getString(R.string.volunteer_status_active)
-        val volunteer = Volunteer(0, index, name, surname, callSign, phoneNumber,
-                carMark = carMark, carModel =  carModel, carRegistrationNumber =  carRegistrationNumber, carColor =  carColor, status =  status)
+        val volunteer = Volunteer(0, index, fullName, callSign, nickname, region, phoneNumber, car, status =  status)
         viewModel.insertVolunteer(volunteer)
         showAlertDialog(getString(R.string.success_qr_code_scan_message))
         barcodeScanned = true
 
-        name = ""
-        surname = ""
-        callSign = ""
-        phoneNumber = ""
-        carMark = ""
-        carModel = ""
-        carRegistrationNumber = ""
-        carColor = ""
+        fullName = "-"
+        callSign = "-"
+        nickname = "-"
+        region = "-"
+        phoneNumber = "-"
+        car = "-"
     }
 }

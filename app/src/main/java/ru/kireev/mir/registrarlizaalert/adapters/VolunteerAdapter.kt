@@ -3,10 +3,10 @@ package ru.kireev.mir.registrarlizaalert.adapters
 import android.app.AlertDialog
 import android.app.TimePickerDialog
 import android.content.Context
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -32,10 +32,9 @@ class VolunteerAdapter(private val context: Context, private val viewModel: Volu
         val queryString = query?.toLowerCase(Locale.getDefault())?.trim()
         queryString?.let {
             for (volunteer in fullList) {
-                if (volunteer.name.toLowerCase(Locale.getDefault()).contains(it)
-                        || volunteer.surname.toLowerCase(Locale.getDefault()).contains(it)
+                if (volunteer.fullName.toLowerCase(Locale.getDefault()).contains(it)
                         || volunteer.callSign.toLowerCase(Locale.getDefault()).contains(it)
-                        || volunteer.carRegistrationNumber.toLowerCase(Locale.getDefault()).contains(it)
+                        || volunteer.car.toLowerCase(Locale.getDefault()).contains(it)
                         || volunteer.status.toLowerCase(Locale.getDefault()).contains(it)) {
                     results.add(volunteer)
                 }
@@ -55,35 +54,32 @@ class VolunteerAdapter(private val context: Context, private val viewModel: Volu
 
     override fun getItemCount() = volunteers.size
 
+
     override fun onBindViewHolder(holder: VolunteerViewHolder, position: Int) {
         val volunteer = volunteers[position]
         with(holder) {
             textViewPosition.text = (position + 1).toString()
-            textViewName.text = volunteer.name
-            textViewSurname.text = volunteer.surname
+            textViewFullName.text = volunteer.fullName
             textViewCallSign.text = volunteer.callSign
+            textViewNickname.text = volunteer.nickName
+            textViewRegion.text = volunteer.region
             textViewPhoneNumber.text = volunteer.phoneNumber
+            textViewCar.text = volunteer.car
             tvVolunteerStatus.text = volunteer.status
             when (volunteer.status) {
                 context.getString(R.string.volunteer_status_active) -> {
-                    tvVolunteerStatus.setTextColor(context.resources.getColor(R.color.green))
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                        tvVolunteerStatus.setTextColor(context.resources.getColor(R.color.green, context.theme))
+                    else tvVolunteerStatus.setTextColor(context.resources.getColor(R.color.green))
                 }
                 context.getString(R.string.volunteer_status_left) -> {
-                    tvVolunteerStatus.setTextColor(context.resources.getColor(R.color.red))
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                        tvVolunteerStatus.setTextColor(context.resources.getColor(R.color.red, context.theme))
+                    else
+                        tvVolunteerStatus.setTextColor(context.resources.getColor(R.color.red))
                 }
             }
             tvVolunteerTimeForSearch.text = volunteer.timeForSearch
-            if (volunteer.carMark.isNotEmpty()) {
-                linearLayoutFirstGroupInfoCar.visibility = View.VISIBLE
-                linearLayoutSecondGroupInfoCar.visibility = View.VISIBLE
-                textViewCarMark.text = volunteer.carMark
-                textViewCarModel.text = volunteer.carModel
-                textViewCarColor.text = volunteer.carColor
-                textViewCarRegistrationNumber.text = volunteer.carRegistrationNumber
-            } else {
-                linearLayoutSecondGroupInfoCar.visibility = View.GONE
-                linearLayoutFirstGroupInfoCar.visibility = View.GONE
-            }
 
             tvOptionsVolunteerItem.setOnClickListener {
                 showPopup(tvOptionsVolunteerItem, volunteer)
@@ -96,17 +92,13 @@ class VolunteerAdapter(private val context: Context, private val viewModel: Volu
     }
 
     inner class VolunteerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val textViewName: TextView = itemView.textViewName
-        val textViewSurname: TextView = itemView.textViewSurname
+        val textViewFullName: TextView = itemView.textViewFullName
         val textViewCallSign: TextView = itemView.textViewCallSign
+        val textViewNickname: TextView = itemView.textViewNickname
+        val textViewRegion: TextView = itemView.textViewRegion
         val textViewPhoneNumber: TextView = itemView.textViewPhoneNumber
+        val textViewCar: TextView = itemView.textViewCar
         val textViewPosition: TextView = itemView.textViewPosition
-        val textViewCarMark: TextView = itemView.textViewCarMark
-        val textViewCarModel: TextView = itemView.textViewCarModel
-        val textViewCarRegistrationNumber: TextView = itemView.textViewCarRegistrationNumber
-        val textViewCarColor: TextView = itemView.textViewCarColor
-        val linearLayoutFirstGroupInfoCar: LinearLayout = itemView.linearLayoutFirstGroupInfoCar
-        val linearLayoutSecondGroupInfoCar: LinearLayout = itemView.linearLayoutSecondGroupInfoCar
         val tvVolunteerStatus: TextView = itemView.tvVolunteerStatus
         val tvOptionsVolunteerItem: TextView = itemView.tvOptionsVolunteerItem
         val tvVolunteerTimeForSearch: TextView = itemView.tvVolunteerTimeForSearch

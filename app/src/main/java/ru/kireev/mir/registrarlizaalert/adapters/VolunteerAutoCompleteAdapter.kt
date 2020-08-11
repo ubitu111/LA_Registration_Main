@@ -31,7 +31,7 @@ class VolunteerAutoCompleteAdapter(private val context: Context, fullList: List<
         val volunteer = getItem(position)
         val firstLastName = view.tvACTVItemFirstLastName
         val callName = view.tvACTVItemCallName
-        firstLastName.text = String.format("%s %s", volunteer.name, volunteer.surname)
+        firstLastName.text = volunteer.fullName
         callName.text = volunteer.callSign
         return view
     }
@@ -69,8 +69,7 @@ class VolunteerAutoCompleteAdapter(private val context: Context, fullList: List<
         val listForResult = mutableListOf<Volunteer>()
         val stringConstraint = constraint.toString().toLowerCase(Locale.getDefault())
         for (volunteer in fullList) {
-            if (volunteer.name.toLowerCase(Locale.getDefault()).contains(stringConstraint)
-                    || volunteer.surname.toLowerCase(Locale.getDefault()).contains(stringConstraint)
+            if (volunteer.fullName.toLowerCase(Locale.getDefault()).contains(stringConstraint)
                     || volunteer.callSign.toLowerCase(Locale.getDefault()).contains(stringConstraint)) {
                 listForResult.add(volunteer)
             }

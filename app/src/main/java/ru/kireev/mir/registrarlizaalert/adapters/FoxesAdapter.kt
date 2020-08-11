@@ -42,8 +42,7 @@ class FoxesAdapter(private val context: Context) : RecyclerView.Adapter<FoxesAda
             val elderTemplate = context.resources.getString(R.string.elder_template)
             tvFoxesItemElder.text = String.format(
                     elderTemplate,
-                    fox.elderOfFox.name,
-                    fox.elderOfFox.surname,
+                    fox.elderOfFox.fullName,
                     fox.elderOfFox.callSign)
             tvFoxesItemElderPhone.text = fox.elderOfFox.phoneNumber
             ivDeleteFox.setOnClickListener {

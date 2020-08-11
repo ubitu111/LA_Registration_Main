@@ -24,6 +24,9 @@ import ru.kireev.mir.registrarlizaalert.listeners.OnVolunteerPhoneNumberClickLis
 class NotSentVolunteersFragment : Fragment(), View.OnClickListener, SearchView.OnQueryTextListener {
     companion object {
         private const val EXTRA_SIZE = "size"
+        private const val SPACE_KEY = " "
+        private const val LINE_SEPARATOR = "\n"
+        private const val NOTE_SEPARATOR = "\n * * * * * * * * * * * * * *\n"
     }
 
     private lateinit var viewModel: VolunteersViewModel
@@ -95,24 +98,33 @@ class NotSentVolunteersFragment : Fragment(), View.OnClickListener, SearchView.O
         isSentToInforg = true
         val builder = StringBuilder()
         for (volunteer in adapter.volunteers) {
-            builder.append(volunteer.name)
-                    .append("\n")
-                    .append(volunteer.surname)
-                    .append("\n")
-            if (volunteer.callSign.isNotEmpty()) {
-                builder.append(volunteer.callSign)
-                        .append("\n")
-            }
-            builder.append(volunteer.phoneNumber)
-                    .append("\n")
-                    .append(volunteer.carMark)
-                    .append("\n")
-                    .append(volunteer.carModel)
-                    .append("\n")
-                    .append(volunteer.carRegistrationNumber)
-                    .append("\n")
-                    .append(volunteer.carColor)
-                    .append("\n----------------------\n")
+            builder
+                    .append(resources.getString(R.string.fullName))
+                    .append(SPACE_KEY)
+                    .append(volunteer.fullName)
+                    .append(LINE_SEPARATOR)
+
+                    .append(resources.getString(R.string.call_sign))
+                    .append(SPACE_KEY)
+                    .append(volunteer.callSign)
+                    .append(LINE_SEPARATOR)
+
+                    .append(resources.getString(R.string.forum_nickname))
+                    .append(SPACE_KEY)
+                    .append(volunteer.nickName)
+                    .append(LINE_SEPARATOR)
+
+                    .append(resources.getString(R.string.phone_number))
+                    .append(SPACE_KEY)
+                    .append(volunteer.phoneNumber)
+                    .append(LINE_SEPARATOR)
+
+                    .append(resources.getString(R.string.info_about_car))
+                    .append(SPACE_KEY)
+                    .append(volunteer.car)
+                    .append(LINE_SEPARATOR)
+
+                    .append(NOTE_SEPARATOR)
         }
 
         val message = builder.toString()

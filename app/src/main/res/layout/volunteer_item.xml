@@ -12,20 +12,12 @@
         android:layout_height="match_parent"
         android:padding="8dp">
 
-        <!--        <ImageView-->
-        <!--            android:id="@+id/ivDeleteVolunteer"-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            app:srcCompat="@android:drawable/ic_delete"-->
-        <!--            app:layout_constraintTop_toTopOf="parent"-->
-        <!--            app:layout_constraintEnd_toEndOf="parent"/>-->
-
         <TextView
             android:id="@+id/tvOptionsVolunteerItem"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="2dp"
-            android:padding="6dp"
+            android:padding="8dp"
             android:text="@string/three_dots_menu"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -43,41 +35,23 @@
             tools:text="position" />
 
         <TextView
-            android:id="@+id/textViewLabelName"
+            android:id="@+id/textViewLabelFullName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
-            android:text="@string/name"
+            android:text="@string/fullName"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/textViewPosition" />
 
         <TextView
-            android:id="@+id/textViewName"
-            android:layout_width="wrap_content"
+            android:id="@+id/textViewFullName"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
-            app:layout_constraintStart_toEndOf="@+id/textViewLabelName"
+            app:layout_constraintStart_toEndOf="@+id/textViewLabelFullName"
             app:layout_constraintTop_toBottomOf="@id/textViewPosition"
-            tools:text="TextView" />
-
-        <TextView
-            android:id="@+id/textViewLabelSurname"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="4dp"
-            android:text="@string/surname"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textViewName" />
-
-        <TextView
-            android:id="@+id/textViewSurname"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="4dp"
-            app:layout_constraintStart_toEndOf="@+id/textViewLabelSurname"
-            app:layout_constraintTop_toBottomOf="@id/textViewName"
+            app:layout_constraintEnd_toEndOf="parent"
             tools:text="TextView" />
 
         <TextView
@@ -88,16 +62,58 @@
             android:text="@string/call_sign"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewSurname" />
+            app:layout_constraintTop_toBottomOf="@id/textViewFullName" />
 
         <TextView
             android:id="@+id/textViewCallSign"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
             app:layout_constraintStart_toEndOf="@+id/textViewLabelCallSign"
-            app:layout_constraintTop_toBottomOf="@+id/textViewSurname"
+            app:layout_constraintTop_toBottomOf="@id/textViewFullName"
+            app:layout_constraintEnd_toEndOf="parent"
             tools:text="TextView" />
+
+        <TextView
+            android:id="@+id/textViewLabelNickname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:text="@string/forum_nickname"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewCallSign" />
+
+        <TextView
+            android:id="@+id/textViewNickname"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            app:layout_constraintStart_toEndOf="@+id/textViewLabelNickname"
+            app:layout_constraintTop_toBottomOf="@+id/textViewCallSign"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="TextView" />
+
+        <TextView
+            android:id="@+id/textViewLabelRegion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:text="@string/region"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewNickname"/>
+
+        <TextView
+            android:id="@+id/textViewRegion"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            tools:text="TextView"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/textViewLabelRegion"
+            app:layout_constraintTop_toBottomOf="@+id/textViewNickname"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
         <TextView
             android:id="@+id/textViewLabelPhoneNumber"
@@ -107,99 +123,39 @@
             android:text="@string/phone_number"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewCallSign" />
+            app:layout_constraintTop_toBottomOf="@+id/textViewRegion" />
 
         <TextView
             android:id="@+id/textViewPhoneNumber"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
             android:textColor="@color/blue"
             app:layout_constraintStart_toEndOf="@+id/textViewLabelPhoneNumber"
-            app:layout_constraintTop_toBottomOf="@+id/textViewCallSign"
+            app:layout_constraintTop_toBottomOf="@+id/textViewRegion"
+            app:layout_constraintEnd_toEndOf="parent"
             tools:text="TextView" />
 
-        <LinearLayout
-            android:id="@+id/linearLayoutFirstGroupInfoCar"
+        <TextView
+            android:id="@+id/textViewLabelCar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:visibility="gone"
+            android:layout_margin="4dp"
+            android:text="@string/info_about_car"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewPhoneNumber">
+            app:layout_constraintTop_toBottomOf="@+id/textViewPhoneNumber"/>
 
-            <TextView
-                android:id="@+id/textViewLabelCarMark"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:text="@string/mark_of_a_car"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/textViewCarMark"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                tools:text="TextView" />
-
-            <TextView
-                android:id="@+id/textViewLabelCarModel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:text="@string/model_of_a_car"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/textViewCarModel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                tools:text="TextView" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/linearLayoutSecondGroupInfoCar"
-            android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/textViewCar"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:visibility="gone"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayoutFirstGroupInfoCar">
+            android:layout_margin="4dp"
+            tools:text="Владимир Олегович Владимир Олегович Владимир Олегович Владимир Олегович Владимир Олегович Владимир Олегович"
+            app:layout_constraintStart_toEndOf="@+id/textViewLabelCar"
+            app:layout_constraintTop_toBottomOf="@+id/textViewPhoneNumber"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
-            <TextView
-                android:id="@+id/textViewLabelCarRegistrationNumber"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:text="@string/registration_number_of_a_car"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/textViewCarRegistrationNumber"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                tools:text="TextView" />
-
-            <TextView
-                android:id="@+id/textViewLabelCarColor"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:text="@string/color_of_a_car"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/textViewCarColor"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                tools:text="TextView" />
-
-        </LinearLayout>
 
         <TextView
             android:id="@+id/tvVolunteerStatus"
@@ -208,7 +164,7 @@
             android:layout_margin="4dp"
             android:textColor="@color/green"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayoutSecondGroupInfoCar"
+            app:layout_constraintTop_toBottomOf="@+id/textViewCar"
             tools:text="активный" />
 
         <TextView
@@ -217,7 +173,7 @@
             android:layout_height="wrap_content"
             tools:text="08-30 01/06/2020"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayoutSecondGroupInfoCar" />
+            app:layout_constraintTop_toBottomOf="@+id/textViewCar" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>
