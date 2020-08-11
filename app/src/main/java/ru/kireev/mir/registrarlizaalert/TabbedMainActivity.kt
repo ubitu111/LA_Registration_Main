@@ -27,12 +27,13 @@ class TabbedMainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
+        return when (item.itemId) {
             R.id.menu_item_foxes -> {
                 val intent = Intent(this, FoxesMainActivity::class.java)
                 startActivity(intent)
+                true
             }
+            else -> super.onOptionsItemSelected(item)
         }
-        return super.onOptionsItemSelected(item)
     }
 }

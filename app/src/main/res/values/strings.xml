@@ -60,7 +60,6 @@
     <string name="label_detail_fox_navigators">Navigators:</string>
     <string name="volunteer_status_active">Active</string>
     <string name="volunteer_status_left">Left</string>
-    <string name="volunteer_status_home">Home</string>
     <string name="three_dots_menu" translatable="false">⋮</string>
     <string name="change_status">Change status</string>
     <string name="change_search_time">Change search time</string>

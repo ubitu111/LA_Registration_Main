@@ -69,13 +69,14 @@ class FoxesMainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
+        return when (item.itemId) {
             R.id.menu_item_volunteers -> {
                 val intent = Intent(this, TabbedMainActivity::class.java)
                 startActivity(intent)
+                true
             }
+            else -> super.onOptionsItemSelected(item)
         }
-        return super.onOptionsItemSelected(item)
     }
 
     fun onClickAddFox(view: View) {

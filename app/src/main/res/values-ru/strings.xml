@@ -60,7 +60,6 @@
     <string name="label_detail_fox_navigators">Навигаторы:</string>
     <string name="volunteer_status_active">Активный</string>
     <string name="volunteer_status_left">Уехал</string>
-    <string name="volunteer_status_home">Дома</string>
     <string name="change_status">Изменить статус</string>
     <string name="change_search_time">Изменить время на поиске</string>
     <string name="data_saved">Данные сохранены</string>

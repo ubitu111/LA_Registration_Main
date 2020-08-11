@@ -154,6 +154,10 @@ class BarCodeScannerActivity : AppCompatActivity() {
                         insertVolunteer()
                     }
 
+                    6 -> {
+
+                    }
+
                     7 -> {
                         name = scanResultArray[0]
                         surname = scanResultArray[1]

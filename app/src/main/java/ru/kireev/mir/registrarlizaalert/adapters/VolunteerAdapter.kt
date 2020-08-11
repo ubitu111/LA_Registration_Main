@@ -35,7 +35,8 @@ class VolunteerAdapter(private val context: Context, private val viewModel: Volu
                 if (volunteer.name.toLowerCase(Locale.getDefault()).contains(it)
                         || volunteer.surname.toLowerCase(Locale.getDefault()).contains(it)
                         || volunteer.callSign.toLowerCase(Locale.getDefault()).contains(it)
-                        || volunteer.carRegistrationNumber.toLowerCase(Locale.getDefault()).contains(it)) {
+                        || volunteer.carRegistrationNumber.toLowerCase(Locale.getDefault()).contains(it)
+                        || volunteer.status.toLowerCase(Locale.getDefault()).contains(it)) {
                     results.add(volunteer)
                 }
             }
@@ -69,9 +70,6 @@ class VolunteerAdapter(private val context: Context, private val viewModel: Volu
                 }
                 context.getString(R.string.volunteer_status_left) -> {
                     tvVolunteerStatus.setTextColor(context.resources.getColor(R.color.red))
-                }
-                context.getString(R.string.volunteer_status_home) -> {
-                    tvVolunteerStatus.setTextColor(context.resources.getColor(R.color.colorAccent))
                 }
             }
             tvVolunteerTimeForSearch.text = volunteer.timeForSearch
@@ -137,8 +135,7 @@ class VolunteerAdapter(private val context: Context, private val viewModel: Volu
                 .setItems(
                         arrayOf(
                                 context.getString(R.string.volunteer_status_active),
-                                context.getString(R.string.volunteer_status_left),
-                                context.getString(R.string.volunteer_status_home))
+                                context.getString(R.string.volunteer_status_left) )
                 ) { _, which ->
                     when (which) {
                         0 -> {
@@ -148,11 +145,6 @@ class VolunteerAdapter(private val context: Context, private val viewModel: Volu
                         }
                         1 -> {
                             volunteer.status = context.getString(R.string.volunteer_status_left)
-                            viewModel.insertVolunteer(volunteer)
-                            onChangeVolunteerStatusListener?.onStatusChanged(volunteer)
-                        }
-                        2 -> {
-                            volunteer.status = context.getString(R.string.volunteer_status_home)
                             viewModel.insertVolunteer(volunteer)
                             onChangeVolunteerStatusListener?.onStatusChanged(volunteer)
                         }
