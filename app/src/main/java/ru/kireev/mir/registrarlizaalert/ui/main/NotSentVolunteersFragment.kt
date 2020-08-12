@@ -27,6 +27,7 @@ class NotSentVolunteersFragment : Fragment(), View.OnClickListener, SearchView.O
         private const val SPACE_KEY = " "
         private const val LINE_SEPARATOR = "\n"
         private const val NOTE_SEPARATOR = "\n * * * * * * * * * * * * * *\n"
+        private const val BUNDLE_KEY_IS_SENT_TO_INFORG = "is_sent_to_inforg"
     }
 
     private lateinit var viewModel: VolunteersViewModel
@@ -37,6 +38,9 @@ class NotSentVolunteersFragment : Fragment(), View.OnClickListener, SearchView.O
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val root = inflater.inflate(R.layout.fragment_tabbed_not_sent_volunteers, container, false)
+        savedInstanceState?.let {
+            isSentToInforg = it.getBoolean(BUNDLE_KEY_IS_SENT_TO_INFORG)
+        }
         val recyclerView = root.recyclerViewNotSentVolunteersTab
         val model by viewModels<VolunteersViewModel>()
         viewModel = model
@@ -182,5 +186,10 @@ class NotSentVolunteersFragment : Fragment(), View.OnClickListener, SearchView.O
                 false
             }
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putBoolean(BUNDLE_KEY_IS_SENT_TO_INFORG, isSentToInforg)
     }
 }

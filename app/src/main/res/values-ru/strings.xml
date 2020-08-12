@@ -66,4 +66,5 @@
     <string name="forum_nickname">Ник на форуме:</string>
     <string name="region">Регион:</string>
     <string name="info_about_car">Авто (госномер):</string>
+    <string name="warning_qr_code_scan_volunteer_exist_message">Этот волонтер уже записан!</string>
 </resources>

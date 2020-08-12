@@ -18,6 +18,7 @@ import ru.kireev.mir.registrarlizaalert.adapters.VolunteerAdapter
 import ru.kireev.mir.registrarlizaalert.data.Volunteer
 import ru.kireev.mir.registrarlizaalert.data.VolunteersViewModel
 import ru.kireev.mir.registrarlizaalert.listeners.OnVolunteerPhoneNumberClickListener
+import java.util.*
 
 class SentVolunteersFragment : Fragment(), SearchView.OnQueryTextListener, View.OnClickListener {
 
@@ -25,6 +26,7 @@ class SentVolunteersFragment : Fragment(), SearchView.OnQueryTextListener, View.
         private const val SPACE_KEY = " "
         private const val LINE_SEPARATOR = "\n"
         private const val NOTE_SEPARATOR = "* * * * * * * * * * * * * *\n"
+        private const val BUNDLE_KEY_IS_SENT_TO_INFORG = "is_sent_to_inforg"
     }
 
     private lateinit var viewModel: VolunteersViewModel
@@ -36,6 +38,9 @@ class SentVolunteersFragment : Fragment(), SearchView.OnQueryTextListener, View.
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val root = inflater.inflate(R.layout.fragment_tabbed_sent_volunteers, container, false)
+        savedInstanceState?.let {
+            isSentToInforg = it.getBoolean(BUNDLE_KEY_IS_SENT_TO_INFORG)
+        }
         val recyclerView = root.recyclerViewSentVolunteersTab
         val model by viewModels<VolunteersViewModel>()
         famMenu = root.fam_menu_sent
@@ -113,27 +118,30 @@ class SentVolunteersFragment : Fragment(), SearchView.OnQueryTextListener, View.
         for (volunteer in leftVolunteers) {
 
             builder
-                    .append(resources.getString(R.string.fullName))
+                    .append(getString(R.string.volunteer_status_left).toUpperCase(Locale.ROOT))
+                    .append(LINE_SEPARATOR)
+
+                    .append(getString(R.string.fullName))
                     .append(SPACE_KEY)
                     .append(volunteer.fullName)
                     .append(LINE_SEPARATOR)
 
-                    .append(resources.getString(R.string.call_sign))
+                    .append(getString(R.string.call_sign))
                     .append(SPACE_KEY)
                     .append(volunteer.callSign)
                     .append(LINE_SEPARATOR)
 
-                    .append(resources.getString(R.string.forum_nickname))
+                    .append(getString(R.string.forum_nickname))
                     .append(SPACE_KEY)
                     .append(volunteer.nickName)
                     .append(LINE_SEPARATOR)
 
-                    .append(resources.getString(R.string.phone_number))
+                    .append(getString(R.string.phone_number))
                     .append(SPACE_KEY)
                     .append(volunteer.phoneNumber)
                     .append(LINE_SEPARATOR)
 
-                    .append(resources.getString(R.string.info_about_car))
+                    .append(getString(R.string.info_about_car))
                     .append(SPACE_KEY)
                     .append(volunteer.car)
                     .append(LINE_SEPARATOR)
@@ -167,5 +175,10 @@ class SentVolunteersFragment : Fragment(), SearchView.OnQueryTextListener, View.
             isSentToInforg = false
         }
         super.onResume()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putBoolean(BUNDLE_KEY_IS_SENT_TO_INFORG, isSentToInforg)
     }
 }

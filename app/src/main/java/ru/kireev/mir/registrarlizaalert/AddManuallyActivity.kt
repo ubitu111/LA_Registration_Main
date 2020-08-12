@@ -6,6 +6,8 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_add_manually.*
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import ru.kireev.mir.registrarlizaalert.data.Volunteer
 import ru.kireev.mir.registrarlizaalert.data.VolunteersViewModel
 
@@ -34,8 +36,18 @@ class AddManuallyActivity : AppCompatActivity() {
         } else {
             val status = getString(R.string.volunteer_status_active)
             val volunteer = Volunteer(0, index, fullName, callSign, nickName, region, phoneNumber, car, status = status)
-            viewModel.insertVolunteer(volunteer)
-            onBackPressed()
+            runBlocking {
+                val job = launch {
+                    if (viewModel.checkForVolunteerExist(fullName, phoneNumber)) {
+                        Toast.makeText(this@AddManuallyActivity, getString(R.string.warning_qr_code_scan_volunteer_exist_message), Toast.LENGTH_SHORT).show()
+                    } else {
+                        viewModel.insertVolunteer(volunteer)
+                        onBackPressed()
+                    }
+                }
+                job.join()
+            }
+
         }
     }
 }

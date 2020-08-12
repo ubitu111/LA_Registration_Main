@@ -42,4 +42,8 @@ class VolunteersViewModel(application: Application) : AndroidViewModel(applicati
     }
 
     fun getVolunteersWithStatus(status: String) = db.volunteersDao().getVolunteersWithStatus(status)
+
+    suspend fun checkForVolunteerExist(fullName: String, phoneNumber: String): Boolean = withContext(viewModelScope.coroutineContext + Dispatchers.IO) {
+        db.volunteersDao().checkForVolunteerExist(fullName, phoneNumber)
+    }
 }

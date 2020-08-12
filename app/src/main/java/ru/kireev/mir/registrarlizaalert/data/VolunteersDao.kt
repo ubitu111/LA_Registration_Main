@@ -35,4 +35,7 @@ interface VolunteersDao {
     @Query("SELECT * FROM volunteers WHERE status == :status AND notifyThatLeft == 'false'")
     fun getVolunteersWithStatus(status: String): LiveData<List<Volunteer>>
 
+    @Query("SELECT COUNT('uniqueId') > 0 FROM volunteers WHERE fullName == :fullName AND phoneNumber == :phoneNumber")
+    fun checkForVolunteerExist(fullName: String, phoneNumber: String): Boolean
+
 }

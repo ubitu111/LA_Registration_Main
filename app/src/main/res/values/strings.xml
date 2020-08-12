@@ -35,6 +35,7 @@
     <string name="color_of_a_car">Color of a car:</string>
     <string name="elder_template" translatable="false">%s (%s)</string>
     <string name="success_qr_code_scan_message">Scan was successful</string>
+    <string name="warning_qr_code_scan_volunteer_exist_message">This volunteer is already exist!</string>
     <string name="error_qr_code_scan_message">There was an error while scanning, try again</string>
     <string name="actionbar_label_volunteers">Volunteers</string>
     <string name="actionbar_label_foxes">Foxes</string>
@@ -69,4 +70,5 @@
     <string name="info_about_car">Car (reg number):</string>
     <string name="template_for_legacy_fullname" translatable="false">%s %s</string>
     <string name="template_for_legacy_car" translatable="false">%s (%s)</string>
+    <string name="volunteer_status_left_big_leters">LEFT</string>
 </resources>

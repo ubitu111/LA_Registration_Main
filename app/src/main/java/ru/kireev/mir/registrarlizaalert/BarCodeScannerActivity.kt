@@ -16,6 +16,8 @@ import com.yanzhenjie.zbar.Config
 import com.yanzhenjie.zbar.Image
 import com.yanzhenjie.zbar.ImageScanner
 import kotlinx.android.synthetic.main.activity_bar_code_scanner.*
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import ru.kireev.mir.registrarlizaalert.data.Volunteer
 import ru.kireev.mir.registrarlizaalert.data.VolunteersViewModel
 import ru.kireev.mir.registrarlizaalert.util.CameraPreview
@@ -204,8 +206,17 @@ class BarCodeScannerActivity : AppCompatActivity() {
     private fun insertVolunteer() {
         val status = getString(R.string.volunteer_status_active)
         val volunteer = Volunteer(0, index, fullName, callSign, nickname, region, phoneNumber, car, status =  status)
-        viewModel.insertVolunteer(volunteer)
-        showAlertDialog(getString(R.string.success_qr_code_scan_message))
+        runBlocking {
+            val job = launch {
+                if (viewModel.checkForVolunteerExist(fullName, phoneNumber)) {
+                    showAlertDialog(getString(R.string.warning_qr_code_scan_volunteer_exist_message))
+                } else{
+                    viewModel.insertVolunteer(volunteer)
+                    showAlertDialog(getString(R.string.success_qr_code_scan_message))
+                }
+            }
+            job.join()
+        }
         barcodeScanned = true
 
         fullName = "-"
