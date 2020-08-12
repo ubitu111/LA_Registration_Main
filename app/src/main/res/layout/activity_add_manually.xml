@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/la_background"
+    android:background="@color/black"
     tools:context=".AddManuallyActivity">
 
     <TextView
@@ -36,8 +36,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
+        android:inputType="textPersonName"
         android:hint="@string/call_sign"
-
         android:textSize="15sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextFullName" />
@@ -48,8 +48,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
+        android:inputType="textPersonName"
         android:hint="@string/forum_nickname"
-
         android:textSize="15sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextCallSign" />
@@ -61,7 +61,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:hint="@string/region"
-
+        android:inputType="textPersonName"
         android:textSize="15sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextForumNickname" />
@@ -85,7 +85,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:hint="@string/info_about_car"
-
+        android:inputType="textPersonName"
         android:textSize="15sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextPhoneNumber" />
