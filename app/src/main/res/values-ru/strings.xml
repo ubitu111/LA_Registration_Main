@@ -67,4 +67,14 @@
     <string name="region">Регион:</string>
     <string name="info_about_car">Авто (госномер):</string>
     <string name="warning_qr_code_scan_volunteer_exist_message">Этот волонтер уже записан!</string>
+    <string name="send_data_foxes">Отправить\nданные о лисах</string>
+    <string name="create_new_fox">Создать \nлису</string>
+    <string name="label_detail_fox_walkie_talkies">Рации:</string>
+    <string name="enter_walkie_talkie_hint">Введите рации лисы</string>
+    <string name="label_detail_fox_compasses">Компасы:</string>
+    <string name="enter_compasses_hint">Введите компасы лисы</string>
+    <string name="label_detail_fox_lamps">Фонари:</string>
+    <string name="enter_lamps_hint">Введите фонари лисы</string>
+    <string name="label_detail_fox_others">Другое оборудование:</string>
+    <string name="enter_others_hint">Введите другое оборудование лисы</string>
 </resources>

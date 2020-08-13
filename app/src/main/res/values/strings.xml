@@ -70,5 +70,15 @@
     <string name="info_about_car">Car (reg number):</string>
     <string name="template_for_legacy_fullname" translatable="false">%s %s</string>
     <string name="template_for_legacy_car" translatable="false">%s (%s)</string>
-    <string name="volunteer_status_left_big_leters">LEFT</string>
+    <string name="send_data_foxes">Send \nfox data</string>
+    <string name="create_new_fox">Create \nnew fox</string>
+    <string name="label_detail_fox_walkie_talkies">Walkie-talkies:</string>
+    <string name="enter_walkie_talkie_hint">Enter the fox walkie-talkies</string>
+    <string name="label_detail_fox_compasses">Compasses:</string>
+    <string name="enter_compasses_hint">Enter the fox compasses</string>
+    <string name="label_detail_fox_lamps">Lamps:</string>
+    <string name="enter_lamps_hint">Enter the fox lamps</string>
+    <string name="label_detail_fox_others">Other:</string>
+    <string name="enter_others_hint">Enter other equipment</string>
+
 </resources>

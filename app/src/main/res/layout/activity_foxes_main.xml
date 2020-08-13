@@ -16,13 +16,33 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.github.clans.fab.FloatingActionButton
+    <com.github.clans.fab.FloatingActionMenu
+        android:id="@+id/fam_menu_foxes_main"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:onClick="onClickAddFox"
-        android:src="@drawable/fab_add"
-        app:fab_colorNormal="@color/colorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:menu_colorNormal="@color/colorPrimary">
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fab_button_foxes_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:src="@drawable/fab_add"
+            app:fab_label="@string/create_new_fox"
+            app:fab_colorNormal="@color/colorPrimary"
+            />
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fab_button_foxes_sent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/ic_menu_send"
+            app:fab_label="@string/send_data_foxes"
+            app:fab_colorNormal="@color/colorPrimary"/>
+
+    </com.github.clans.fab.FloatingActionMenu>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

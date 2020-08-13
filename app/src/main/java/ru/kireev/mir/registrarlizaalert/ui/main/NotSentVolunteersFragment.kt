@@ -114,27 +114,27 @@ class NotSentVolunteersFragment : Fragment(), View.OnClickListener, SearchView.O
         val builder = StringBuilder()
         for (volunteer in adapter.volunteers) {
             builder
-                    .append(resources.getString(R.string.fullName))
+                    .append(getString(R.string.fullName))
                     .append(SPACE_KEY)
                     .append(volunteer.fullName)
                     .append(LINE_SEPARATOR)
 
-                    .append(resources.getString(R.string.call_sign))
+                    .append(getString(R.string.call_sign))
                     .append(SPACE_KEY)
                     .append(volunteer.callSign)
                     .append(LINE_SEPARATOR)
 
-                    .append(resources.getString(R.string.forum_nickname))
+                    .append(getString(R.string.forum_nickname))
                     .append(SPACE_KEY)
                     .append(volunteer.nickName)
                     .append(LINE_SEPARATOR)
 
-                    .append(resources.getString(R.string.phone_number))
+                    .append(getString(R.string.phone_number))
                     .append(SPACE_KEY)
                     .append(volunteer.phoneNumber)
                     .append(LINE_SEPARATOR)
 
-                    .append(resources.getString(R.string.info_about_car))
+                    .append(getString(R.string.info_about_car))
                     .append(SPACE_KEY)
                     .append(volunteer.car)
                     .append(LINE_SEPARATOR)
