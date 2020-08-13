@@ -10,11 +10,13 @@ import android.view.ViewGroup
 import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.volunteer_item.view.*
 import ru.kireev.mir.registrarlizaalert.R
 import ru.kireev.mir.registrarlizaalert.data.Volunteer
 import ru.kireev.mir.registrarlizaalert.data.VolunteersViewModel
+import ru.kireev.mir.registrarlizaalert.listeners.OnVolunteerClickListener
 import ru.kireev.mir.registrarlizaalert.listeners.OnVolunteerPhoneNumberClickListener
 import ru.kireev.mir.registrarlizaalert.util.TimePickerFragment
 import java.util.*
@@ -46,6 +48,7 @@ class VolunteerAdapter(private val context: Context, private val viewModel: Volu
     var onVolunteerPhoneNumberClickListener: OnVolunteerPhoneNumberClickListener? = null
     var onChangeVolunteerStatusListener: OnChangeVolunteerStatusListener? = null
     var onVolunteerChangeTimeToSearchListener: OnVolunteerChangeTimeToSearchListener? = null
+    var onVolunteerClickListener: OnVolunteerClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VolunteerViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.volunteer_item, parent, false)
@@ -87,6 +90,9 @@ class VolunteerAdapter(private val context: Context, private val viewModel: Volu
             textViewPhoneNumber.setOnClickListener {
                 onVolunteerPhoneNumberClickListener?.onVolunteerPhoneNumberClick(textViewPhoneNumber.text.toString())
             }
+            cardViewVolunteer.setOnClickListener {
+                onVolunteerClickListener?.onVolunteerClick(adapterPosition)
+            }
         }
 
     }
@@ -102,6 +108,7 @@ class VolunteerAdapter(private val context: Context, private val viewModel: Volu
         val tvVolunteerStatus: TextView = itemView.tvVolunteerStatus
         val tvOptionsVolunteerItem: TextView = itemView.tvOptionsVolunteerItem
         val tvVolunteerTimeForSearch: TextView = itemView.tvVolunteerTimeForSearch
+        val cardViewVolunteer: CardView = itemView.cardViewVolunteer
     }
 
     private fun showPopup(textView: TextView, volunteer: Volunteer) {

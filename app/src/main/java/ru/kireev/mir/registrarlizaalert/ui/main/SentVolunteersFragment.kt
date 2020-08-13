@@ -13,16 +13,20 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.clans.fab.FloatingActionMenu
 import kotlinx.android.synthetic.main.fragment_tabbed_sent_volunteers.view.*
+import ru.kireev.mir.registrarlizaalert.AddManuallyActivity
 import ru.kireev.mir.registrarlizaalert.R
 import ru.kireev.mir.registrarlizaalert.adapters.VolunteerAdapter
 import ru.kireev.mir.registrarlizaalert.data.Volunteer
 import ru.kireev.mir.registrarlizaalert.data.VolunteersViewModel
+import ru.kireev.mir.registrarlizaalert.listeners.OnVolunteerClickListener
 import ru.kireev.mir.registrarlizaalert.listeners.OnVolunteerPhoneNumberClickListener
 import java.util.*
 
 class SentVolunteersFragment : Fragment(), SearchView.OnQueryTextListener, View.OnClickListener {
 
     companion object {
+        private const val EXTRA_SIZE = "size"
+        private const val EXTRA_VOLUNTEER_ID = "volunteer_id"
         private const val SPACE_KEY = " "
         private const val LINE_SEPARATOR = "\n"
         private const val NOTE_SEPARATOR = "* * * * * * * * * * * * * *\n"
@@ -50,6 +54,15 @@ class SentVolunteersFragment : Fragment(), SearchView.OnQueryTextListener, View.
             override fun onVolunteerPhoneNumberClick(phone: String) {
                 val toDial = "tel:$phone"
                 startActivity(Intent(Intent.ACTION_DIAL, Uri.parse(toDial)))
+            }
+        }
+        adapter.onVolunteerClickListener = object : OnVolunteerClickListener {
+            override fun onVolunteerClick(position: Int) {
+                val volunteerId = adapter.volunteers[position].uniqueId
+                val intent = Intent(context, AddManuallyActivity::class.java)
+                intent.putExtra(EXTRA_VOLUNTEER_ID, volunteerId)
+                intent.putExtra(EXTRA_SIZE, adapter.itemCount)
+                startActivity(intent)
             }
         }
         recyclerView.adapter = adapter

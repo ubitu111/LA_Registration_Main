@@ -12,14 +12,21 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_tabbed_all_volunteers.view.*
+import ru.kireev.mir.registrarlizaalert.AddManuallyActivity
 import ru.kireev.mir.registrarlizaalert.R
 import ru.kireev.mir.registrarlizaalert.adapters.VolunteerAdapter
 import ru.kireev.mir.registrarlizaalert.data.FoxesViewModel
 import ru.kireev.mir.registrarlizaalert.data.Volunteer
 import ru.kireev.mir.registrarlizaalert.data.VolunteersViewModel
+import ru.kireev.mir.registrarlizaalert.listeners.OnVolunteerClickListener
 import ru.kireev.mir.registrarlizaalert.listeners.OnVolunteerPhoneNumberClickListener
 
 class AllVolunteersFragment : Fragment(), View.OnClickListener, SearchView.OnQueryTextListener {
+
+    companion object {
+        private const val EXTRA_SIZE = "size"
+        private const val EXTRA_VOLUNTEER_ID = "volunteer_id"
+    }
 
     private lateinit var foxesViewModel: FoxesViewModel
     private lateinit var viewModel: VolunteersViewModel
@@ -39,6 +46,15 @@ class AllVolunteersFragment : Fragment(), View.OnClickListener, SearchView.OnQue
             override fun onVolunteerPhoneNumberClick(phone: String) {
                 val toDial = "tel:$phone"
                 startActivity(Intent(Intent.ACTION_DIAL, Uri.parse(toDial)))
+            }
+        }
+        adapter.onVolunteerClickListener = object : OnVolunteerClickListener {
+            override fun onVolunteerClick(position: Int) {
+                val volunteerId = adapter.volunteers[position].uniqueId
+                val intent = Intent(context, AddManuallyActivity::class.java)
+                intent.putExtra(EXTRA_VOLUNTEER_ID, volunteerId)
+                intent.putExtra(EXTRA_SIZE, adapter.itemCount)
+                startActivity(intent)
             }
         }
         recyclerView.adapter = adapter
