@@ -180,7 +180,7 @@ class SentVolunteersFragment : Fragment(), SearchView.OnQueryTextListener, View.
             alertDialog.setPositiveButton(getString(R.string.sent_successfully)) { _, _ ->
                 for (volunteer in leftVolunteers) {
                     volunteer.notifyThatLeft = "true"
-                    viewModel.insertVolunteer(volunteer)
+                    viewModel.updateVolunteer(volunteer)
                 }
             }
             alertDialog.setNegativeButton(getString(R.string.not_sent), null)

@@ -160,7 +160,7 @@ class NotSentVolunteersFragment : Fragment(), View.OnClickListener, SearchView.O
             alertDialog.setPositiveButton(getString(R.string.sent_successfully)) { _, _ ->
                 for (volunteer in adapter.volunteers) {
                     volunteer.isSent = "true"
-                    viewModel.insertVolunteer(volunteer)
+                    viewModel.updateVolunteer(volunteer)
                 }
             }
             alertDialog.setNegativeButton(getString(R.string.not_sent), null)

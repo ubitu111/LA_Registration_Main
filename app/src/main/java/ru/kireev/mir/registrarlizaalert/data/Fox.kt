@@ -1,18 +1,27 @@
 package ru.kireev.mir.registrarlizaalert.data
 
 import androidx.room.Entity
+import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
 import ru.kireev.mir.registrarlizaalert.converters.Converter
 
-@Entity(tableName = "foxes")
+@Entity(tableName = "foxes",
+        foreignKeys = [
+                ForeignKey(
+                        entity = Volunteer::class, parentColumns = arrayOf("uniqueId"),
+                        childColumns = arrayOf("elderOfFox"),
+                        onDelete = ForeignKey.CASCADE,
+                        onUpdate = ForeignKey.CASCADE
+                )
+        ])
 @TypeConverters(value = [Converter::class])
 data class Fox(
         @PrimaryKey(autoGenerate = true)
         var id: Int,
         var numberOfFox: Int,
-        var elderOfFox: Volunteer,
-        var membersOfFox: List<Volunteer>,
+        var elderOfFox: Int,
+        var membersOfFox: List<Int>,
         var navigators: String = "",
         var walkieTalkies: String = "",
         var compasses: String = "",

@@ -16,4 +16,10 @@ class Converter {
 
     @TypeConverter
     fun stringToVolunteer(volunteerAsString: String): Volunteer = Gson().fromJson(volunteerAsString, Volunteer::class.java)
+
+    @TypeConverter
+    fun listIntToString(ids: List<Int>): String = Gson().toJson(ids)
+
+    @TypeConverter
+    fun stringToListInt(listIdsAsString: String): List<Int> = Gson().fromJson(listIdsAsString, Array<Int>::class.java).toList()
 }

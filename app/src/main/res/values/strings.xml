@@ -63,6 +63,7 @@
     <string name="three_dots_menu" translatable="false">⋮</string>
     <string name="change_status">Change status</string>
     <string name="change_search_time">Change search time</string>
+    <string name="edit_data">Edit data</string>
     <string name="data_saved">Data saved</string>
     <string name="fab_sent_who_left_label">Send those\nwho left\nto inforg</string>
     <string name="forum_nickname">Forum Nickname:</string>
@@ -80,5 +81,10 @@
     <string name="enter_lamps_hint">Enter the fox lamps</string>
     <string name="label_detail_fox_others">Other:</string>
     <string name="enter_others_hint">Enter other equipment</string>
-
+    <string name="action_share_db">Send Database</string>
+    <string name="backup_db">Backup Database</string>
+    <string name="restore_db">Restore Database</string>
+    <string name="message_for_success_backup_db">The database was saved successfully</string>
+    <string name="message_for_success_restore_db">Database restoration was successful</string>
+    <string name="message_for_error_backup_adn_restore_db">An error has occurred</string>
 </resources>

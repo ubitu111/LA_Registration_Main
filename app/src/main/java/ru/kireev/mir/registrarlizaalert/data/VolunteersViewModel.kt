@@ -23,6 +23,12 @@ class VolunteersViewModel(application: Application) : AndroidViewModel(applicati
         }
     }
 
+    fun updateVolunteer(volunteer: Volunteer) {
+        viewModelScope.launch(Dispatchers.IO) {
+            db.volunteersDao().updateVolunteer(volunteer)
+        }
+    }
+
     fun deleteVolunteer(volunteer: Volunteer) {
         viewModelScope.launch(Dispatchers.IO) {
             db.volunteersDao().deleteVolunteer(volunteer)

@@ -77,4 +77,11 @@
     <string name="enter_lamps_hint">Введите фонари лисы</string>
     <string name="label_detail_fox_others">Другое оборудование:</string>
     <string name="enter_others_hint">Введите другое оборудование лисы</string>
+    <string name="edit_data">Редактировать данные</string>
+    <string name="action_share_db">Отправить базу данных</string>
+    <string name="backup_db">Сохранить базу данных</string>
+    <string name="restore_db">Восстановить базу данных</string>
+    <string name="message_for_success_backup_db">Успешное сохранение базы данных</string>
+    <string name="message_for_success_restore_db">Успешное восстановление базы данных</string>
+    <string name="message_for_error_backup_adn_restore_db">Произошла ошибка</string>
 </resources>

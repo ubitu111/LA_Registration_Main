@@ -10,7 +10,6 @@ import android.view.ViewGroup
 import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.volunteer_item.view.*
 import ru.kireev.mir.registrarlizaalert.R
@@ -85,19 +84,16 @@ class VolunteerAdapter(private val context: Context, private val viewModel: Volu
             tvVolunteerTimeForSearch.text = volunteer.timeForSearch
 
             tvOptionsVolunteerItem.setOnClickListener {
-                showPopup(tvOptionsVolunteerItem, volunteer)
+                showPopup(tvOptionsVolunteerItem, volunteer, adapterPosition)
             }
             textViewPhoneNumber.setOnClickListener {
                 onVolunteerPhoneNumberClickListener?.onVolunteerPhoneNumberClick(textViewPhoneNumber.text.toString())
-            }
-            cardViewVolunteer.setOnClickListener {
-                onVolunteerClickListener?.onVolunteerClick(adapterPosition)
             }
         }
 
     }
 
-    inner class VolunteerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class VolunteerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val textViewFullName: TextView = itemView.textViewFullName
         val textViewCallSign: TextView = itemView.textViewCallSign
         val textViewNickname: TextView = itemView.textViewNickname
@@ -108,19 +104,21 @@ class VolunteerAdapter(private val context: Context, private val viewModel: Volu
         val tvVolunteerStatus: TextView = itemView.tvVolunteerStatus
         val tvOptionsVolunteerItem: TextView = itemView.tvOptionsVolunteerItem
         val tvVolunteerTimeForSearch: TextView = itemView.tvVolunteerTimeForSearch
-        val cardViewVolunteer: CardView = itemView.cardViewVolunteer
     }
 
-    private fun showPopup(textView: TextView, volunteer: Volunteer) {
+    private fun showPopup(textView: TextView, volunteer: Volunteer, position: Int) {
         val popup = PopupMenu(context, textView)
         popup.inflate(R.menu.volunter_item_options_menu)
         popup.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.options_menu_change_status -> {
-                    changeStatus(volunteer)
+                    changeStatus(volunteer, position)
                 }
                 R.id.options_menu_set_time -> {
-                    setTime(volunteer)
+                    setTime(volunteer, position)
+                }
+                R.id.options_menu_edit_data -> {
+                    onVolunteerClickListener?.onVolunteerClick(position)
                 }
             }
             return@setOnMenuItemClickListener false
@@ -128,7 +126,7 @@ class VolunteerAdapter(private val context: Context, private val viewModel: Volu
         popup.show()
     }
 
-    private fun changeStatus(volunteer: Volunteer) {
+    private fun changeStatus(volunteer: Volunteer, position: Int) {
         val dialogBuilder = AlertDialog.Builder(context)
         dialogBuilder.setTitle(R.string.change_status)
                 .setItems(
@@ -139,20 +137,20 @@ class VolunteerAdapter(private val context: Context, private val viewModel: Volu
                     when (which) {
                         0 -> {
                             volunteer.status = context.getString(R.string.volunteer_status_active)
-                            viewModel.insertVolunteer(volunteer)
-                            onChangeVolunteerStatusListener?.onStatusChanged(volunteer)
+                            viewModel.updateVolunteer(volunteer)
+                            onChangeVolunteerStatusListener?.onStatusChanged(position)
                         }
                         1 -> {
                             volunteer.status = context.getString(R.string.volunteer_status_left)
-                            viewModel.insertVolunteer(volunteer)
-                            onChangeVolunteerStatusListener?.onStatusChanged(volunteer)
+                            viewModel.updateVolunteer(volunteer)
+                            onChangeVolunteerStatusListener?.onStatusChanged(position)
                         }
                     }
                 }
         dialogBuilder.create().show()
     }
 
-    private fun setTime(volunteer: Volunteer) {
+    private fun setTime(volunteer: Volunteer, position: Int) {
         val activity = context as AppCompatActivity
         val timePicker = TimePickerFragment(TimePickerDialog.OnTimeSetListener {
             _, hourOfDay, minute ->
@@ -162,18 +160,18 @@ class VolunteerAdapter(private val context: Context, private val viewModel: Volu
             val min = if (minute.toString().length == 2) minute.toString()
             else "0$minute"
             volunteer.timeForSearch = "$hour:$min"
-            viewModel.insertVolunteer(volunteer)
-            onVolunteerChangeTimeToSearchListener?.onTimeChanged(volunteer)
+            viewModel.updateVolunteer(volunteer)
+            onVolunteerChangeTimeToSearchListener?.onTimeChanged(position)
         })
         timePicker.show(activity.supportFragmentManager, "timePicker")
     }
 
     interface OnChangeVolunteerStatusListener {
-        fun onStatusChanged(volunteer: Volunteer)
+        fun onStatusChanged(position: Int)
     }
 
     interface OnVolunteerChangeTimeToSearchListener {
-        fun onTimeChanged(volunteer: Volunteer)
+        fun onTimeChanged(position: Int)
     }
 
 }

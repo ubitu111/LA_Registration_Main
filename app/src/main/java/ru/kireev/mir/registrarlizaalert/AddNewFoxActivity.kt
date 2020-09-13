@@ -24,13 +24,14 @@ import ru.kireev.mir.registrarlizaalert.listeners.OnClickDeleteNewMemberOfFoxLis
 import ru.kireev.mir.registrarlizaalert.listeners.OnVolunteerItemClickListener
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.properties.Delegates
 
 class AddNewFoxActivity : AppCompatActivity() {
     private lateinit var volunteersViewModel: VolunteersViewModel
     private lateinit var foxesViewModel: FoxesViewModel
     private var elder: Volunteer? = null
     private val searchersList = mutableListOf<Volunteer>()
-    private var numberOfFox = 0
+    private var numberOfFox by Delegates.notNull<Int>()
     private var selectedSearcherVolunteer: Volunteer? = null
     private var isVolunteerElderSelected = false
     private var isVolunteerSearcherSelected = false
@@ -217,11 +218,12 @@ class AddNewFoxActivity : AppCompatActivity() {
         } else {
             elder?.let {
                 it.isAddedToFox = "true"
-                volunteersViewModel.insertVolunteer(it)
-
+                volunteersViewModel.updateVolunteer(it)
+                val searchersIds = mutableListOf<Int>()
                 for (searcher in searchersList) {
                     searcher.isAddedToFox = "true"
-                    volunteersViewModel.insertVolunteer(searcher)
+                    volunteersViewModel.updateVolunteer(searcher)
+                    searchersIds.add(searcher.uniqueId)
                 }
                 val currentDate = Date()
                 val dateFormat = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
@@ -230,8 +232,8 @@ class AddNewFoxActivity : AppCompatActivity() {
                 foxesViewModel.insertFox(Fox(
                         0,
                         numberOfFox,
-                        it,
-                        searchersList,
+                        it.uniqueId,
+                        searchersIds,
                         dateOfCreation = dateOfCreation))
 
                 onBackPressed()

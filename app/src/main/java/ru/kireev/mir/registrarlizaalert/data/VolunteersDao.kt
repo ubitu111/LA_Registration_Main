@@ -5,7 +5,7 @@ import androidx.room.*
 
 @Dao
 interface VolunteersDao {
-    @Query("SELECT * FROM volunteers ORDER BY `index` ASC")
+    @Query("SELECT * FROM volunteers ORDER BY `_index` ASC")
     fun getAllVolunteers(): LiveData<List<Volunteer>>
 
     @Query("SELECT * FROM volunteers WHERE isSent == 'true'")
@@ -22,6 +22,9 @@ interface VolunteersDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertVolunteer(volunteer: Volunteer)
+
+    @Update
+    fun updateVolunteer(volunteer: Volunteer)
 
     @Delete
     fun deleteVolunteer(volunteer: Volunteer)

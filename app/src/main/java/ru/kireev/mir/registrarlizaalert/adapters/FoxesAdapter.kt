@@ -9,13 +9,16 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.foxes_item.view.*
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import ru.kireev.mir.registrarlizaalert.R
 import ru.kireev.mir.registrarlizaalert.data.Fox
+import ru.kireev.mir.registrarlizaalert.data.VolunteersViewModel
 import ru.kireev.mir.registrarlizaalert.listeners.OnDeleteFoxClickListener
 import ru.kireev.mir.registrarlizaalert.listeners.OnFoxClickListener
 import ru.kireev.mir.registrarlizaalert.listeners.OnVolunteerPhoneNumberClickListener
 
-class FoxesAdapter(private val context: Context) : RecyclerView.Adapter<FoxesAdapter.FoxesViewHolder>() {
+class FoxesAdapter(private val context: Context, private val volunteersViewModel: VolunteersViewModel) : RecyclerView.Adapter<FoxesAdapter.FoxesViewHolder>() {
     var foxes: List<Fox> = listOf()
         set(value) {
             field = value
@@ -40,11 +43,18 @@ class FoxesAdapter(private val context: Context) : RecyclerView.Adapter<FoxesAda
             tvFoxesItemNumberTitle.text = String.format(numberOfFox, fox.numberOfFox)
             tvDate.text = fox.dateOfCreation
             val elderTemplate = context.resources.getString(R.string.elder_template)
-            tvFoxesItemElder.text = String.format(
-                    elderTemplate,
-                    fox.elderOfFox.fullName,
-                    fox.elderOfFox.callSign)
-            tvFoxesItemElderPhone.text = fox.elderOfFox.phoneNumber
+            runBlocking {
+                val job = launch {
+                    val elder =  volunteersViewModel.getVolunteerById(fox.elderOfFox)
+                    tvFoxesItemElder.text = String.format(
+                            elderTemplate,
+                            elder.fullName,
+                            elder.callSign)
+                    tvFoxesItemElderPhone.text = elder.phoneNumber
+                }
+                job.join()
+            }
+
             ivDeleteFox.setOnClickListener {
                 onDeleteFoxClickListener?.onDeleteFoxClick(fox)
             }

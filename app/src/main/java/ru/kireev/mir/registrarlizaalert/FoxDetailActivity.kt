@@ -58,8 +58,12 @@ class FoxDetailActivity : AppCompatActivity() {
             fox = foxesViewModel.getFoxById(foxId)
             tvNumberOfFox.text = String.format(getString(R.string.foxes_item_number_of_fox), fox.numberOfFox)
             tvDateOfCreation.text = fox.dateOfCreation
-            elderAdapter.volunteers = listOf(fox.elderOfFox)
-            volunteerAdapter.volunteers = fox.membersOfFox
+            elderAdapter.volunteers = listOf(volunteersViewModel.getVolunteerById(fox.elderOfFox))
+            val volunteers = mutableListOf<Volunteer>()
+            for (id in fox.membersOfFox) {
+                volunteers.add(volunteersViewModel.getVolunteerById(id))
+            }
+            volunteerAdapter.volunteers = volunteers
             etTask.setText(fox.task)
             etNavigators.setText(fox.navigators)
             etWalkieTalkies.setText(fox.walkieTalkies)
@@ -69,27 +73,27 @@ class FoxDetailActivity : AppCompatActivity() {
 
             //слушатель изменения статуса у старшего
             elderAdapter.onChangeVolunteerStatusListener = object : VolunteerAdapter.OnChangeVolunteerStatusListener {
-                override fun onStatusChanged(volunteer: Volunteer) {
-                    changeElderInfo(volunteer)
+                override fun onStatusChanged(position: Int) {
+                    elderAdapter.notifyItemChanged(position)
                 }
             }
             //слушатель изменения времени на поиск у старшего
             elderAdapter.onVolunteerChangeTimeToSearchListener = object : VolunteerAdapter.OnVolunteerChangeTimeToSearchListener {
-                override fun onTimeChanged(volunteer: Volunteer) {
-                    changeElderInfo(volunteer)
+                override fun onTimeChanged(position: Int) {
+                    elderAdapter.notifyItemChanged(position)
                 }
             }
 
             //слушатель изменения статуса у поисковиков
             volunteerAdapter.onChangeVolunteerStatusListener = object : VolunteerAdapter.OnChangeVolunteerStatusListener {
-                override fun onStatusChanged(volunteer: Volunteer) {
-                    changeSearchersInfo(volunteer)
+                override fun onStatusChanged(position: Int) {
+                    volunteerAdapter.notifyItemChanged(position)
                 }
             }
             //слушатель изменения времени на поиск у поисковиков
             volunteerAdapter.onVolunteerChangeTimeToSearchListener = object : VolunteerAdapter.OnVolunteerChangeTimeToSearchListener {
-                override fun onTimeChanged(volunteer: Volunteer) {
-                    changeSearchersInfo(volunteer)
+                override fun onTimeChanged(position: Int) {
+                    volunteerAdapter.notifyItemChanged(position)
                 }
             }
         }
@@ -107,27 +111,6 @@ class FoxDetailActivity : AppCompatActivity() {
         }
         Toast.makeText(this, getString(R.string.data_saved), Toast.LENGTH_SHORT).show()
         onBackPressed()
-    }
-
-    private fun changeSearchersInfo(volunteer: Volunteer) {
-        val mutableMembers = fox.membersOfFox.toMutableList()
-        for ((index, memberOfFox) in mutableMembers.withIndex()) {
-            if (memberOfFox.uniqueId == volunteer.uniqueId) {
-                mutableMembers[index] = volunteer
-                fox.membersOfFox = mutableMembers
-                volunteerAdapter.volunteers = fox.membersOfFox
-                foxesViewModel.insertFox(fox)
-                return
-            }
-        }
-    }
-
-    private fun changeElderInfo(volunteer: Volunteer) {
-        if (volunteer.uniqueId == fox.elderOfFox.uniqueId) {
-            fox.elderOfFox = volunteer
-            elderAdapter.volunteers = listOf(fox.elderOfFox)
-            foxesViewModel.insertFox(fox)
-        }
     }
 
     private fun makeCall(phone: String) {

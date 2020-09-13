@@ -17,10 +17,15 @@ interface FoxesDao {
     @Query("DELETE FROM foxes")
     fun deleteAllFoxes()
 
-    @Query("SELECT numberOfFox FROM foxes WHERE ID = (SELECT MAX(ID) FROM foxes)")
-    fun getLastNumberOfFox(): Int
+    @Update
+    fun updateFox(fox: Fox)
+
+//    @Query("SELECT numberOfFox FROM foxes WHERE ID = (SELECT MAX(ID) FROM foxes)")
+//    fun getLastNumberOfFox(): Int
+
+    @Query("SELECT ID FROM foxes ORDER BY ID DESC LIMIT 1")
+    fun getLastNumberOfFox():Int
 
     @Query("SELECT * FROM foxes WHERE ID = :id")
     fun getFoxById(id: Int): Fox
-
 }

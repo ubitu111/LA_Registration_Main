@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 data class Volunteer(
         @PrimaryKey(autoGenerate = true)
         var uniqueId: Int,
-        var index: Int,
+        var _index: Int,
         var fullName: String,
         var callSign: String = "",
         var nickName: String = "",

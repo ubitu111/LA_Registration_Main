@@ -16,6 +16,7 @@ import ru.kireev.mir.registrarlizaalert.AddManuallyActivity
 import ru.kireev.mir.registrarlizaalert.R
 import ru.kireev.mir.registrarlizaalert.adapters.VolunteerAdapter
 import ru.kireev.mir.registrarlizaalert.data.FoxesViewModel
+import ru.kireev.mir.registrarlizaalert.data.MainViewModel
 import ru.kireev.mir.registrarlizaalert.data.Volunteer
 import ru.kireev.mir.registrarlizaalert.data.VolunteersViewModel
 import ru.kireev.mir.registrarlizaalert.listeners.OnVolunteerClickListener
@@ -29,7 +30,8 @@ class AllVolunteersFragment : Fragment(), View.OnClickListener, SearchView.OnQue
     }
 
     private lateinit var foxesViewModel: FoxesViewModel
-    private lateinit var viewModel: VolunteersViewModel
+    private lateinit var volunteersViewModel: VolunteersViewModel
+    private lateinit var mainViewModel: MainViewModel
     private lateinit var adapter: VolunteerAdapter
     private var fullList = listOf<Volunteer>()
 
@@ -40,7 +42,9 @@ class AllVolunteersFragment : Fragment(), View.OnClickListener, SearchView.OnQue
         foxesViewModel = foxModel
         foxesViewModel.allFoxes.observe(viewLifecycleOwner, Observer {  })
         val model by viewModels<VolunteersViewModel>()
-        viewModel = model
+        volunteersViewModel = model
+        val mainModel by viewModels<MainViewModel>()
+        mainViewModel = mainModel
         adapter = VolunteerAdapter(requireContext(), model)
         adapter.onVolunteerPhoneNumberClickListener = object : OnVolunteerPhoneNumberClickListener {
             override fun onVolunteerPhoneNumberClick(phone: String) {
@@ -60,7 +64,7 @@ class AllVolunteersFragment : Fragment(), View.OnClickListener, SearchView.OnQue
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(context)
 
-        viewModel.allVolunteers.observe(viewLifecycleOwner, Observer {
+        volunteersViewModel.allVolunteers.observe(viewLifecycleOwner, Observer {
             adapter.volunteers = it
             fullList = it
         })
@@ -76,7 +80,8 @@ class AllVolunteersFragment : Fragment(), View.OnClickListener, SearchView.OnQue
         alertDialog.setMessage(getString(R.string.message_confirm_delete_all))
         alertDialog.setPositiveButton(getString(R.string.delete_all)) { _, _ ->
             if (foxesViewModel.allFoxes.value.isNullOrEmpty()) {
-                viewModel.deleteAllVolunteers()
+                volunteersViewModel.deleteAllVolunteers()
+                mainViewModel.clearAutoIncrementCounter()
             } else {
                 Toast.makeText(context, "Перед удалением волонтеров необходимо удалить все лисы!", Toast.LENGTH_SHORT).show()
             }

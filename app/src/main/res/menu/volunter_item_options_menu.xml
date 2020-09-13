@@ -7,4 +7,9 @@
     <item
         android:id="@+id/options_menu_set_time"
         android:title="@string/change_search_time" />
+
+    <item
+        android:id="@+id/options_menu_edit_data"
+        android:title="@string/edit_data"/>
+
 </menu>

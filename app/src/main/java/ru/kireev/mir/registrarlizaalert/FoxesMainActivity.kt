@@ -15,9 +15,11 @@ import kotlinx.android.synthetic.main.activity_foxes_main.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import ru.kireev.mir.registrarlizaalert.adapters.FoxesAdapter
 import ru.kireev.mir.registrarlizaalert.data.Fox
 import ru.kireev.mir.registrarlizaalert.data.FoxesViewModel
+import ru.kireev.mir.registrarlizaalert.data.Volunteer
 import ru.kireev.mir.registrarlizaalert.data.VolunteersViewModel
 import ru.kireev.mir.registrarlizaalert.listeners.OnDeleteFoxClickListener
 import ru.kireev.mir.registrarlizaalert.listeners.OnFoxClickListener
@@ -42,7 +44,7 @@ class FoxesMainActivity : AppCompatActivity(), View.OnClickListener {
         foxesViewModel = foxModel
         val volunteerModel by viewModels<VolunteersViewModel>()
         volunteersViewModel = volunteerModel
-        foxesAdapter = FoxesAdapter(applicationContext)
+        foxesAdapter = FoxesAdapter(applicationContext, volunteersViewModel)
         foxesAdapter.onVolunteerPhoneNumberClickListener = object : OnVolunteerPhoneNumberClickListener {
             override fun onVolunteerPhoneNumberClick(phone: String) {
                 val toDial = "tel:$phone"
@@ -70,6 +72,8 @@ class FoxesMainActivity : AppCompatActivity(), View.OnClickListener {
 
         fab_button_foxes_add.setOnClickListener(this)
         fab_button_foxes_sent.setOnClickListener(this)
+
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -103,22 +107,34 @@ class FoxesMainActivity : AppCompatActivity(), View.OnClickListener {
 
                     .append(getString(R.string.elder_of_fox))
                     .append(LINE_SEPARATOR)
-                    .append(fox.elderOfFox.fullName)
-                    .append(LINE_SEPARATOR)
-                    .append(fox.elderOfFox.phoneNumber)
-                    .append(LINE_SEPARATOR)
+                    runBlocking {
+                        val job = launch {
+                            val elder = volunteersViewModel.getVolunteerById(fox.elderOfFox)
+                            builder.append(elder.fullName)
+                                    .append(LINE_SEPARATOR)
+                                    .append(elder.phoneNumber)
+                                    .append(LINE_SEPARATOR)
+                                    .append(LINE_SEPARATOR)
+                        }
+                        job.join()
+                    }
+
+                    builder.append(getString(R.string.searchers))
                     .append(LINE_SEPARATOR)
 
-                    .append(getString(R.string.searchers))
-                    .append(LINE_SEPARATOR)
-
-            for (volunteer in fox.membersOfFox) {
-                builder
-                        .append(volunteer.fullName)
-                        .append(LINE_SEPARATOR)
-                        .append(volunteer.phoneNumber)
-                        .append(LINE_SEPARATOR)
+            runBlocking {
+                val job = launch {
+                    for (volunteer in fox.membersOfFox) {
+                        builder
+                                .append(volunteersViewModel.getVolunteerById(volunteer).fullName)
+                                .append(LINE_SEPARATOR)
+                                .append(volunteersViewModel.getVolunteerById(volunteer).phoneNumber)
+                                .append(LINE_SEPARATOR)
+                    }
+                }
+                job.join()
             }
+
 
             builder
                     .append(LINE_SEPARATOR)
@@ -175,15 +191,20 @@ class FoxesMainActivity : AppCompatActivity(), View.OnClickListener {
     private fun onClickDeleteFox(fox: Fox) {
         CoroutineScope(Dispatchers.Main).launch {
             val freshFox = foxesViewModel.getFoxById(fox.id)
+            val freshElder = volunteersViewModel.getVolunteerById(freshFox.elderOfFox)
+            val freshVolunteers = mutableListOf<Volunteer>()
+            for (volunteer in freshFox.membersOfFox) {
+                freshVolunteers.add(volunteersViewModel.getVolunteerById(volunteer))
+            }
             val alertDialog = AlertDialog.Builder(this@FoxesMainActivity)
             alertDialog.setTitle(getString(R.string.warning))
             alertDialog.setMessage(getString(R.string.message_confirm_delete_one))
             alertDialog.setPositiveButton(getString(R.string.delete_all)) { _, _ ->
-                freshFox.elderOfFox.isAddedToFox = "false"
-                volunteersViewModel.insertVolunteer(freshFox.elderOfFox)
-                for (volunteer in freshFox.membersOfFox) {
-                    volunteer.isAddedToFox = "false"
-                    volunteersViewModel.insertVolunteer(volunteer)
+                freshElder.isAddedToFox = "false"
+                volunteersViewModel.updateVolunteer(freshElder)
+                for (freshVolunteer in freshVolunteers) {
+                    freshVolunteer.isAddedToFox = "false"
+                    volunteersViewModel.updateVolunteer(freshVolunteer)
                 }
                 foxesViewModel.deleteFox(freshFox)
             }
