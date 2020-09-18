@@ -77,28 +77,31 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvSearchersLabel" />
 
-        <TextView
-            android:id="@+id/tvTaskLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:text="@string/label_fox_detail_task"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/rvFoxDetailInfoVolunteers" />
+<!--        <TextView-->
+<!--            android:id="@+id/tvTaskLabel"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:padding="8dp"-->
+<!--            android:text="@string/label_fox_detail_task"-->
+<!--            android:textSize="18sp"-->
+<!--            android:textStyle="bold"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/rvFoxDetailInfoVolunteers" />-->
 
-        <EditText
-            android:id="@+id/etTask"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/inputLayoutTask"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:gravity="start|top"
-            android:hint="@string/enter_fox_task_hint"
-            android:inputType="textMultiLine"
-            android:padding="8dp"
+            android:hint="@string/label_fox_detail_task"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvTaskLabel" />
+            app:layout_constraintTop_toBottomOf="@+id/rvFoxDetailInfoVolunteers">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etTask"
+                android:inputType="textMultiLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
             android:id="@+id/tvEquipmentLabel"
@@ -109,122 +112,137 @@
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/etTask" />
+            app:layout_constraintTop_toBottomOf="@+id/inputLayoutTask" />
 
-        <TextView
-            android:id="@+id/tvNavigatorsLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:text="@string/label_detail_fox_navigators"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvEquipmentLabel" />
+<!--        <TextView-->
+<!--            android:id="@+id/tvNavigatorsLabel"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:padding="8dp"-->
+<!--            android:text="@string/label_detail_fox_navigators"-->
+<!--            android:textSize="18sp"-->
+<!--            android:textStyle="bold"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/tvEquipmentLabel" />-->
 
-        <EditText
-            android:id="@+id/etNavigators"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/inputLayoutNavigators"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:gravity="start|top"
-            android:hint="@string/enter_navigators_hint"
-            android:inputType="textMultiLine"
-            android:padding="8dp"
+            android:hint="@string/label_detail_fox_navigators"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvNavigatorsLabel" />
+            app:layout_constraintTop_toBottomOf="@+id/tvEquipmentLabel">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etNavigators"
+                android:inputType="textMultiLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <TextView
-            android:id="@+id/tvWalkieTalkiesLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:text="@string/label_detail_fox_walkie_talkies"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/etNavigators" />
+<!--        <TextView-->
+<!--            android:id="@+id/tvWalkieTalkiesLabel"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:padding="8dp"-->
+<!--            android:text="@string/label_detail_fox_walkie_talkies"-->
+<!--            android:textSize="18sp"-->
+<!--            android:textStyle="bold"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/inputLayoutNavigators" />-->
 
-        <EditText
-            android:id="@+id/etWalkieTalkies"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/inputLayoutWalkieTalkies"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:gravity="start|top"
-            android:hint="@string/enter_walkie_talkie_hint"
-            android:inputType="textMultiLine"
-            android:padding="8dp"
+            android:hint="@string/label_detail_fox_walkie_talkies"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvWalkieTalkiesLabel" />
+            app:layout_constraintTop_toBottomOf="@+id/inputLayoutNavigators">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etWalkieTalkies"
+                android:inputType="textMultiLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <TextView
-            android:id="@+id/tvCompassesLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:text="@string/label_detail_fox_compasses"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/etWalkieTalkies" />
+<!--        <TextView-->
+<!--            android:id="@+id/tvCompassesLabel"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:padding="8dp"-->
+<!--            android:text="@string/label_detail_fox_compasses"-->
+<!--            android:textSize="18sp"-->
+<!--            android:textStyle="bold"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/inputLayoutWalkieTalkies" />-->
 
-        <EditText
-            android:id="@+id/etCompasses"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/inputLayoutCompasses"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:gravity="start|top"
-            android:hint="@string/enter_compasses_hint"
-            android:inputType="textMultiLine"
-            android:padding="8dp"
+            android:hint="@string/label_detail_fox_compasses"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvCompassesLabel" />
+            app:layout_constraintTop_toBottomOf="@+id/inputLayoutWalkieTalkies">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etCompasses"
+                android:inputType="textMultiLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <TextView
-            android:id="@+id/tvLampsLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:text="@string/label_detail_fox_lamps"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/etCompasses" />
+<!--        <TextView-->
+<!--            android:id="@+id/tvLampsLabel"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:padding="8dp"-->
+<!--            android:text="@string/label_detail_fox_lamps"-->
+<!--            android:textSize="18sp"-->
+<!--            android:textStyle="bold"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/inputLayoutCompasses" />-->
 
-        <EditText
-            android:id="@+id/etLamps"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:gravity="start|top"
-            android:hint="@string/enter_lamps_hint"
-            android:inputType="textMultiLine"
-            android:padding="8dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvLampsLabel" />
-
-        <TextView
-            android:id="@+id/tvOthersLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:text="@string/label_detail_fox_others"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/etLamps" />
-
-        <EditText
-            android:id="@+id/etOthers"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/inputLayoutLamps"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:gravity="start|top"
-            android:hint="@string/enter_others_hint"
-            android:inputType="textMultiLine"
-            android:padding="8dp"
+            android:hint="@string/label_detail_fox_lamps"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvOthersLabel" />
+            app:layout_constraintTop_toBottomOf="@+id/inputLayoutCompasses">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etLamps"
+                android:inputType="textMultiLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+<!--        <TextView-->
+<!--            android:id="@+id/tvOthersLabel"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:padding="8dp"-->
+<!--            android:text="@string/label_detail_fox_others"-->
+<!--            android:textSize="18sp"-->
+<!--            android:textStyle="bold"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/inputLayoutLamps" />-->
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/inputLayoutOthers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/label_detail_fox_others"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/inputLayoutLamps">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etOthers"
+                android:inputType="textMultiLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
         <Button
             android:id="@+id/bDetailFoxSaveData"
@@ -234,7 +252,7 @@
             android:onClick="onClickSaveFoxData"
             android:text="@string/save_data"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/etOthers" />
+            app:layout_constraintTop_toBottomOf="@+id/inputLayoutOthers" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

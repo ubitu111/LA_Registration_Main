@@ -81,8 +81,7 @@
     <string name="enter_lamps_hint">Enter the fox lamps</string>
     <string name="label_detail_fox_others">Other:</string>
     <string name="enter_others_hint">Enter other equipment</string>
-    <string name="action_share_db">Send Database</string>
-    <string name="backup_db">Backup Database</string>
+    <string name="backup_db">Backup and \nsend Database</string>
     <string name="restore_db">Restore Database</string>
     <string name="message_for_success_backup_db">The database was saved successfully</string>
     <string name="message_for_success_restore_db">Database restoration was successful</string>

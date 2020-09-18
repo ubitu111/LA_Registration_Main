@@ -6,20 +6,19 @@ import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.ShareActionProvider
-import androidx.core.view.MenuItemCompat
+import androidx.core.content.FileProvider
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
 import kotlinx.android.synthetic.main.activity_tabbed_main.*
 import ru.kireev.mir.registrarlizaalert.data.MainViewModel
 import ru.kireev.mir.registrarlizaalert.ui.main.SectionsPagerAdapter
+import java.io.File
 
 class TabbedMainActivity : AppCompatActivity() {
 
@@ -27,7 +26,6 @@ class TabbedMainActivity : AppCompatActivity() {
         private const val REQUEST_CODE_GET_PATH_TO_FILE = 111
     }
     private lateinit var mainViewModel: MainViewModel
-    private lateinit var shareActionProvider: ShareActionProvider
     private var pathToFile = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,13 +42,6 @@ class TabbedMainActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.main_menu, menu)
-        menu?.let {
-            val menuItem = it.findItem(R.id.menu_action_share_db)
-            shareActionProvider = MenuItemCompat.getActionProvider(menuItem) as ShareActionProvider
-            setShareActionIntent(pathToFile)
-        }
-
-
         return super.onCreateOptionsMenu(menu)
 
     }
@@ -77,15 +68,19 @@ class TabbedMainActivity : AppCompatActivity() {
     private fun backupDB() {
         this.getExternalFilesDir(null)?.absolutePath?.let {
             pathToFile = mainViewModel.backupDatabase(it)
-            setShareActionIntent(pathToFile)
+            setChooserIntent(pathToFile)
         }
     }
 
-    private fun setShareActionIntent(pathToFile: String) {
+    private fun setChooserIntent(pathToFile: String) {
         val intent = Intent(Intent.ACTION_SEND)
-        intent.type = "file/*"
-        intent.putExtra(Intent.EXTRA_STREAM, Uri.parse(pathToFile))
-        shareActionProvider.setShareIntent(intent)
+        val file = File(pathToFile)
+        val newUri = FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID + ".provider", file)
+        intent.putExtra(Intent.EXTRA_STREAM, newUri)
+        intent.type = "application/json"
+        intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+        val chooser = Intent.createChooser(intent, getString(R.string.chooser_title))
+        startActivity(chooser)
     }
 
     private fun restoreDB() {

@@ -5,9 +5,6 @@
         android:id="@+id/menu_item_foxes"
         android:title="@string/actionbar_label_foxes" />
     <item
-        android:id="@+id/menu_item_volunteers"
-        android:title="@string/actionbar_label_volunteers" />
-    <item
         android:id="@+id/search_view"
         android:title="@string/search_searching"
         app:actionViewClass="android.widget.SearchView"
@@ -18,10 +15,4 @@
     <item
         android:id="@+id/menu_restore_db"
         android:title="@string/restore_db"/>
-    <item
-        android:id="@+id/menu_action_share_db"
-        android:title="@string/action_share_db"
-        android:orderInCategory="2"
-        app:showAsAction="ifRoom"
-        app:actionProviderClass="androidx.appcompat.widget.ShareActionProvider"/>
 </menu>

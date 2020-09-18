@@ -77,7 +77,7 @@ class FoxesMainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.main_menu, menu)
+        menuInflater.inflate(R.menu.foxes_menu, menu)
         return super.onCreateOptionsMenu(menu)
     }
 
