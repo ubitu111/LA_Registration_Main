@@ -1,15 +1,19 @@
 package ru.kireev.mir.registrarlizaalert.data
 
 import android.app.Application
+import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.sqlite.db.SimpleSQLiteQuery
-import ir.androidexception.roomdatabasebackupandrestore.Backup
-import ir.androidexception.roomdatabasebackupandrestore.Restore
+//import ir.androidexception.roomdatabasebackupandrestore.Backup
+//import ir.androidexception.roomdatabasebackupandrestore.Restore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import ru.kireev.mir.registrarlizaalert.R
+import ru.kireev.mir.registrarlizaalert.util.backup_and_restore_db.Backup
+import ru.kireev.mir.registrarlizaalert.util.backup_and_restore_db.OnWorkFinishListener
+import ru.kireev.mir.registrarlizaalert.util.backup_and_restore_db.Restore
 
 class MainViewModel(private val app: Application) : AndroidViewModel(app) {
     private val db = MainDatabase.getInstance(app)
@@ -21,36 +25,45 @@ class MainViewModel(private val app: Application) : AndroidViewModel(app) {
     }
 
     fun backupDatabase(pathToFile: String) : String {
-        Backup.Init()
+        Backup().Init()
                 .database(db)
                 .path(pathToFile)
                 .fileName(FILENAME_FOR_BACKUP_AND_RESTORE)
-                .onWorkFinishListener { success, _ ->
-                    val message = if (success) {
-                        app.getString(R.string.message_for_success_backup_db)
-                    } else
-                        app.getString(R.string.message_for_error_backup_adn_restore_db)
+                .onWorkFinishListener(object : OnWorkFinishListener {
+                    override fun onFinished(success: Boolean, message: String) {
+                        val msg = if (success) {
+                            app.getString(R.string.message_for_success_backup_db)
+                        } else
+                            app.getString(R.string.message_for_error_backup_adn_restore_db)
 
-                    Toast.makeText(app, message, Toast.LENGTH_SHORT).show()
-                }
+                        Toast.makeText(app, msg, Toast.LENGTH_SHORT).show()
+                    }
+
+                })
                 .execute()
         return "$pathToFile/$FILENAME_FOR_BACKUP_AND_RESTORE"
     }
 
     fun restoreDatabase(pathToFile: String) {
         clearAutoIncrementCounter()
-        Restore.Init()
+        db.openHelper.readableDatabase.execSQL("PRAGMA foreign_keys = off;")
+        Restore().Init()
                 .database(db)
                 .backupFilePath(pathToFile)
-                .onWorkFinishListener { success, _ ->
-                    val message = if (success) {
-                        app.getString(R.string.message_for_success_restore_db)
-                    } else
-                        app.getString(R.string.message_for_error_backup_adn_restore_db)
+                .onWorkFinishListener(object : OnWorkFinishListener {
+                    override fun onFinished(success: Boolean, message: String) {
+                        val msg = if (success) {
+                            app.getString(R.string.message_for_success_restore_db)
+                        } else
+                            app.getString(R.string.message_for_error_backup_adn_restore_db)
 
-                    Toast.makeText(app, message, Toast.LENGTH_SHORT).show()
-                }
+                        Log.d("matag", message)
+
+                        Toast.makeText(app, msg, Toast.LENGTH_SHORT).show()
+                    }
+                })
                 .execute()
+        db.openHelper.readableDatabase.execSQL("PRAGMA foreign_keys = on;")
     }
 
     fun clearAutoIncrementCounter() {

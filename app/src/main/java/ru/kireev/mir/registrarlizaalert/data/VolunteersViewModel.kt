@@ -15,7 +15,7 @@ class VolunteersViewModel(application: Application) : AndroidViewModel(applicati
     val notSentVolunteers = db.volunteersDao().getNotSentVolunteers()
     val addedToFoxVolunteers = db.volunteersDao().getAddedToFoxVolunteers()
 
-    fun getNotAddedToFoxAndActiveVolunteers(status: String) = db.volunteersDao().getNotAddedToFoxAndActiveVolunteers(status)
+    fun getVolunteersByStatusAndNotAddedToFox(status: String) = db.volunteersDao().getVolunteersByStatusAndNotAddedToFox(status)
 
     fun insertVolunteer(volunteer: Volunteer) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -51,5 +51,11 @@ class VolunteersViewModel(application: Application) : AndroidViewModel(applicati
 
     suspend fun checkForVolunteerExist(fullName: String, phoneNumber: String): Boolean = withContext(viewModelScope.coroutineContext + Dispatchers.IO) {
         db.volunteersDao().checkForVolunteerExist(fullName, phoneNumber)
+    }
+
+    suspend fun getVolunteersByNumberOfGroup(numberOfGroup: Int): List<Volunteer> {
+        return withContext(viewModelScope.coroutineContext + Dispatchers.IO) {
+            db.volunteersDao().getVolunteersByNumberOfGroup(numberOfGroup)
+        }
     }
 }

@@ -15,7 +15,6 @@ import kotlinx.coroutines.launch
 import ru.kireev.mir.registrarlizaalert.adapters.VolunteerAdapter
 import ru.kireev.mir.registrarlizaalert.data.Fox
 import ru.kireev.mir.registrarlizaalert.data.FoxesViewModel
-import ru.kireev.mir.registrarlizaalert.data.Volunteer
 import ru.kireev.mir.registrarlizaalert.data.VolunteersViewModel
 import ru.kireev.mir.registrarlizaalert.listeners.OnVolunteerPhoneNumberClickListener
 
@@ -58,12 +57,9 @@ class FoxDetailActivity : AppCompatActivity() {
             fox = foxesViewModel.getFoxById(foxId)
             tvNumberOfFox.text = String.format(getString(R.string.foxes_item_number_of_fox), fox.numberOfFox)
             tvDateOfCreation.text = fox.dateOfCreation
-            elderAdapter.volunteers = listOf(volunteersViewModel.getVolunteerById(fox.elderOfFox))
-            val volunteers = mutableListOf<Volunteer>()
-            for (id in fox.membersOfFox) {
-                volunteers.add(volunteersViewModel.getVolunteerById(id))
-            }
-            volunteerAdapter.volunteers = volunteers
+            val elder = volunteersViewModel.getVolunteerById(fox.elderOfFoxId)
+            elderAdapter.volunteers = listOf(elder)
+            volunteerAdapter.volunteers = volunteersViewModel.getVolunteersByNumberOfGroup(fox.numberOfFox).filter { it != elder }
             etTask.setText(fox.task)
             etNavigators.setText(fox.navigators)
             etWalkieTalkies.setText(fox.walkieTalkies)
@@ -107,7 +103,7 @@ class FoxDetailActivity : AppCompatActivity() {
             compasses = etCompasses.text.toString().trim()
             lamps = etLamps.text.toString().trim()
             others = etOthers.text.toString().trim()
-            foxesViewModel.insertFox(this)
+            foxesViewModel.updateFox(this)
         }
         Toast.makeText(this, getString(R.string.data_saved), Toast.LENGTH_SHORT).show()
         onBackPressed()

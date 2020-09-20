@@ -10,7 +10,7 @@ import ru.kireev.mir.registrarlizaalert.converters.Converter
         foreignKeys = [
                 ForeignKey(
                         entity = Volunteer::class, parentColumns = arrayOf("uniqueId"),
-                        childColumns = arrayOf("elderOfFox"),
+                        childColumns = arrayOf("elderOfFoxId"),
                         onDelete = ForeignKey.CASCADE,
                         onUpdate = ForeignKey.CASCADE
                 )
@@ -20,8 +20,7 @@ data class Fox(
         @PrimaryKey(autoGenerate = true)
         var id: Int,
         var numberOfFox: Int,
-        var elderOfFox: Int,
-        var membersOfFox: List<Int>,
+        var elderOfFoxId: Int? = null,
         var navigators: String = "",
         var walkieTalkies: String = "",
         var compasses: String = "",
@@ -30,5 +29,6 @@ data class Fox(
         var task: String = "",
         var leavingTime: String = "",
         var returnTime: String = "",
-        var dateOfCreation: String
+        var dateOfCreation: String,
+        var nameOfGroup: GroupCallsigns
 )

@@ -8,7 +8,6 @@ import android.widget.AdapterView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_add_new_fox.*
 import kotlinx.coroutines.CoroutineScope
@@ -16,10 +15,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import ru.kireev.mir.registrarlizaalert.adapters.NewMemberOfFoxAdapter
 import ru.kireev.mir.registrarlizaalert.adapters.VolunteerAutoCompleteAdapter
-import ru.kireev.mir.registrarlizaalert.data.Fox
-import ru.kireev.mir.registrarlizaalert.data.FoxesViewModel
-import ru.kireev.mir.registrarlizaalert.data.Volunteer
-import ru.kireev.mir.registrarlizaalert.data.VolunteersViewModel
+import ru.kireev.mir.registrarlizaalert.data.*
 import ru.kireev.mir.registrarlizaalert.listeners.OnClickDeleteNewMemberOfFoxListener
 import ru.kireev.mir.registrarlizaalert.listeners.OnVolunteerItemClickListener
 import java.text.SimpleDateFormat
@@ -54,7 +50,7 @@ class AddNewFoxActivity : AppCompatActivity() {
             numberOfFox = foxesViewModel.getLastNumberOfFox() + 1
         }
 
-        volunteersViewModel.getNotAddedToFoxAndActiveVolunteers(getString(R.string.volunteer_status_active)).observe(this, Observer {
+        volunteersViewModel.getVolunteersByStatusAndNotAddedToFox(getString(R.string.volunteer_status_active)).observe(this, {
             autoCompleteAdapter.fullList = it
             volunteersForUpdate = it.toMutableList()
         })
@@ -217,25 +213,28 @@ class AddNewFoxActivity : AppCompatActivity() {
             Toast.makeText(this, getString(R.string.select_elder_and_searchers_from_list), Toast.LENGTH_SHORT).show()
         } else {
             elder?.let {
-                it.isAddedToFox = "true"
-                volunteersViewModel.updateVolunteer(it)
-                val searchersIds = mutableListOf<Int>()
-                for (searcher in searchersList) {
-                    searcher.isAddedToFox = "true"
-                    volunteersViewModel.updateVolunteer(searcher)
-                    searchersIds.add(searcher.uniqueId)
-                }
                 val currentDate = Date()
                 val dateFormat = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
                 val dateOfCreation = dateFormat.format(currentDate)
 
-                foxesViewModel.insertFox(Fox(
+                CoroutineScope(Dispatchers.Main).launch {
+                 val idOfFox = foxesViewModel.insertFox(Fox(
                         0,
                         numberOfFox,
                         it.uniqueId,
-                        searchersIds,
-                        dateOfCreation = dateOfCreation))
+                        dateOfCreation = dateOfCreation,
+                        nameOfGroup = GroupCallsigns.LISA            //TODO: Изменить хардкод группы
+                ))
 
+                    it.groupId = idOfFox
+                    volunteersViewModel.updateVolunteer(it)
+
+                    for (searcher in searchersList) {
+                        searcher.groupId = idOfFox
+                        volunteersViewModel.updateVolunteer(searcher)
+                    }
+
+                }
                 onBackPressed()
             }
         }

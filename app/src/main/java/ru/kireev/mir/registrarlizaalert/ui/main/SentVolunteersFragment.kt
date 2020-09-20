@@ -8,7 +8,6 @@ import android.view.*
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.clans.fab.FloatingActionMenu
@@ -78,11 +77,11 @@ class SentVolunteersFragment : Fragment(), SearchView.OnQueryTextListener, View.
             }
         })
 
-        viewModel.sentVolunteers.observe(viewLifecycleOwner, Observer {
+        viewModel.sentVolunteers.observe(viewLifecycleOwner, {
             adapter.volunteers = it
             fullList = it
         })
-        viewModel.getVolunteersWithStatus(getString(R.string.volunteer_status_left)).observe(viewLifecycleOwner, Observer {
+        viewModel.getVolunteersWithStatus(getString(R.string.volunteer_status_left)).observe(viewLifecycleOwner, {
             leftVolunteers = it
         })
         setHasOptionsMenu(true)
@@ -147,6 +146,11 @@ class SentVolunteersFragment : Fragment(), SearchView.OnQueryTextListener, View.
                     .append(getString(R.string.forum_nickname))
                     .append(SPACE_KEY)
                     .append(volunteer.nickName)
+                    .append(LINE_SEPARATOR)
+
+                    .append(getString(R.string.region))
+                    .append(SPACE_KEY)
+                    .append(volunteer.region)
                     .append(LINE_SEPARATOR)
 
                     .append(getString(R.string.phone_number))

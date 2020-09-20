@@ -2,6 +2,7 @@ package ru.kireev.mir.registrarlizaalert.converters
 
 import androidx.room.TypeConverter
 import com.google.gson.Gson
+import ru.kireev.mir.registrarlizaalert.data.GroupCallsigns
 import ru.kireev.mir.registrarlizaalert.data.Volunteer
 
 class Converter {
@@ -22,4 +23,10 @@ class Converter {
 
     @TypeConverter
     fun stringToListInt(listIdsAsString: String): List<Int> = Gson().fromJson(listIdsAsString, Array<Int>::class.java).toList()
+
+    @TypeConverter
+    fun groupToString(group: GroupCallsigns): String = Gson().toJson(group)
+
+    @TypeConverter
+    fun stringToGroup(groupAsString: String): GroupCallsigns = Gson().fromJson(groupAsString, GroupCallsigns::class.java)
 }

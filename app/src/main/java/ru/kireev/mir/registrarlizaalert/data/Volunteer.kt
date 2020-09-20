@@ -1,9 +1,18 @@
 package ru.kireev.mir.registrarlizaalert.data
 
 import androidx.room.Entity
+import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "volunteers")
+@Entity(tableName = "volunteers",
+        foreignKeys = [
+            ForeignKey(
+                    entity = Fox::class, parentColumns = arrayOf("id"),
+                    childColumns = arrayOf("groupId"),
+                    onDelete = ForeignKey.SET_NULL,
+                    onUpdate = ForeignKey.CASCADE
+            )
+        ])
 data class Volunteer(
         @PrimaryKey(autoGenerate = true)
         var uniqueId: Int,
@@ -15,10 +24,10 @@ data class Volunteer(
         var phoneNumber: String,
         var car: String = "",
         var isSent: String = "false",
-        var isAddedToFox: String = "false",
         var status: String,
         var notifyThatLeft: String = "false",
-        var timeForSearch: String = ""
+        var timeForSearch: String = "",
+        var groupId: Int? = null
 ) {
     override fun toString(): String {
         return "$fullName ($callSign)"

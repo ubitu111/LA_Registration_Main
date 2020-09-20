@@ -111,7 +111,6 @@
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
             tools:text="TextView"
-            android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/textViewLabelRegion"
             app:layout_constraintTop_toBottomOf="@+id/textViewNickname"
             app:layout_constraintEnd_toEndOf="parent"/>

@@ -45,7 +45,7 @@ class FoxesAdapter(private val context: Context, private val volunteersViewModel
             val elderTemplate = context.resources.getString(R.string.elder_template)
             runBlocking {
                 val job = launch {
-                    val elder =  volunteersViewModel.getVolunteerById(fox.elderOfFox)
+                    val elder =  volunteersViewModel.getVolunteerById(fox.elderOfFoxId)
                     tvFoxesItemElder.text = String.format(
                             elderTemplate,
                             elder.fullName,

@@ -6,10 +6,8 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.*
 import android.widget.SearchView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_tabbed_all_volunteers.view.*
 import ru.kireev.mir.registrarlizaalert.AddManuallyActivity
@@ -40,7 +38,7 @@ class AllVolunteersFragment : Fragment(), View.OnClickListener, SearchView.OnQue
         val recyclerView = root.recyclerViewAllVolunteersTab
         val foxModel by viewModels<FoxesViewModel>()
         foxesViewModel = foxModel
-        foxesViewModel.allFoxes.observe(viewLifecycleOwner, Observer {  })
+        foxesViewModel.allFoxes.observe(viewLifecycleOwner, {  })
         val model by viewModels<VolunteersViewModel>()
         volunteersViewModel = model
         val mainModel by viewModels<MainViewModel>()
@@ -64,7 +62,7 @@ class AllVolunteersFragment : Fragment(), View.OnClickListener, SearchView.OnQue
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(context)
 
-        volunteersViewModel.allVolunteers.observe(viewLifecycleOwner, Observer {
+        volunteersViewModel.allVolunteers.observe(viewLifecycleOwner, {
             adapter.volunteers = it
             fullList = it
         })
@@ -79,13 +77,8 @@ class AllVolunteersFragment : Fragment(), View.OnClickListener, SearchView.OnQue
         alertDialog.setTitle(getString(R.string.warning))
         alertDialog.setMessage(getString(R.string.message_confirm_delete_all))
         alertDialog.setPositiveButton(getString(R.string.delete_all)) { _, _ ->
-            if (foxesViewModel.allFoxes.value.isNullOrEmpty()) {
                 volunteersViewModel.deleteAllVolunteers()
                 mainViewModel.clearAutoIncrementCounter()
-            } else {
-                Toast.makeText(context, "Перед удалением волонтеров необходимо удалить все лисы!", Toast.LENGTH_SHORT).show()
-            }
-
         }
         alertDialog.setNegativeButton(getString(R.string.cancel), null)
         alertDialog.show()
