@@ -2,17 +2,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/menu_item_foxes"
-        android:title="@string/actionbar_label_foxes" />
-    <item
         android:id="@+id/search_view"
         android:title="@string/search_searching"
         app:actionViewClass="android.widget.SearchView"
         app:showAsAction="always" />
-    <item
-        android:id="@+id/menu_backup_db"
-        android:title="@string/backup_db"/>
-    <item
-        android:id="@+id/menu_restore_db"
-        android:title="@string/restore_db"/>
 </menu>

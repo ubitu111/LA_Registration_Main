@@ -15,10 +15,10 @@ interface VolunteersDao {
     fun getNotSentVolunteers(): LiveData<List<Volunteer>>
 
     @Query("SELECT * FROM volunteers WHERE groupId IS NOT NULL")
-    fun getAddedToFoxVolunteers(): LiveData<List<Volunteer>>
+    fun getAddedToGroupVolunteers(): LiveData<List<Volunteer>>
 
     @Query("SELECT * FROM volunteers WHERE status == :status AND groupId IS NULL")
-    fun getVolunteersByStatusAndNotAddedToFox(status: String): LiveData<List<Volunteer>>
+    fun getVolunteersByStatusAndNotAddedToGroup(status: String): LiveData<List<Volunteer>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertVolunteer(volunteer: Volunteer)
@@ -41,7 +41,8 @@ interface VolunteersDao {
     @Query("SELECT COUNT('uniqueId') > 0 FROM volunteers WHERE fullName == :fullName AND phoneNumber == :phoneNumber")
     fun checkForVolunteerExist(fullName: String, phoneNumber: String): Boolean
 
-    @Query("SELECT * FROM volunteers WHERE groupId == (SELECT id from foxes WHERE numberOfFox == :numberOfGroup)")
-    fun getVolunteersByNumberOfGroup(numberOfGroup: Int): List<Volunteer>
+    @Query("SELECT * FROM volunteers WHERE groupId == :idOfGroup")
+    fun getVolunteersByIdOfGroup(idOfGroup: Int): List<Volunteer>
+
 
 }

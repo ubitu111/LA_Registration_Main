@@ -1,5 +1,5 @@
 package ru.kireev.mir.registrarlizaalert.listeners
 
-interface OnClickDeleteNewMemberOfFoxListener {
+interface OnClickDeleteNewMemberOfGroupListener {
     fun onClickDeleteMember(position: Int)
 }

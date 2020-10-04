@@ -1,28 +1,38 @@
 package ru.kireev.mir.registrarlizaalert.util.backup_and_restore_db
 
+import android.content.Context
+import android.net.Uri
 import androidx.room.RoomDatabase
 import com.google.gson.Gson
 import com.google.gson.JsonObject
-import java.io.*
+import java.io.BufferedReader
+import java.io.InputStream
+import java.io.InputStreamReader
 
 
 class Restore {
     private val STRING_FOR_NULL_VALUE = "!!!string_for_null_value!!!"
+
     @Throws(Exception::class)
-    private fun convertStreamToString(`is`: InputStream): String {
-        val reader = BufferedReader(InputStreamReader(`is`))
+    private fun convertStreamToString(inputStream: InputStream?): String {
         val sb = StringBuilder()
-        var line: String
-        while (reader.readLine().also { line = it } != null) {
-            sb.append(line).append("\n")
+        inputStream?.let {
+            val reader = BufferedReader(InputStreamReader(it))
+            var line = reader.readLine()
+            while (line != null) {
+                sb.append(line).append("\n")
+                line = reader.readLine()
+            }
+            reader.close()
         }
-        reader.close()
+
         return sb.toString()
     }
 
     inner class Init {
         private var database: RoomDatabase? = null
-        private var backupFilePath: String = ""
+        private var backupFilePath: Uri? = null
+        private var context: Context? = null
         private var onWorkFinishListener: OnWorkFinishListener? = null
 
         fun database(database: RoomDatabase?): Init {
@@ -30,7 +40,12 @@ class Restore {
             return this
         }
 
-        fun backupFilePath(backupFilePath: String): Init {
+        fun context(context: Context): Init {
+            this.context = context
+            return this
+        }
+
+        fun backupFilePath(backupFilePath: Uri): Init {
             this.backupFilePath = backupFilePath
             return this
         }
@@ -46,13 +61,11 @@ class Restore {
                     onWorkFinishListener?.onFinished(false, "Database not specified")
                     return
                 }
-                val fl = File(backupFilePath)
-                val fin = FileInputStream(fl)
+
+                val fin = backupFilePath?.let { context?.contentResolver?.openInputStream(it) }
                 val data = convertStreamToString(fin)
-                fin.close()
-                val jsonTextDB: String
-                jsonTextDB = data
-                val jsonDB = Gson().fromJson(jsonTextDB, JsonObject::class.java)
+                fin?.close()
+                val jsonDB = Gson().fromJson(data, JsonObject::class.java)
                 for (table in jsonDB.keySet()) {
                     val c = database?.query("delete from $table", null)
                     c?.close()
@@ -75,9 +88,9 @@ class Restore {
                             }
                         }
                         query = query.substring(0, query.lastIndexOf(","))
-                        query = "$query)"
+                        query = "$query);"
                         val cc = database?.query(query, null)
-                        cc?.close()
+                        val pp = cc?.count
                     }
                 }
                 onWorkFinishListener?.onFinished(true, "success")

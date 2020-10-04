@@ -1,4 +1,4 @@
-package ru.kireev.mir.registrarlizaalert
+package ru.kireev.mir.registrarlizaalert.ui.activities
 
 import android.content.Intent
 import android.os.Bundle

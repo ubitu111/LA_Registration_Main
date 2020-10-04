@@ -12,15 +12,23 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.volunteer_item.view.*
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import ru.kireev.mir.registrarlizaalert.R
+import ru.kireev.mir.registrarlizaalert.data.GroupsViewModel
 import ru.kireev.mir.registrarlizaalert.data.Volunteer
 import ru.kireev.mir.registrarlizaalert.data.VolunteersViewModel
 import ru.kireev.mir.registrarlizaalert.listeners.OnVolunteerClickListener
 import ru.kireev.mir.registrarlizaalert.listeners.OnVolunteerPhoneNumberClickListener
 import ru.kireev.mir.registrarlizaalert.util.TimePickerFragment
+import ru.kireev.mir.registrarlizaalert.util.getGroupCallsignAsString
 import java.util.*
 
-class VolunteerAdapter(private val context: Context, private val viewModel: VolunteersViewModel) : RecyclerView.Adapter<VolunteerAdapter.VolunteerViewHolder>() {
+class VolunteerAdapter(
+        private val context: Context,
+        private val viewModel: VolunteersViewModel,
+        private val groupsViewmodel: GroupsViewModel
+) : RecyclerView.Adapter<VolunteerAdapter.VolunteerViewHolder>() {
 
     var volunteers: List<Volunteer> = listOf()
         set(value) {
@@ -29,19 +37,37 @@ class VolunteerAdapter(private val context: Context, private val viewModel: Volu
         }
 
     fun filterVolunteers(query: String?, fullList: List<Volunteer>): List<Volunteer> {
-        val results = mutableListOf<Volunteer>()
-        val queryString = query?.toLowerCase(Locale.getDefault())?.trim()
-        queryString?.let {
-            for (volunteer in fullList) {
-                if (volunteer.fullName.toLowerCase(Locale.getDefault()).contains(it)
-                        || volunteer.callSign.toLowerCase(Locale.getDefault()).contains(it)
-                        || volunteer.car.toLowerCase(Locale.getDefault()).contains(it)
-                        || volunteer.status.toLowerCase(Locale.getDefault()).contains(it)) {
-                    results.add(volunteer)
+        var groupName = ""
+
+            val results = mutableListOf<Volunteer>()
+            val queryString = query?.toLowerCase(Locale.getDefault())?.trim()
+            queryString?.let { it ->
+                for (volunteer in fullList) {
+
+                    runBlocking {
+                        val job = launch {
+                            volunteer.groupId?.let {id ->
+                                val group = groupsViewmodel.getGroupById(id)
+                                val groupCallsign = group
+                                        .groupCallsign
+                                        .getGroupCallsignAsString(context)
+                                groupName = "$groupCallsign ${group.numberOfGroup}"
+                            }
+                        }
+                        job.join()
+                    }
+
+                    if (volunteer.fullName.toLowerCase(Locale.getDefault()).contains(it)
+                            || volunteer.callSign.toLowerCase(Locale.getDefault()).contains(it)
+                            || volunteer.car.toLowerCase(Locale.getDefault()).contains(it)
+                            || volunteer.status.toLowerCase(Locale.getDefault()).contains(it)
+                            || groupName.toLowerCase(Locale.getDefault()).contains(it))
+                    {
+                        results.add(volunteer)
+                    }
                 }
             }
-        }
-        return results
+            return results
     }
 
     var onVolunteerPhoneNumberClickListener: OnVolunteerPhoneNumberClickListener? = null
@@ -59,6 +85,24 @@ class VolunteerAdapter(private val context: Context, private val viewModel: Volu
 
     override fun onBindViewHolder(holder: VolunteerViewHolder, position: Int) {
         val volunteer = volunteers[position]
+        var groupName = ""
+        runBlocking {
+            val job = launch {
+                volunteer.groupId?.let {id ->
+                    val group = groupsViewmodel.getGroupById(id)
+
+                    //без этой проверки валится с NPE
+                    if (group != null){
+                        val groupCallsign = group
+                                .groupCallsign
+                                .getGroupCallsignAsString(context)
+                        groupName = "$groupCallsign ${group.numberOfGroup}"
+                    }
+                }
+            }
+            job.join()
+
+        }
         with(holder) {
             textViewPosition.text = (position + 1).toString()
             textViewFullName.text = volunteer.fullName
@@ -68,6 +112,7 @@ class VolunteerAdapter(private val context: Context, private val viewModel: Volu
             textViewPhoneNumber.text = volunteer.phoneNumber
             textViewCar.text = volunteer.car
             tvVolunteerStatus.text = volunteer.status
+            tvGroupCallsign.text = groupName
             when (volunteer.status) {
                 context.getString(R.string.volunteer_status_active) -> {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
@@ -104,6 +149,7 @@ class VolunteerAdapter(private val context: Context, private val viewModel: Volu
         val tvVolunteerStatus: TextView = itemView.tvVolunteerStatus
         val tvOptionsVolunteerItem: TextView = itemView.tvOptionsVolunteerItem
         val tvVolunteerTimeForSearch: TextView = itemView.tvVolunteerTimeForSearch
+        val tvGroupCallsign: TextView = itemView.tv_group_callsign
     }
 
     private fun showPopup(textView: TextView, volunteer: Volunteer, position: Int) {

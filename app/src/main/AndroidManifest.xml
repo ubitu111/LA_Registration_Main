@@ -3,9 +3,9 @@
     package="ru.kireev.mir.registrarlizaalert">
 
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -15,7 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".SplashActivity"
+            android:name=".ui.activities.SplashActivity"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,28 +24,28 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".AddNewFoxActivity"
-            android:screenOrientation="portrait"
-             />
-        <activity
-            android:name=".FoxesMainActivity"
-            android:label="@string/actionbar_label_foxes"
+            android:name=".ui.activities.AddNewGroupActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".ui.activities.TabbedMainActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".TabbedMainActivity"
+            android:name=".ui.activities.TabbedMainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".BarCodeScannerActivity"
+            android:name=".ui.activities.BarCodeScannerActivity"
+            android:parentActivityName=".ui.activities.TabbedMainActivity"
             android:label="@string/actionbar_label_scan_QR"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".AddManuallyActivity"
+            android:name=".ui.activities.AddManuallyActivity"
+            android:parentActivityName=".ui.activities.TabbedMainActivity"
             android:label="@string/actionbar_label_add_manually"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".FoxDetailActivity"
-            android:label="@string/label_fox_detail"
+            android:name=".ui.activities.GroupDetailActivity"
+            android:parentActivityName=".ui.activities.TabbedMainActivity"
+            android:label="@string/label_group_detail"
             android:screenOrientation="portrait" />
 
         <provider
@@ -55,10 +55,8 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/provider_paths"/>
+                android:resource="@xml/provider_paths" />
         </provider>
     </application>
-
-
 
 </manifest>

@@ -1,13 +1,12 @@
 package ru.kireev.mir.registrarlizaalert.data
 
 import android.app.Application
-import android.util.Log
+import android.content.Context
+import android.net.Uri
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.sqlite.db.SimpleSQLiteQuery
-//import ir.androidexception.roomdatabasebackupandrestore.Backup
-//import ir.androidexception.roomdatabasebackupandrestore.Restore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import ru.kireev.mir.registrarlizaalert.R
@@ -21,7 +20,7 @@ class MainViewModel(private val app: Application) : AndroidViewModel(app) {
     companion object {
         private const val FILENAME_FOR_BACKUP_AND_RESTORE = "database_backup.json"
         private const val TABLE_NAME_VOLUNTEERS = "volunteers"
-        private const val TABLE_NAME_FOXES = "foxes"
+        private const val TABLE_NAME_GROUPS = "groups"
     }
 
     fun backupDatabase(pathToFile: String) : String {
@@ -44,20 +43,19 @@ class MainViewModel(private val app: Application) : AndroidViewModel(app) {
         return "$pathToFile/$FILENAME_FOR_BACKUP_AND_RESTORE"
     }
 
-    fun restoreDatabase(pathToFile: String) {
+    fun restoreDatabase(pathToFile: Uri,  context: Context) {
         clearAutoIncrementCounter()
         db.openHelper.readableDatabase.execSQL("PRAGMA foreign_keys = off;")
         Restore().Init()
                 .database(db)
                 .backupFilePath(pathToFile)
+                .context(context)
                 .onWorkFinishListener(object : OnWorkFinishListener {
                     override fun onFinished(success: Boolean, message: String) {
                         val msg = if (success) {
                             app.getString(R.string.message_for_success_restore_db)
                         } else
                             app.getString(R.string.message_for_error_backup_adn_restore_db)
-
-                        Log.d("matag", message)
 
                         Toast.makeText(app, msg, Toast.LENGTH_SHORT).show()
                     }
@@ -68,10 +66,15 @@ class MainViewModel(private val app: Application) : AndroidViewModel(app) {
 
     fun clearAutoIncrementCounter() {
         val volunteersQuery = SimpleSQLiteQuery("UPDATE sqlite_sequence SET seq = 0 WHERE name = '$TABLE_NAME_VOLUNTEERS';")
-        val foxesQuery = SimpleSQLiteQuery("UPDATE sqlite_sequence SET seq = 0 WHERE name = '$TABLE_NAME_FOXES';")
+        val groupsQuery = SimpleSQLiteQuery("UPDATE sqlite_sequence SET seq = 0 WHERE name = '$TABLE_NAME_GROUPS';")
         viewModelScope.launch (Dispatchers.IO) {
             db.mainDao().clearAutoIncrementCounter(volunteersQuery)
-            db.mainDao().clearAutoIncrementCounter(foxesQuery)
+            db.mainDao().clearAutoIncrementCounter(groupsQuery)
         }
+    }
+
+    fun deleteOldTable() {
+        val query = SimpleSQLiteQuery("DROP TABLE IF EXISTS foxes;")
+        viewModelScope.launch(Dispatchers.IO) { db.mainDao().clearAutoIncrementCounter(query) }
     }
 }

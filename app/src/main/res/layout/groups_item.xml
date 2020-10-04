@@ -2,7 +2,7 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/cardViewFox"
+    android:id="@+id/cardViewGroup"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
@@ -14,7 +14,7 @@
         android:padding="8dp">
 
         <ImageView
-            android:id="@+id/ivDeleteFox"
+            android:id="@+id/ivDeleteGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:srcCompat="@android:drawable/ic_delete"
@@ -31,7 +31,7 @@
             app:layout_constraintTop_toTopOf="parent"/>
 
         <TextView
-            android:id="@+id/tvFoxesItemNumberTitle"
+            android:id="@+id/tvGroupsItemNumberTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
@@ -41,41 +41,41 @@
             tools:text="Лиса 1" />
 
         <TextView
-            android:id="@+id/tvFoxesItemElderTitle"
+            android:id="@+id/tvGroupsItemElderTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
             android:text="@string/elder"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvFoxesItemNumberTitle" />
+            app:layout_constraintTop_toBottomOf="@id/tvGroupsItemNumberTitle" />
 
         <TextView
-            android:id="@+id/tvFoxesItemElder"
+            android:id="@+id/tvGroupsItemElder"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
-            app:layout_constraintStart_toEndOf="@id/tvFoxesItemElderTitle"
-            app:layout_constraintTop_toBottomOf="@id/tvFoxesItemNumberTitle"
+            app:layout_constraintStart_toEndOf="@id/tvGroupsItemElderTitle"
+            app:layout_constraintTop_toBottomOf="@id/tvGroupsItemNumberTitle"
             app:layout_constraintEnd_toEndOf="parent"
             tools:text="Иванов Антон (Регистратор)" />
 
         <TextView
-            android:id="@+id/tvFoxesItemElderPhoneTitle"
+            android:id="@+id/tvGroupsItemElderPhoneTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
             android:text="@string/elder_phone_number"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvFoxesItemElder" />
+            app:layout_constraintTop_toBottomOf="@id/tvGroupsItemElder" />
 
         <TextView
-            android:id="@+id/tvFoxesItemElderPhone"
+            android:id="@+id/tvGroupsItemElderPhone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
             android:textColor="@color/blue"
-            app:layout_constraintStart_toEndOf="@id/tvFoxesItemElderPhoneTitle"
-            app:layout_constraintTop_toBottomOf="@id/tvFoxesItemElder"
+            app:layout_constraintStart_toEndOf="@id/tvGroupsItemElderPhoneTitle"
+            app:layout_constraintTop_toBottomOf="@id/tvGroupsItemElder"
             tools:text="89138529898" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

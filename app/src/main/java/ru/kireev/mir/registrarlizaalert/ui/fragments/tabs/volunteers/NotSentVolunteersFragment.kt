@@ -1,4 +1,4 @@
-package ru.kireev.mir.registrarlizaalert.ui.main
+package ru.kireev.mir.registrarlizaalert.ui.fragments.tabs.volunteers
 
 import android.app.AlertDialog
 import android.content.Intent
@@ -6,49 +6,52 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.*
 import android.widget.SearchView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.clans.fab.FloatingActionMenu
-import kotlinx.android.synthetic.main.fragment_tabbed_sent_volunteers.view.*
-import ru.kireev.mir.registrarlizaalert.AddManuallyActivity
+import kotlinx.android.synthetic.main.fragment_tabbed_not_sent_volunteers.view.*
 import ru.kireev.mir.registrarlizaalert.R
 import ru.kireev.mir.registrarlizaalert.adapters.VolunteerAdapter
+import ru.kireev.mir.registrarlizaalert.data.GroupsViewModel
 import ru.kireev.mir.registrarlizaalert.data.Volunteer
 import ru.kireev.mir.registrarlizaalert.data.VolunteersViewModel
 import ru.kireev.mir.registrarlizaalert.listeners.OnVolunteerClickListener
 import ru.kireev.mir.registrarlizaalert.listeners.OnVolunteerPhoneNumberClickListener
-import java.util.*
+import ru.kireev.mir.registrarlizaalert.ui.activities.AddManuallyActivity
+import ru.kireev.mir.registrarlizaalert.ui.activities.BarCodeScannerActivity
 
-class SentVolunteersFragment : Fragment(), SearchView.OnQueryTextListener, View.OnClickListener {
-
+class NotSentVolunteersFragment : Fragment(), View.OnClickListener, SearchView.OnQueryTextListener {
     companion object {
         private const val EXTRA_SIZE = "size"
         private const val EXTRA_VOLUNTEER_ID = "volunteer_id"
         private const val SPACE_KEY = " "
         private const val LINE_SEPARATOR = "\n"
-        private const val NOTE_SEPARATOR = "* * * * * * * * * * * * * *\n"
+        private const val NOTE_SEPARATOR = "\n * * * * * * * * * * * * * *\n"
         private const val BUNDLE_KEY_IS_SENT_TO_INFORG = "is_sent_to_inforg"
     }
 
     private lateinit var viewModel: VolunteersViewModel
     private lateinit var adapter: VolunteerAdapter
-    private var fullList = listOf<Volunteer>()
-    private var isSentToInforg = false
-    private var leftVolunteers = listOf<Volunteer>()
+    private lateinit var groupsViewModel: GroupsViewModel
     private lateinit var famMenu: FloatingActionMenu
+    private var isSentToInforg = false
+    private var fullList = listOf<Volunteer>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val root = inflater.inflate(R.layout.fragment_tabbed_sent_volunteers, container, false)
+        val root = inflater.inflate(R.layout.fragment_tabbed_not_sent_volunteers, container, false)
         savedInstanceState?.let {
             isSentToInforg = it.getBoolean(BUNDLE_KEY_IS_SENT_TO_INFORG)
         }
-        val recyclerView = root.recyclerViewSentVolunteersTab
+        val recyclerView = root.recyclerViewNotSentVolunteersTab
         val model by viewModels<VolunteersViewModel>()
-        famMenu = root.fam_menu_sent
         viewModel = model
-        adapter = VolunteerAdapter(requireContext(), model)
+        val groupModel by viewModels<GroupsViewModel>()
+        groupsViewModel = groupModel
+        famMenu = root.fam_menu_tab
+        adapter = VolunteerAdapter(requireContext(), viewModel, groupsViewModel)
         adapter.onVolunteerPhoneNumberClickListener = object : OnVolunteerPhoneNumberClickListener {
             override fun onVolunteerPhoneNumberClick(phone: String) {
                 val toDial = "tel:$phone"
@@ -66,6 +69,11 @@ class SentVolunteersFragment : Fragment(), SearchView.OnQueryTextListener, View.
         }
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(context)
+
+        viewModel.notSentVolunteers.observe(viewLifecycleOwner, {
+            adapter.volunteers = it
+            fullList = it
+        })
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
@@ -76,63 +84,40 @@ class SentVolunteersFragment : Fragment(), SearchView.OnQueryTextListener, View.
                 }
             }
         })
-
-        viewModel.sentVolunteers.observe(viewLifecycleOwner, {
-            adapter.volunteers = it
-            fullList = it
-        })
-        viewModel.getVolunteersWithStatus(getString(R.string.volunteer_status_left)).observe(viewLifecycleOwner, {
-            leftVolunteers = it
-        })
+        root.fab_buttonAddManuallyTab.setOnClickListener(this)
+        root.fab_buttonAddByScannerTab.setOnClickListener(this)
+        root.fab_buttonSentNewTab.setOnClickListener(this)
         setHasOptionsMenu(true)
-        root.fab_buttonSentLeft.setOnClickListener(this)
         return root
     }
 
-    override fun onQueryTextSubmit(query: String?): Boolean {
-        adapter.volunteers = adapter.filterVolunteers(query, fullList)
-        return false
-    }
-
-    override fun onQueryTextChange(newText: String?): Boolean {
-        adapter.volunteers = adapter.filterVolunteers(newText, fullList)
-        return false
-    }
-
-    override fun onPause() {
-        adapter.volunteers = fullList
-        super.onPause()
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        val searchView = menu.findItem(R.id.search_view).actionView as SearchView
-        with(searchView) {
-            isFocusable = false
-            queryHint = getString(R.string.search_searching)
-            setOnQueryTextListener(this@SentVolunteersFragment)
-            setOnCloseListener {
-                adapter.volunteers = fullList
-                false
-            }
-        }
-    }
-
     override fun onClick(v: View?) {
-        when(v?.id) {
-            R.id.fab_buttonSentLeft -> onClickSentLeft()
+        when (v?.id) {
+            R.id.fab_buttonAddManuallyTab -> onClickAddManuallyTab()
+            R.id.fab_buttonAddByScannerTab -> onClickAddByScannerTab()
+            R.id.fab_buttonSentNewTab -> onClickSentNewTab()
         }
     }
 
-    private fun onClickSentLeft() {
+    private fun onClickAddManuallyTab() {
+        val intent = Intent(context, AddManuallyActivity::class.java)
+        intent.putExtra(EXTRA_SIZE, adapter.itemCount)
+        startActivity(intent)
+        famMenu.close(true)
+    }
+
+    private fun onClickAddByScannerTab() {
+        val intent = Intent(context, BarCodeScannerActivity::class.java)
+        intent.putExtra(EXTRA_SIZE, adapter.itemCount)
+        startActivity(intent)
+        famMenu.close(true)
+    }
+
+    private fun onClickSentNewTab() {
         isSentToInforg = true
         val builder = StringBuilder()
-        for (volunteer in leftVolunteers) {
-
+        for (volunteer in adapter.volunteers) {
             builder
-                    .append(getString(R.string.volunteer_status_left).toUpperCase(Locale.ROOT))
-                    .append(LINE_SEPARATOR)
-
                     .append(getString(R.string.fullName))
                     .append(SPACE_KEY)
                     .append(volunteer.fullName)
@@ -182,8 +167,8 @@ class SentVolunteersFragment : Fragment(), SearchView.OnQueryTextListener, View.
             alertDialog.setTitle(getString(R.string.attention))
             alertDialog.setMessage(getString(R.string.message_confirm_sent_to_inforg))
             alertDialog.setPositiveButton(getString(R.string.sent_successfully)) { _, _ ->
-                for (volunteer in leftVolunteers) {
-                    volunteer.notifyThatLeft = "true"
+                for (volunteer in adapter.volunteers) {
+                    volunteer.isSent = "true"
                     viewModel.updateVolunteer(volunteer)
                 }
             }
@@ -192,6 +177,40 @@ class SentVolunteersFragment : Fragment(), SearchView.OnQueryTextListener, View.
             isSentToInforg = false
         }
         super.onResume()
+    }
+
+    override fun onQueryTextSubmit(query: String?): Boolean {
+        adapter.volunteers = adapter.filterVolunteers(query, fullList)
+        return false
+    }
+
+    override fun onQueryTextChange(newText: String?): Boolean {
+        adapter.volunteers = adapter.filterVolunteers(newText, fullList)
+        return false
+    }
+
+    override fun onPause() {
+        adapter.volunteers = fullList
+        super.onPause()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.actionbar_label_volunteers)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        val searchView = menu.findItem(R.id.search_view).actionView as SearchView
+        with(searchView) {
+            isFocusable = false
+            queryHint = getString(R.string.search_searching)
+            setOnQueryTextListener(this@NotSentVolunteersFragment)
+            setOnCloseListener {
+                adapter.volunteers = fullList
+                false
+            }
+        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

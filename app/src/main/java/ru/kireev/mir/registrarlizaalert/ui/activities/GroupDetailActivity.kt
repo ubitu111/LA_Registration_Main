@@ -1,5 +1,6 @@
-package ru.kireev.mir.registrarlizaalert
+package ru.kireev.mir.registrarlizaalert.ui.activities
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -8,34 +9,46 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.activity_fox_detail.*
+import kotlinx.android.synthetic.main.activity_group_detail.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import ru.kireev.mir.registrarlizaalert.R
 import ru.kireev.mir.registrarlizaalert.adapters.VolunteerAdapter
-import ru.kireev.mir.registrarlizaalert.data.Fox
-import ru.kireev.mir.registrarlizaalert.data.FoxesViewModel
+import ru.kireev.mir.registrarlizaalert.data.Group
+import ru.kireev.mir.registrarlizaalert.data.GroupsViewModel
 import ru.kireev.mir.registrarlizaalert.data.VolunteersViewModel
 import ru.kireev.mir.registrarlizaalert.listeners.OnVolunteerPhoneNumberClickListener
+import ru.kireev.mir.registrarlizaalert.util.getGroupCallsignAsString
 
-class FoxDetailActivity : AppCompatActivity() {
+class GroupDetailActivity : AppCompatActivity() {
 
     private lateinit var volunteerAdapter: VolunteerAdapter
     private lateinit var elderAdapter: VolunteerAdapter
-    private lateinit var foxesViewModel: FoxesViewModel
+    private lateinit var groupsViewModel: GroupsViewModel
     private lateinit var volunteersViewModel: VolunteersViewModel
-    private lateinit var fox: Fox
+    private lateinit var group: Group
+
+    companion object {
+        private const val ARG_GROUP_ID = "group_id"
+        fun getIntent(groupId: Int, context: Context) : Intent {
+            val intent = Intent(context, GroupDetailActivity::class.java)
+            intent.putExtra(ARG_GROUP_ID, groupId)
+            return intent
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_fox_detail)
+        setContentView(R.layout.activity_group_detail)
         val volunteersModel by viewModels<VolunteersViewModel>()
         volunteersViewModel = volunteersModel
-        volunteerAdapter = VolunteerAdapter(this, volunteersViewModel)
-        elderAdapter = VolunteerAdapter(this, volunteersViewModel)
-        val foxesModel by viewModels<FoxesViewModel>()
-        foxesViewModel = foxesModel
-        val foxId = intent.getIntExtra("fox_id", 0)
+        val groupsModel by viewModels<GroupsViewModel>()
+        groupsViewModel = groupsModel
+        volunteerAdapter = VolunteerAdapter(this, volunteersViewModel, groupsViewModel)
+        elderAdapter = VolunteerAdapter(this, volunteersViewModel, groupsViewModel)
+
+        val groupId = intent.getIntExtra(ARG_GROUP_ID, 0)
 
         volunteerAdapter.onVolunteerPhoneNumberClickListener = object : OnVolunteerPhoneNumberClickListener {
             override fun onVolunteerPhoneNumberClick(phone: String) {
@@ -48,24 +61,27 @@ class FoxDetailActivity : AppCompatActivity() {
                 makeCall(phone)
             }
         }
-        rvFoxDetailInfoVolunteers.adapter = volunteerAdapter
-        rvFoxDetailInfoVolunteers.layoutManager = LinearLayoutManager(this)
-        rvFoxDetailInfoElder.adapter = elderAdapter
-        rvFoxDetailInfoElder.layoutManager = LinearLayoutManager(this)
+        rvGroupDetailInfoVolunteers.adapter = volunteerAdapter
+        rvGroupDetailInfoVolunteers.layoutManager = LinearLayoutManager(this)
+        rvGroupDetailInfoElder.adapter = elderAdapter
+        rvGroupDetailInfoElder.layoutManager = LinearLayoutManager(this)
 
         CoroutineScope(Dispatchers.Main).launch {
-            fox = foxesViewModel.getFoxById(foxId)
-            tvNumberOfFox.text = String.format(getString(R.string.foxes_item_number_of_fox), fox.numberOfFox)
-            tvDateOfCreation.text = fox.dateOfCreation
-            val elder = volunteersViewModel.getVolunteerById(fox.elderOfFoxId)
+            group = groupsViewModel.getGroupById(groupId)
+            val groupCallsign = group.groupCallsign.getGroupCallsignAsString(this@GroupDetailActivity)
+            val groupName = "$groupCallsign ${group.numberOfGroup}"
+            supportActionBar?.title = groupName
+            tvNumberOfGroup.text = groupName
+            tvDateOfCreation.text = group.dateOfCreation
+            val elder = volunteersViewModel.getVolunteerById(group.elderOfGroupId)
             elderAdapter.volunteers = listOf(elder)
-            volunteerAdapter.volunteers = volunteersViewModel.getVolunteersByNumberOfGroup(fox.numberOfFox).filter { it != elder }
-            etTask.setText(fox.task)
-            etNavigators.setText(fox.navigators)
-            etWalkieTalkies.setText(fox.walkieTalkies)
-            etCompasses.setText(fox.compasses)
-            etLamps.setText(fox.lamps)
-            etOthers.setText(fox.others)
+            volunteerAdapter.volunteers = volunteersViewModel.getVolunteersByIdOfGroup(group.id).filter { it != elder }
+            etTask.setText(group.task)
+            etNavigators.setText(group.navigators)
+            etWalkieTalkies.setText(group.walkieTalkies)
+            etCompasses.setText(group.compasses)
+            etLamps.setText(group.lamps)
+            etOthers.setText(group.others)
 
             //слушатель изменения статуса у старшего
             elderAdapter.onChangeVolunteerStatusListener = object : VolunteerAdapter.OnChangeVolunteerStatusListener {
@@ -95,15 +111,15 @@ class FoxDetailActivity : AppCompatActivity() {
         }
     }
 
-    fun onClickSaveFoxData(view: View) {
-        with(fox) {
+    fun onClickSaveGroupData(view: View) {
+        with(group) {
             task = etTask.text.toString().trim()
             navigators = etNavigators.text.toString().trim()
             walkieTalkies = etWalkieTalkies.text.toString().trim()
             compasses = etCompasses.text.toString().trim()
             lamps = etLamps.text.toString().trim()
             others = etOthers.text.toString().trim()
-            foxesViewModel.updateFox(this)
+            groupsViewModel.updateGroup(this)
         }
         Toast.makeText(this, getString(R.string.data_saved), Toast.LENGTH_SHORT).show()
         onBackPressed()

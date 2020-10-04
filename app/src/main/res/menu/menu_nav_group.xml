@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_group_volunteers"
+            android:checked="true"
+            android:title="@string/actionbar_label_volunteers" />
+
+        <item android:title="@string/label_groups">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nav_group_lisa"
+                        android:title="@string/group_callsign_lisa" />
+                    <item
+                        android:id="@+id/nav_group_bort"
+                        android:title="@string/group_callsign_bort" />
+                    <item
+                        android:id="@+id/nav_group_kinolog"
+                        android:title="@string/group_callsign_kinolog" />
+                    <item
+                        android:id="@+id/nav_group_veter"
+                        android:title="@string/group_callsign_veter" />
+                    <item
+                        android:id="@+id/nav_group_voda"
+                        android:title="@string/group_callsign_voda" />
+                    <item
+                        android:id="@+id/nav_group_pegas"
+                        android:title="@string/group_callsign_pegas" />
+                    <item
+                        android:id="@+id/nav_group_police"
+                        android:title="@string/group_callsign_police" />
+                    <item
+                        android:id="@+id/nav_group_mchs"
+                        android:title="@string/group_callsign_mchs" />
+                    <item
+                        android:id="@+id/nav_group_pso"
+                        android:title="@string/group_callsign_pso" />
+                    <item
+                        android:id="@+id/nav_group_sent_info"
+                        android:checkable="false"
+                        android:title="@string/send_data_groups" />
+                </group>
+            </menu>
+        </item>
+    </group>
+
+    <item android:title="@string/label_database">
+        <menu>
+            <group android:checkableBehavior="none">
+                <item
+                    android:id="@+id/nav_group_backup_db"
+                    android:title="@string/backup_db" />
+                <item
+                    android:id="@+id/nav_group_restore_db"
+                    android:title="@string/load_db" />
+            </group>
+
+        </menu>
+    </item>
+
+</menu>

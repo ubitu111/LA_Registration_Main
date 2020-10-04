@@ -8,12 +8,12 @@ import android.view.ViewGroup
 import android.widget.AutoCompleteTextView
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.new_member_of_fox_item.view.*
+import kotlinx.android.synthetic.main.new_member_of_group_item.view.*
 import ru.kireev.mir.registrarlizaalert.R
-import ru.kireev.mir.registrarlizaalert.listeners.OnClickDeleteNewMemberOfFoxListener
+import ru.kireev.mir.registrarlizaalert.listeners.OnClickDeleteNewMemberOfGroupListener
 import ru.kireev.mir.registrarlizaalert.listeners.OnVolunteerItemClickListener
 
-class NewMemberOfFoxAdapter(private val adapter: VolunteerAutoCompleteAdapter) : RecyclerView.Adapter<NewMemberOfFoxAdapter.NewMemberViewHolder>() {
+class NewMemberOfGroupAdapter(private val adapter: VolunteerAutoCompleteAdapter) : RecyclerView.Adapter<NewMemberOfGroupAdapter.NewMemberViewHolder>() {
 
     private var isTyping = false
 
@@ -36,12 +36,12 @@ class NewMemberOfFoxAdapter(private val adapter: VolunteerAutoCompleteAdapter) :
         notifyDataSetChanged()
     }
 
-    var onClickDeleteMemberListener: OnClickDeleteNewMemberOfFoxListener? = null
+    var onClickDeleteMemberListener: OnClickDeleteNewMemberOfGroupListener? = null
     var onVolunteerItemClickListener: OnVolunteerItemClickListener? = null
     var textChangedListener: TextChangedListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewMemberViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.new_member_of_fox_item, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.new_member_of_group_item, parent, false)
         val member = NewMemberViewHolder(view)
         member.ivDeleteNewMember.setOnClickListener {
             onClickDeleteMemberListener?.onClickDeleteMember(member.adapterPosition)

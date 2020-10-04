@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "volunteers",
         foreignKeys = [
             ForeignKey(
-                    entity = Fox::class, parentColumns = arrayOf("id"),
+                    entity = Group::class, parentColumns = arrayOf("id"),
                     childColumns = arrayOf("groupId"),
                     onDelete = ForeignKey.SET_NULL,
                     onUpdate = ForeignKey.CASCADE

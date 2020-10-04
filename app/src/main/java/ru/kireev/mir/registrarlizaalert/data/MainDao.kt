@@ -9,4 +9,5 @@ interface MainDao {
 
     @RawQuery
     fun clearAutoIncrementCounter(query: SupportSQLiteQuery): Boolean
+
 }

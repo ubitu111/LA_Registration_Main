@@ -1,4 +1,4 @@
-package ru.kireev.mir.registrarlizaalert
+package ru.kireev.mir.registrarlizaalert.ui.activities
 
 import android.os.Bundle
 import android.view.View
@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_add_manually.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import ru.kireev.mir.registrarlizaalert.R
 import ru.kireev.mir.registrarlizaalert.data.Volunteer
 import ru.kireev.mir.registrarlizaalert.data.VolunteersViewModel
 

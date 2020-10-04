@@ -4,8 +4,11 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
+import ru.kireev.mir.registrarlizaalert.converters.Converter
 
-@Database(entities = [Volunteer::class, Fox::class], version = 16, exportSchema = false)
+@Database(entities = [Volunteer::class, Group::class], version = 18, exportSchema = false)
+@TypeConverters(value = [Converter::class])
 abstract class MainDatabase : RoomDatabase() {
     companion object {
         private var db: MainDatabase? = null
@@ -28,6 +31,6 @@ abstract class MainDatabase : RoomDatabase() {
     }
 
     abstract fun volunteersDao(): VolunteersDao
-    abstract fun foxesDao(): FoxesDao
+    abstract fun groupsDao(): GroupsDao
     abstract fun mainDao(): MainDao
 }

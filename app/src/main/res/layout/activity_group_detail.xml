@@ -6,15 +6,15 @@
     android:layout_height="match_parent"
     android:background="@color/black"
     android:padding="4dp"
-    tools:context=".FoxDetailActivity">
+    tools:context=".ui.activities.GroupDetailActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context=".FoxDetailActivity">
+        tools:context=".ui.activities.GroupDetailActivity">
 
         <TextView
-            android:id="@+id/tvNumberOfFox"
+            android:id="@+id/tvNumberOfGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="8dp"
@@ -36,7 +36,7 @@
             tools:text="30 мая 2005" />
 
         <TextView
-            android:id="@+id/tvElderOfFoxLabel"
+            android:id="@+id/tvElderOfGroupLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="8dp"
@@ -44,17 +44,17 @@
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvNumberOfFox" />
+            app:layout_constraintTop_toBottomOf="@+id/tvNumberOfGroup" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvFoxDetailInfoElder"
+            android:id="@+id/rvGroupDetailInfoElder"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:nestedScrollingEnabled="false"
             android:padding="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvElderOfFoxLabel"/>
+            app:layout_constraintTop_toBottomOf="@+id/tvElderOfGroupLabel"/>
 
         <TextView
             android:id="@+id/tvSearchersLabel"
@@ -65,10 +65,10 @@
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/rvFoxDetailInfoElder" />
+            app:layout_constraintTop_toBottomOf="@id/rvGroupDetailInfoElder" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvFoxDetailInfoVolunteers"
+            android:id="@+id/rvGroupDetailInfoVolunteers"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:nestedScrollingEnabled="false"
@@ -77,25 +77,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvSearchersLabel" />
 
-<!--        <TextView-->
-<!--            android:id="@+id/tvTaskLabel"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:padding="8dp"-->
-<!--            android:text="@string/label_fox_detail_task"-->
-<!--            android:textSize="18sp"-->
-<!--            android:textStyle="bold"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toBottomOf="@id/rvFoxDetailInfoVolunteers" />-->
-
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/inputLayoutTask"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/label_fox_detail_task"
+            android:hint="@string/label_group_detail_task"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rvFoxDetailInfoVolunteers">
+            app:layout_constraintTop_toBottomOf="@+id/rvGroupDetailInfoVolunteers">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etTask"
                 android:inputType="textMultiLine"
@@ -108,7 +97,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="8dp"
-            android:text="@string/label_fox_detail_equipment"
+            android:text="@string/label_group_detail_equipment"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
@@ -118,7 +107,7 @@
             android:id="@+id/inputLayoutNavigators"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/label_detail_fox_navigators"
+            android:hint="@string/label_detail_group_navigators"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvEquipmentLabel">
@@ -133,7 +122,7 @@
             android:id="@+id/inputLayoutWalkieTalkies"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/label_detail_fox_walkie_talkies"
+            android:hint="@string/label_detail_group_walkie_talkies"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/inputLayoutNavigators">
@@ -148,7 +137,7 @@
             android:id="@+id/inputLayoutCompasses"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/label_detail_fox_compasses"
+            android:hint="@string/label_detail_group_compasses"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/inputLayoutWalkieTalkies">
@@ -163,7 +152,7 @@
             android:id="@+id/inputLayoutLamps"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/label_detail_fox_lamps"
+            android:hint="@string/label_detail_group_lamps"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/inputLayoutCompasses">
@@ -178,7 +167,7 @@
             android:id="@+id/inputLayoutOthers"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/label_detail_fox_others"
+            android:hint="@string/label_detail_group_other"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/inputLayoutLamps">
@@ -190,11 +179,11 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
-            android:id="@+id/bDetailFoxSaveData"
+            android:id="@+id/bDetailGroupSaveData"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:onClick="onClickSaveFoxData"
+            android:onClick="onClickSaveGroupData"
             android:text="@string/save_data"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/inputLayoutOthers" />

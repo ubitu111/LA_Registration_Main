@@ -1,4 +1,4 @@
-package ru.kireev.mir.registrarlizaalert.ui.main
+package ru.kireev.mir.registrarlizaalert.ui.fragments.tabs.volunteers
 
 import android.app.AlertDialog
 import android.content.Intent
@@ -10,15 +10,15 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_tabbed_all_volunteers.view.*
-import ru.kireev.mir.registrarlizaalert.AddManuallyActivity
 import ru.kireev.mir.registrarlizaalert.R
 import ru.kireev.mir.registrarlizaalert.adapters.VolunteerAdapter
-import ru.kireev.mir.registrarlizaalert.data.FoxesViewModel
+import ru.kireev.mir.registrarlizaalert.data.GroupsViewModel
 import ru.kireev.mir.registrarlizaalert.data.MainViewModel
 import ru.kireev.mir.registrarlizaalert.data.Volunteer
 import ru.kireev.mir.registrarlizaalert.data.VolunteersViewModel
 import ru.kireev.mir.registrarlizaalert.listeners.OnVolunteerClickListener
 import ru.kireev.mir.registrarlizaalert.listeners.OnVolunteerPhoneNumberClickListener
+import ru.kireev.mir.registrarlizaalert.ui.activities.AddManuallyActivity
 
 class AllVolunteersFragment : Fragment(), View.OnClickListener, SearchView.OnQueryTextListener {
 
@@ -27,7 +27,7 @@ class AllVolunteersFragment : Fragment(), View.OnClickListener, SearchView.OnQue
         private const val EXTRA_VOLUNTEER_ID = "volunteer_id"
     }
 
-    private lateinit var foxesViewModel: FoxesViewModel
+    private lateinit var groupsViewModel: GroupsViewModel
     private lateinit var volunteersViewModel: VolunteersViewModel
     private lateinit var mainViewModel: MainViewModel
     private lateinit var adapter: VolunteerAdapter
@@ -36,14 +36,14 @@ class AllVolunteersFragment : Fragment(), View.OnClickListener, SearchView.OnQue
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val root = inflater.inflate(R.layout.fragment_tabbed_all_volunteers, container, false)
         val recyclerView = root.recyclerViewAllVolunteersTab
-        val foxModel by viewModels<FoxesViewModel>()
-        foxesViewModel = foxModel
-        foxesViewModel.allFoxes.observe(viewLifecycleOwner, {  })
+        val groupModel by viewModels<GroupsViewModel>()
+        groupsViewModel = groupModel
+        groupsViewModel.allGroups.observe(viewLifecycleOwner, {  })
         val model by viewModels<VolunteersViewModel>()
         volunteersViewModel = model
         val mainModel by viewModels<MainViewModel>()
         mainViewModel = mainModel
-        adapter = VolunteerAdapter(requireContext(), model)
+        adapter = VolunteerAdapter(requireContext(), volunteersViewModel, groupsViewModel)
         adapter.onVolunteerPhoneNumberClickListener = object : OnVolunteerPhoneNumberClickListener {
             override fun onVolunteerPhoneNumberClick(phone: String) {
                 val toDial = "tel:$phone"

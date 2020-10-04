@@ -1,5 +1,7 @@
-package ru.kireev.mir.registrarlizaalert
+package ru.kireev.mir.registrarlizaalert.ui.activities
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -8,62 +10,80 @@ import android.widget.AdapterView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.activity_add_new_fox.*
+import kotlinx.android.synthetic.main.activity_add_new_group.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import ru.kireev.mir.registrarlizaalert.adapters.NewMemberOfFoxAdapter
+import ru.kireev.mir.registrarlizaalert.R
+import ru.kireev.mir.registrarlizaalert.adapters.NewMemberOfGroupAdapter
 import ru.kireev.mir.registrarlizaalert.adapters.VolunteerAutoCompleteAdapter
 import ru.kireev.mir.registrarlizaalert.data.*
-import ru.kireev.mir.registrarlizaalert.listeners.OnClickDeleteNewMemberOfFoxListener
+import ru.kireev.mir.registrarlizaalert.listeners.OnClickDeleteNewMemberOfGroupListener
 import ru.kireev.mir.registrarlizaalert.listeners.OnVolunteerItemClickListener
+import ru.kireev.mir.registrarlizaalert.util.getGroupCallsignAsString
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.properties.Delegates
 
-class AddNewFoxActivity : AppCompatActivity() {
+class AddNewGroupActivity : AppCompatActivity() {
     private lateinit var volunteersViewModel: VolunteersViewModel
-    private lateinit var foxesViewModel: FoxesViewModel
+    private lateinit var groupsViewModel: GroupsViewModel
+    private var groupCallsign: GroupCallsigns? = null
     private var elder: Volunteer? = null
     private val searchersList = mutableListOf<Volunteer>()
-    private var numberOfFox by Delegates.notNull<Int>()
+    private var numberOfGroup by Delegates.notNull<Int>()
     private var selectedSearcherVolunteer: Volunteer? = null
     private var isVolunteerElderSelected = false
     private var isVolunteerSearcherSelected = false
     private var volunteersForUpdate = mutableListOf<Volunteer>()
-    private lateinit var addNewMemberOfFoxAdapter: NewMemberOfFoxAdapter
-
+    private lateinit var addNewMemberOfGroupAdapter: NewMemberOfGroupAdapter
     private lateinit var autoCompleteAdapter: VolunteerAutoCompleteAdapter
+
+    companion object {
+        private const val ARG_GROUP_CALLSIGN = "group_callsign"
+
+        fun getIntent(groupCallsign: GroupCallsigns, context: Context?): Intent {
+            val intent = Intent(context, AddNewGroupActivity::class.java)
+            intent.putExtra(ARG_GROUP_CALLSIGN, groupCallsign)
+            return intent
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_add_new_fox)
+        setContentView(R.layout.activity_add_new_group)
+
+        groupCallsign = intent.getSerializableExtra(ARG_GROUP_CALLSIGN) as GroupCallsigns
+        setSupportActionBar(new_group_toolbar as Toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.title = groupCallsign?.getGroupCallsignAsString(this)
 
         autoCompleteAdapter = VolunteerAutoCompleteAdapter(this, arrayListOf())
         val volunteersModel by viewModels<VolunteersViewModel>()
         volunteersViewModel = volunteersModel
-        val foxesModel by viewModels<FoxesViewModel>()
-        foxesViewModel = foxesModel
+        val groupModel by viewModels<GroupsViewModel>()
+        groupsViewModel = groupModel
 
         CoroutineScope(Dispatchers.Main).launch {
-            numberOfFox = foxesViewModel.getLastNumberOfFox() + 1
+            numberOfGroup = groupsViewModel.getLastNumberOfGroup(groupCallsign ?: GroupCallsigns.LISA) + 1
         }
 
-        volunteersViewModel.getVolunteersByStatusAndNotAddedToFox(getString(R.string.volunteer_status_active)).observe(this, {
+        volunteersViewModel.getVolunteersByStatusAndNotAddedToGroup(getString(R.string.volunteer_status_active)).observe(this, {
             autoCompleteAdapter.fullList = it
             volunteersForUpdate = it.toMutableList()
         })
 
 
-        actvAddFoxElder.setAdapter(autoCompleteAdapter)
-        actvAddFoxSearcher.setAdapter(autoCompleteAdapter)
+        actv_add_group_elder.setAdapter(autoCompleteAdapter)
+        actv_add_group_searcher.setAdapter(autoCompleteAdapter)
 
         //адаптер для RecycleView, в который добавляются новые поля AutoComplete
-        addNewMemberOfFoxAdapter = NewMemberOfFoxAdapter(autoCompleteAdapter)
-        addNewMemberOfFoxAdapter.onClickDeleteMemberListener = object : OnClickDeleteNewMemberOfFoxListener {
+        addNewMemberOfGroupAdapter = NewMemberOfGroupAdapter(autoCompleteAdapter)
+        addNewMemberOfGroupAdapter.onClickDeleteMemberListener = object : OnClickDeleteNewMemberOfGroupListener {
             override fun onClickDeleteMember(position: Int) {
-                val fieldActv = addNewMemberOfFoxAdapter.newMembers[position]
+                val fieldActv = addNewMemberOfGroupAdapter.newMembers[position]
                 if (fieldActv.isNotEmpty()) {
                     for (searcher in searchersList) {
                         if (searcher.toString() == fieldActv && notContainsStringVolunteerInListForUpdate(fieldActv)) {
@@ -74,40 +94,40 @@ class AddNewFoxActivity : AppCompatActivity() {
                         }
                     }
                 }
-                addNewMemberOfFoxAdapter.deleteMember(position)
+                addNewMemberOfGroupAdapter.deleteMember(position)
             }
         }
-        rvAddFox.adapter = addNewMemberOfFoxAdapter
-        rvAddFox.layoutManager = LinearLayoutManager(applicationContext)
+        rv_add_group.adapter = addNewMemberOfGroupAdapter
+        rv_add_group.layoutManager = LinearLayoutManager(applicationContext)
 
         //показывает раскрывающийся список при касании на actv
-        actvAddFoxElder.setOnClickListener {
+        actv_add_group_elder.setOnClickListener {
             autoCompleteAdapter.filter.filter("")
-            actvAddFoxElder.showDropDown()
+            actv_add_group_elder.showDropDown()
         }
-        actvAddFoxSearcher.setOnClickListener {
+        actv_add_group_searcher.setOnClickListener {
             autoCompleteAdapter.filter.filter("")
-            actvAddFoxSearcher.showDropDown()
+            actv_add_group_searcher.showDropDown()
         }
 
         //заносит выбранного волонтера из общего списка в список ролей
-        actvAddFoxElder.setOnItemClickListener { parent, _, position, _ ->
+        actv_add_group_elder.setOnItemClickListener { parent, _, position, _ ->
             val volunteer = parent.getItemAtPosition(position) as Volunteer
             elder = volunteer
             volunteersForUpdate.remove(volunteer)
             autoCompleteAdapter.fullList = volunteersForUpdate
             isVolunteerElderSelected = true
         }
-        actvAddFoxSearcher.setOnItemClickListener { parent, _, position, _ ->
+        actv_add_group_searcher.setOnItemClickListener { parent, _, position, _ ->
             onVolunteerItemClick(parent, position, -1)
         }
-        addNewMemberOfFoxAdapter.onVolunteerItemClickListener = object : OnVolunteerItemClickListener {
+        addNewMemberOfGroupAdapter.onVolunteerItemClickListener = object : OnVolunteerItemClickListener {
             override fun onItemClick(parent: AdapterView<*>, position: Int, adapterPosition: Int) {
                 onVolunteerItemClick(parent, position, adapterPosition)
             }
         }
 
-        actvAddFoxElder.addTextChangedListener(object : TextWatcher {
+        actv_add_group_elder.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {}
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -123,7 +143,7 @@ class AddNewFoxActivity : AppCompatActivity() {
                 }
             }
         })
-        actvAddFoxSearcher.addTextChangedListener(object : TextWatcher {
+        actv_add_group_searcher.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {}
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -134,7 +154,7 @@ class AddNewFoxActivity : AppCompatActivity() {
                 whenTextChanged(s)
             }
         })
-        addNewMemberOfFoxAdapter.textChangedListener = object : NewMemberOfFoxAdapter.TextChangedListener {
+        addNewMemberOfGroupAdapter.textChangedListener = object : NewMemberOfGroupAdapter.TextChangedListener {
             override fun beforeChanged(s: CharSequence?) {
                 untilTextChanged(s)
             }
@@ -171,7 +191,7 @@ class AddNewFoxActivity : AppCompatActivity() {
         selectedSearcherVolunteer = volunteer
         isVolunteerSearcherSelected = true
         if (adapterPosition != -1) {
-            addNewMemberOfFoxAdapter.newMembers[adapterPosition] = volunteer.toString()
+            addNewMemberOfGroupAdapter.newMembers[adapterPosition] = volunteer.toString()
         }
     }
 
@@ -208,8 +228,8 @@ class AddNewFoxActivity : AppCompatActivity() {
         }
     }
 
-    fun onClickSaveFox(view: View) {
-        if (elder == null || searchersList.isEmpty() || searchersList.size != addNewMemberOfFoxAdapter.itemCount + 1) {
+    fun onClickSaveGroup(view: View) {
+        if (elder == null || searchersList.isEmpty() || searchersList.size != addNewMemberOfGroupAdapter.itemCount + 1) {
             Toast.makeText(this, getString(R.string.select_elder_and_searchers_from_list), Toast.LENGTH_SHORT).show()
         } else {
             elder?.let {
@@ -218,19 +238,19 @@ class AddNewFoxActivity : AppCompatActivity() {
                 val dateOfCreation = dateFormat.format(currentDate)
 
                 CoroutineScope(Dispatchers.Main).launch {
-                 val idOfFox = foxesViewModel.insertFox(Fox(
+                 val idOfGroup = groupsViewModel.insertGroup(Group(
                         0,
-                        numberOfFox,
+                        numberOfGroup,
                         it.uniqueId,
                         dateOfCreation = dateOfCreation,
-                        nameOfGroup = GroupCallsigns.LISA            //TODO: Изменить хардкод группы
+                        groupCallsign = groupCallsign ?: GroupCallsigns.LISA
                 ))
 
-                    it.groupId = idOfFox
+                    it.groupId = idOfGroup
                     volunteersViewModel.updateVolunteer(it)
 
                     for (searcher in searchersList) {
-                        searcher.groupId = idOfFox
+                        searcher.groupId = idOfGroup
                         volunteersViewModel.updateVolunteer(searcher)
                     }
 
@@ -242,7 +262,7 @@ class AddNewFoxActivity : AppCompatActivity() {
 
     fun onClickAddNewMember(view: View) {
         isVolunteerSearcherSelected = false
-        addNewMemberOfFoxAdapter.addMember("")
+        addNewMemberOfGroupAdapter.addMember("")
     }
 
 }

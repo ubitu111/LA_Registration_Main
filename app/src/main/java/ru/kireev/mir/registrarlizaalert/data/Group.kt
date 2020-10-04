@@ -6,21 +6,21 @@ import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
 import ru.kireev.mir.registrarlizaalert.converters.Converter
 
-@Entity(tableName = "foxes",
+@Entity(tableName = "groups",
         foreignKeys = [
                 ForeignKey(
                         entity = Volunteer::class, parentColumns = arrayOf("uniqueId"),
-                        childColumns = arrayOf("elderOfFoxId"),
+                        childColumns = arrayOf("elderOfGroupId"),
                         onDelete = ForeignKey.CASCADE,
                         onUpdate = ForeignKey.CASCADE
                 )
         ])
 @TypeConverters(value = [Converter::class])
-data class Fox(
+data class Group(
         @PrimaryKey(autoGenerate = true)
         var id: Int,
-        var numberOfFox: Int,
-        var elderOfFoxId: Int? = null,
+        var numberOfGroup: Int,
+        var elderOfGroupId: Int? = null,
         var navigators: String = "",
         var walkieTalkies: String = "",
         var compasses: String = "",
@@ -30,5 +30,5 @@ data class Fox(
         var leavingTime: String = "",
         var returnTime: String = "",
         var dateOfCreation: String,
-        var nameOfGroup: GroupCallsigns
+        var groupCallsign: GroupCallsigns
 )

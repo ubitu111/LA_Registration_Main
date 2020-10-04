@@ -1,4 +1,4 @@
-package ru.kireev.mir.registrarlizaalert
+package ru.kireev.mir.registrarlizaalert.ui.activities
 
 import android.Manifest
 import android.content.pm.ActivityInfo
@@ -18,6 +18,7 @@ import com.yanzhenjie.zbar.ImageScanner
 import kotlinx.android.synthetic.main.activity_bar_code_scanner.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import ru.kireev.mir.registrarlizaalert.R
 import ru.kireev.mir.registrarlizaalert.data.Volunteer
 import ru.kireev.mir.registrarlizaalert.data.VolunteersViewModel
 import ru.kireev.mir.registrarlizaalert.util.CameraPreview
