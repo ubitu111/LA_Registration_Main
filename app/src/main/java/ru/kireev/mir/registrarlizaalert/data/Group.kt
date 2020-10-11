@@ -11,8 +11,7 @@ import ru.kireev.mir.registrarlizaalert.converters.Converter
                 ForeignKey(
                         entity = Volunteer::class, parentColumns = arrayOf("uniqueId"),
                         childColumns = arrayOf("elderOfGroupId"),
-                        onDelete = ForeignKey.CASCADE,
-                        onUpdate = ForeignKey.CASCADE
+                        onDelete = ForeignKey.CASCADE
                 )
         ])
 @TypeConverters(value = [Converter::class])
@@ -30,5 +29,6 @@ data class Group(
         var leavingTime: String = "",
         var returnTime: String = "",
         var dateOfCreation: String,
-        var groupCallsign: GroupCallsigns
+        var groupCallsign: GroupCallsigns,
+        var archived: String = "false"
 )

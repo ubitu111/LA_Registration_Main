@@ -37,6 +37,7 @@ class VolunteersViewModel(application: Application) : AndroidViewModel(applicati
 
     fun deleteAllVolunteers() {
         viewModelScope.launch(Dispatchers.IO) {
+            db.archiveGroupsVolunteersDao().deleteAllArchivedGroupsVolunteers()
             db.volunteersDao().deleteAllVolunteers()
         }
     }
@@ -56,6 +57,12 @@ class VolunteersViewModel(application: Application) : AndroidViewModel(applicati
     suspend fun getVolunteersByIdOfGroup(idOfGroup: Int): List<Volunteer> {
         return withContext(viewModelScope.coroutineContext + Dispatchers.IO) {
             db.volunteersDao().getVolunteersByIdOfGroup(idOfGroup)
+        }
+    }
+
+    suspend fun getVolunteersByIdOfArchiveGroup(idOfGroup: Int) : List<Volunteer> {
+        return withContext(viewModelScope.coroutineContext + Dispatchers.IO) {
+            db.volunteersDao().getVolunteersByIdOfArchiveGroup(idOfGroup)
         }
     }
 }

@@ -181,6 +181,11 @@ class TabbedMainActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
     private fun onClickSendGroupInfo() {
         val builder = StringBuilder()
         for (group in allGroups) {
+            if (group.archived == "true") {
+                builder
+                        .append(getString(R.string.archived))
+                        .append(SPACE_KEY)
+            }
             builder
                     .append(group.groupCallsign.getGroupCallsignAsString(this))
                     .append(SPACE_KEY)
@@ -206,7 +211,11 @@ class TabbedMainActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
 
             runBlocking {
                 val job = launch {
-                    val volunteers = volunteersViewModel.getVolunteersByIdOfGroup(group.id)
+                    val volunteers = if (group.archived == "true") {
+                        volunteersViewModel.getVolunteersByIdOfArchiveGroup(group.id)
+                    } else {
+                        volunteersViewModel.getVolunteersByIdOfGroup(group.id)
+                    }
                     for (volunteer in volunteers) {
                         if (volunteer.uniqueId != group.elderOfGroupId) {
                             builder

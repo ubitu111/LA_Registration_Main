@@ -9,8 +9,7 @@ import androidx.room.PrimaryKey
             ForeignKey(
                     entity = Group::class, parentColumns = arrayOf("id"),
                     childColumns = arrayOf("groupId"),
-                    onDelete = ForeignKey.SET_NULL,
-                    onUpdate = ForeignKey.CASCADE
+                    onDelete = ForeignKey.SET_NULL
             )
         ])
 data class Volunteer(

@@ -4,7 +4,6 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
@@ -14,12 +13,14 @@ import kotlinx.coroutines.runBlocking
 import ru.kireev.mir.registrarlizaalert.R
 import ru.kireev.mir.registrarlizaalert.data.Group
 import ru.kireev.mir.registrarlizaalert.data.VolunteersViewModel
-import ru.kireev.mir.registrarlizaalert.listeners.OnDeleteGroupClickListener
+import ru.kireev.mir.registrarlizaalert.listeners.OnClickGroupOptionsMenu
 import ru.kireev.mir.registrarlizaalert.listeners.OnGroupClickListener
 import ru.kireev.mir.registrarlizaalert.listeners.OnVolunteerPhoneNumberClickListener
 import ru.kireev.mir.registrarlizaalert.util.getGroupCallsignAsString
 
-class GroupsAdapter(private val context: Context, private val volunteersViewModel: VolunteersViewModel) : RecyclerView.Adapter<GroupsAdapter.GroupsViewHolder>() {
+class GroupsAdapter(private val context: Context,
+                    private val volunteersViewModel: VolunteersViewModel
+) : RecyclerView.Adapter<GroupsAdapter.GroupsViewHolder>() {
     var groups: List<Group> = listOf()
         set(value) {
             field = value
@@ -27,7 +28,7 @@ class GroupsAdapter(private val context: Context, private val volunteersViewMode
         }
 
     var onVolunteerPhoneNumberClickListener: OnVolunteerPhoneNumberClickListener? = null
-    var onDeleteGroupClickListener: OnDeleteGroupClickListener? = null
+    var onClickGroupOptionsMenu: OnClickGroupOptionsMenu? = null
     var onGroupClickListener: OnGroupClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GroupsViewHolder {
@@ -47,7 +48,7 @@ class GroupsAdapter(private val context: Context, private val volunteersViewMode
             val elderTemplate = context.resources.getString(R.string.elder_template)
             runBlocking {
                 val job = launch {
-                    val elder =  volunteersViewModel.getVolunteerById(group.elderOfGroupId)
+                    val elder = volunteersViewModel.getVolunteerById(group.elderOfGroupId)
                     tvGroupsItemElder.text = String.format(
                             elderTemplate,
                             elder.fullName,
@@ -57,14 +58,14 @@ class GroupsAdapter(private val context: Context, private val volunteersViewMode
                 job.join()
             }
 
-            ivDeleteGroup.setOnClickListener {
-                onDeleteGroupClickListener?.onDeleteGroupClick(group)
+            tvOptionsGroupItem.setOnClickListener {
+                onClickGroupOptionsMenu?.onGroupOptionsMenuClick(tvOptionsGroupItem, group)
             }
             tvGroupsItemElderPhone.setOnClickListener {
                 onVolunteerPhoneNumberClickListener?.onVolunteerPhoneNumberClick(tvGroupsItemElderPhone.text.toString())
             }
             cardViewGroup.setOnClickListener {
-                onGroupClickListener?.onGroupClick(holder.adapterPosition)
+                onGroupClickListener?.onGroupClick(adapterPosition)
             }
         }
 
@@ -75,7 +76,8 @@ class GroupsAdapter(private val context: Context, private val volunteersViewMode
         val tvGroupsItemElder: TextView = itemView.tvGroupsItemElder
         val tvGroupsItemElderPhone: TextView = itemView.tvGroupsItemElderPhone
         val cardViewGroup: CardView = itemView.cardViewGroup
-        val ivDeleteGroup: ImageView = itemView.ivDeleteGroup
+        val tvOptionsGroupItem: TextView = itemView.tvOptionsGroupItem
         val tvDate: TextView = itemView.tvDate
     }
+
 }

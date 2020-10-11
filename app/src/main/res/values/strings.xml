@@ -102,4 +102,7 @@
     <string name="label_database">Database</string>
     <string name="nav_open_drawer">Open</string>
     <string name="nav_close_drawer">Close</string>
+    <string name="group_options_menu_send_to_archive">Send to archive</string>
+    <string name="archived">IN THE ARCHIVE</string>
+    <string name="message_confirm_add_to_archive">Confirm the transfer of the group to the archive</string>
 </resources>

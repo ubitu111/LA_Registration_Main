@@ -7,6 +7,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -21,7 +23,7 @@ import ru.kireev.mir.registrarlizaalert.data.Group
 import ru.kireev.mir.registrarlizaalert.data.GroupCallsigns
 import ru.kireev.mir.registrarlizaalert.data.GroupsViewModel
 import ru.kireev.mir.registrarlizaalert.data.VolunteersViewModel
-import ru.kireev.mir.registrarlizaalert.listeners.OnDeleteGroupClickListener
+import ru.kireev.mir.registrarlizaalert.listeners.OnClickGroupOptionsMenu
 import ru.kireev.mir.registrarlizaalert.listeners.OnGroupClickListener
 import ru.kireev.mir.registrarlizaalert.listeners.OnVolunteerPhoneNumberClickListener
 import ru.kireev.mir.registrarlizaalert.ui.activities.AddNewGroupActivity
@@ -70,22 +72,23 @@ class ActiveGroupFragment : Fragment(), View.OnClickListener {
                 startActivity(Intent(Intent.ACTION_DIAL, Uri.parse(toDial)))
             }
         }
-        groupsAdapter.onDeleteGroupClickListener = object : OnDeleteGroupClickListener {
-            override fun onDeleteGroupClick(group: Group) {
-                onClickDeleteGroup(group)
+        groupsAdapter.onClickGroupOptionsMenu = object : OnClickGroupOptionsMenu {
+            override fun onGroupOptionsMenuClick(textView: TextView, group: Group) {
+                showPopup(textView, group)
             }
+
         }
         groupsAdapter.onGroupClickListener = object : OnGroupClickListener {
             override fun onGroupClick(position: Int) {
                 val groupId = groupsAdapter.groups[position].id
-                val intent = GroupDetailActivity.getIntent(groupId, activity as AppCompatActivity)
+                val intent = GroupDetailActivity.getIntent(groupId, activity as AppCompatActivity, false)
                 startActivity(intent)
             }
         }
 
         view.rv_active_group_main.adapter = groupsAdapter
         view.rv_active_group_main.layoutManager = LinearLayoutManager(activity)
-        groupsViewModel.getGroupByCallsign(groupCallsign ?: GroupCallsigns.LISA).observe(viewLifecycleOwner, {
+        groupsViewModel.getGroupByCallsignNotArchived(groupCallsign ?: GroupCallsigns.LISA).observe(viewLifecycleOwner, {
             groupsAdapter.groups = it
         })
 
@@ -111,16 +114,33 @@ class ActiveGroupFragment : Fragment(), View.OnClickListener {
         view?.fam_menu_active_group_main?.close(true)
     }
 
-    private fun onClickDeleteGroup(group: Group) {
+    private fun showDialogForAddToArchive(group: Group) {
         CoroutineScope(Dispatchers.Main).launch {
             val alertDialog = AlertDialog.Builder(activity)
             alertDialog.setTitle(getString(R.string.warning))
-            alertDialog.setMessage(getString(R.string.message_confirm_delete_one))
-            alertDialog.setPositiveButton(getString(R.string.delete_all)) { _, _ ->
-                groupsViewModel.deleteGroup(group)
+            alertDialog.setMessage(getString(R.string.message_confirm_add_to_archive))
+            alertDialog.setPositiveButton(getString(R.string.group_options_menu_send_to_archive)) { _, _ ->
+                groupsViewModel.insertInArchive(group)
             }
             alertDialog.setNegativeButton(getString(R.string.cancel), null)
             alertDialog.show()
         }
     }
+
+    private fun showPopup(textView: TextView, group: Group) {
+        val popup = PopupMenu(context, textView)
+        popup.inflate(R.menu.group_item_options_menu)
+        popup.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.group_options_menu_archive -> {
+                    showDialogForAddToArchive(group)
+                    true
+                }
+            }
+            false
+        }
+        popup.show()
+    }
+
+
 }

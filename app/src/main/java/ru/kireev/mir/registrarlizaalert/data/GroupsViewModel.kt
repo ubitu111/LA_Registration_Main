@@ -12,7 +12,8 @@ class GroupsViewModel(private val app: Application) : AndroidViewModel(app) {
 
 
     val allGroups = db.groupsDao().getAllGroups()
-    fun getGroupByCallsign(groupCallsign: GroupCallsigns) = db.groupsDao().getGroupByCallsign(groupCallsign)
+    fun getGroupByCallsignNotArchived(groupCallsign: GroupCallsigns) = db.groupsDao().getGroupsByCallsignNotArchived(groupCallsign)
+    fun getGroupByCallsignArchived(groupCallsign: GroupCallsigns) = db.groupsDao().getGroupsByCallsignArchived(groupCallsign)
 
     suspend fun insertGroup(group: Group): Int {
         return withContext(viewModelScope.coroutineContext + Dispatchers.IO) {
@@ -48,7 +49,24 @@ class GroupsViewModel(private val app: Application) : AndroidViewModel(app) {
         return withContext(viewModelScope.coroutineContext + Dispatchers.IO) { db.groupsDao().getGroupById(id) }
     }
 
-    suspend fun getGroupIdByNumber(numberOfGroup: Int) : Int {
-        return withContext(viewModelScope.coroutineContext + Dispatchers.IO) { db.groupsDao().getGroupIdByNumber(numberOfGroup)}
+    suspend fun getArchivedGroupById(id: Int): Group {
+        return withContext(viewModelScope.coroutineContext + Dispatchers.IO) { db.groupsDao().getArchivedGroupById(id) }
+    }
+
+    suspend fun getGroupIdByNumber(numberOfGroup: Int): Int {
+        return withContext(viewModelScope.coroutineContext + Dispatchers.IO) { db.groupsDao().getGroupIdByNumber(numberOfGroup) }
+    }
+
+    fun insertInArchive(group: Group) {
+        viewModelScope.launch(Dispatchers.IO) {
+            group.archived = "true"
+            db.groupsDao().updateGroup(group)
+            val groupVolunteers = db.volunteersDao().getVolunteersByIdOfGroup(group.id)
+            for (volunteer in groupVolunteers) {
+                val archivedGroupsVolunteers = ArchivedGroupsVolunteers(group.id, volunteer.uniqueId)
+                db.archiveGroupsVolunteersDao().insertInArchive(archivedGroupsVolunteers)
+            }
+            db.volunteersDao().clearVolunteersGroupId(group.id)
+        }
     }
 }

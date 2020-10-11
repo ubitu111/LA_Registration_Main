@@ -4,55 +4,67 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.android.synthetic.main.fragment_archive_group.view.*
 import ru.kireev.mir.registrarlizaalert.R
+import ru.kireev.mir.registrarlizaalert.adapters.GroupsAdapter
+import ru.kireev.mir.registrarlizaalert.data.GroupCallsigns
+import ru.kireev.mir.registrarlizaalert.data.GroupsViewModel
+import ru.kireev.mir.registrarlizaalert.data.VolunteersViewModel
+import ru.kireev.mir.registrarlizaalert.listeners.OnGroupClickListener
+import ru.kireev.mir.registrarlizaalert.ui.activities.GroupDetailActivity
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [ArchiveGroupFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class ArchiveGroupFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private var groupCallsign: GroupCallsigns? = null
+    private lateinit var groupsViewModel: GroupsViewModel
+    private lateinit var volunteersViewModel: VolunteersViewModel
+    private lateinit var groupsAdapter: GroupsAdapter
+
+    companion object {
+        private const val ARG_GROUP_CALLSIGN = "groupCallSign"
+
+        @JvmStatic
+        fun newInstance(groupCallsign: GroupCallsigns) =
+                ArchiveGroupFragment().apply {
+                    arguments = Bundle().apply {
+                        putSerializable(ARG_GROUP_CALLSIGN, groupCallsign)
+                    }
+                }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+            groupCallsign = it.getSerializable(ARG_GROUP_CALLSIGN) as GroupCallsigns
         }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_archive_group, container, false)
-    }
+        val view = inflater.inflate(R.layout.fragment_archive_group, container, false)
+        val groupModel by viewModels<GroupsViewModel>()
+        groupsViewModel = groupModel
+        val volunteerModel by viewModels<VolunteersViewModel>()
+        volunteersViewModel = volunteerModel
+        groupsAdapter = GroupsAdapter(activity as AppCompatActivity, volunteersViewModel)
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ArchiveGroupFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-                ArchiveGroupFragment().apply {
-                    arguments = Bundle().apply {
-                        putString(ARG_PARAM1, param1)
-                        putString(ARG_PARAM2, param2)
-                    }
-                }
+        groupsAdapter.onGroupClickListener = object : OnGroupClickListener {
+            override fun onGroupClick(position: Int) {
+                val groupId = groupsAdapter.groups[position].id
+                val intent = GroupDetailActivity.getIntent(groupId, activity as AppCompatActivity, true)
+                startActivity(intent)
+            }
+        }
+
+        view.rv_archive_group_main.adapter = groupsAdapter
+        view.rv_archive_group_main.layoutManager = LinearLayoutManager(activity)
+        groupsViewModel.getGroupByCallsignArchived(groupCallsign ?: GroupCallsigns.LISA)
+                .observe(viewLifecycleOwner, {
+                    groupsAdapter.groups = it
+                })
+        return view
     }
 }

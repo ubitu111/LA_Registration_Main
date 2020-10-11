@@ -28,12 +28,15 @@ class GroupDetailActivity : AppCompatActivity() {
     private lateinit var groupsViewModel: GroupsViewModel
     private lateinit var volunteersViewModel: VolunteersViewModel
     private lateinit var group: Group
+    private var isGroupArchive = false
 
     companion object {
         private const val ARG_GROUP_ID = "group_id"
-        fun getIntent(groupId: Int, context: Context) : Intent {
+        private const val ARG_IS_GROUP_ARCHIVE = "group_is_archive"
+        fun getIntent(groupId: Int, context: Context, isGroupArchive: Boolean) : Intent {
             val intent = Intent(context, GroupDetailActivity::class.java)
             intent.putExtra(ARG_GROUP_ID, groupId)
+            intent.putExtra(ARG_IS_GROUP_ARCHIVE, isGroupArchive)
             return intent
         }
     }
@@ -49,6 +52,10 @@ class GroupDetailActivity : AppCompatActivity() {
         elderAdapter = VolunteerAdapter(this, volunteersViewModel, groupsViewModel)
 
         val groupId = intent.getIntExtra(ARG_GROUP_ID, 0)
+        isGroupArchive = intent.getBooleanExtra(ARG_IS_GROUP_ARCHIVE, false)
+        if (isGroupArchive) {
+            bDetailGroupSaveData.visibility = View.GONE
+        }
 
         volunteerAdapter.onVolunteerPhoneNumberClickListener = object : OnVolunteerPhoneNumberClickListener {
             override fun onVolunteerPhoneNumberClick(phone: String) {
@@ -75,7 +82,11 @@ class GroupDetailActivity : AppCompatActivity() {
             tvDateOfCreation.text = group.dateOfCreation
             val elder = volunteersViewModel.getVolunteerById(group.elderOfGroupId)
             elderAdapter.volunteers = listOf(elder)
-            volunteerAdapter.volunteers = volunteersViewModel.getVolunteersByIdOfGroup(group.id).filter { it != elder }
+            volunteerAdapter.volunteers = if (isGroupArchive) {
+                volunteersViewModel.getVolunteersByIdOfArchiveGroup(group.id).filter { it != elder }
+            } else {
+                volunteersViewModel.getVolunteersByIdOfGroup(group.id).filter { it != elder }
+            }
             etTask.setText(group.task)
             etNavigators.setText(group.navigators)
             etWalkieTalkies.setText(group.walkieTalkies)
@@ -112,17 +123,19 @@ class GroupDetailActivity : AppCompatActivity() {
     }
 
     fun onClickSaveGroupData(view: View) {
-        with(group) {
-            task = etTask.text.toString().trim()
-            navigators = etNavigators.text.toString().trim()
-            walkieTalkies = etWalkieTalkies.text.toString().trim()
-            compasses = etCompasses.text.toString().trim()
-            lamps = etLamps.text.toString().trim()
-            others = etOthers.text.toString().trim()
-            groupsViewModel.updateGroup(this)
+        if (!isGroupArchive) {
+            with(group) {
+                task = etTask.text.toString().trim()
+                navigators = etNavigators.text.toString().trim()
+                walkieTalkies = etWalkieTalkies.text.toString().trim()
+                compasses = etCompasses.text.toString().trim()
+                lamps = etLamps.text.toString().trim()
+                others = etOthers.text.toString().trim()
+                groupsViewModel.updateGroup(this)
+            }
+            Toast.makeText(this, getString(R.string.data_saved), Toast.LENGTH_SHORT).show()
+            onBackPressed()
         }
-        Toast.makeText(this, getString(R.string.data_saved), Toast.LENGTH_SHORT).show()
-        onBackPressed()
     }
 
     private fun makeCall(phone: String) {

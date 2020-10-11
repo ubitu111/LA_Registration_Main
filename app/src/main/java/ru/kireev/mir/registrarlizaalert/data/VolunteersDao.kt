@@ -44,5 +44,9 @@ interface VolunteersDao {
     @Query("SELECT * FROM volunteers WHERE groupId == :idOfGroup")
     fun getVolunteersByIdOfGroup(idOfGroup: Int): List<Volunteer>
 
+    @Query("UPDATE volunteers SET groupId = NULL WHERE groupId = :groupId")
+    fun clearVolunteersGroupId(groupId: Int)
 
+    @Query("SELECT * FROM volunteers WHERE uniqueId IN (SELECT archivedVolunteerId FROM archived_groups_volunteers WHERE archivedGroupId = :idOfGroup)")
+    fun getVolunteersByIdOfArchiveGroup(idOfGroup: Int): List<Volunteer>
 }

@@ -19,7 +19,7 @@ class GroupSectionsPagerAdapter(
     override fun getItem(position: Int): Fragment {
         return when (position) {
             0 -> ActiveGroupFragment.newInstance(groupCallsign)
-            else -> ArchiveGroupFragment.newInstance("", "")
+            else -> ArchiveGroupFragment.newInstance(groupCallsign)
         }
     }
 
