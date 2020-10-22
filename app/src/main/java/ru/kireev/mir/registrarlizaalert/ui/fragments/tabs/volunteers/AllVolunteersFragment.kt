@@ -38,7 +38,7 @@ class AllVolunteersFragment : Fragment(), View.OnClickListener, SearchView.OnQue
         val recyclerView = root.recyclerViewAllVolunteersTab
         val groupModel by viewModels<GroupsViewModel>()
         groupsViewModel = groupModel
-        groupsViewModel.allGroups.observe(viewLifecycleOwner, {  })
+        groupsViewModel.allGroups.observe(viewLifecycleOwner, { })
         val model by viewModels<VolunteersViewModel>()
         volunteersViewModel = model
         val mainModel by viewModels<MainViewModel>()
@@ -77,8 +77,9 @@ class AllVolunteersFragment : Fragment(), View.OnClickListener, SearchView.OnQue
         alertDialog.setTitle(getString(R.string.warning))
         alertDialog.setMessage(getString(R.string.message_confirm_delete_all))
         alertDialog.setPositiveButton(getString(R.string.delete_all)) { _, _ ->
-                volunteersViewModel.deleteAllVolunteers()
-                mainViewModel.clearAutoIncrementCounter()
+            volunteersViewModel.deleteAllVolunteers()
+            groupsViewModel.deleteAllGroups()
+            mainViewModel.clearAutoIncrementCounter()
         }
         alertDialog.setNegativeButton(getString(R.string.cancel), null)
         alertDialog.show()

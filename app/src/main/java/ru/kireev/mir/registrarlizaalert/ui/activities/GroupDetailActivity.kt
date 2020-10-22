@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -29,11 +31,12 @@ class GroupDetailActivity : AppCompatActivity() {
     private lateinit var volunteersViewModel: VolunteersViewModel
     private lateinit var group: Group
     private var isGroupArchive = false
+    private var groupId = 0
 
     companion object {
         private const val ARG_GROUP_ID = "group_id"
         private const val ARG_IS_GROUP_ARCHIVE = "group_is_archive"
-        fun getIntent(groupId: Int, context: Context, isGroupArchive: Boolean) : Intent {
+        fun getIntent(groupId: Int, context: Context, isGroupArchive: Boolean): Intent {
             val intent = Intent(context, GroupDetailActivity::class.java)
             intent.putExtra(ARG_GROUP_ID, groupId)
             intent.putExtra(ARG_IS_GROUP_ARCHIVE, isGroupArchive)
@@ -51,7 +54,7 @@ class GroupDetailActivity : AppCompatActivity() {
         volunteerAdapter = VolunteerAdapter(this, volunteersViewModel, groupsViewModel)
         elderAdapter = VolunteerAdapter(this, volunteersViewModel, groupsViewModel)
 
-        val groupId = intent.getIntExtra(ARG_GROUP_ID, 0)
+        groupId = intent.getIntExtra(ARG_GROUP_ID, 0)
         isGroupArchive = intent.getBooleanExtra(ARG_IS_GROUP_ARCHIVE, false)
         if (isGroupArchive) {
             bDetailGroupSaveData.visibility = View.GONE
@@ -72,21 +75,15 @@ class GroupDetailActivity : AppCompatActivity() {
         rvGroupDetailInfoVolunteers.layoutManager = LinearLayoutManager(this)
         rvGroupDetailInfoElder.adapter = elderAdapter
         rvGroupDetailInfoElder.layoutManager = LinearLayoutManager(this)
-
         CoroutineScope(Dispatchers.Main).launch {
-            group = groupsViewModel.getGroupById(groupId)
+            initRvAdapters()
+
             val groupCallsign = group.groupCallsign.getGroupCallsignAsString(this@GroupDetailActivity)
             val groupName = "$groupCallsign ${group.numberOfGroup}"
             supportActionBar?.title = groupName
             tvNumberOfGroup.text = groupName
             tvDateOfCreation.text = group.dateOfCreation
-            val elder = volunteersViewModel.getVolunteerById(group.elderOfGroupId)
-            elderAdapter.volunteers = listOf(elder)
-            volunteerAdapter.volunteers = if (isGroupArchive) {
-                volunteersViewModel.getVolunteersByIdOfArchiveGroup(group.id).filter { it != elder }
-            } else {
-                volunteersViewModel.getVolunteersByIdOfGroup(group.id).filter { it != elder }
-            }
+
             etTask.setText(group.task)
             etNavigators.setText(group.navigators)
             etWalkieTalkies.setText(group.walkieTalkies)
@@ -122,6 +119,25 @@ class GroupDetailActivity : AppCompatActivity() {
         }
     }
 
+    private suspend fun initRvAdapters() {
+        group = groupsViewModel.getGroupById(groupId)
+        val elder = volunteersViewModel.getVolunteerById(group.elderOfGroupId)
+        elderAdapter.volunteers = listOf(elder)
+
+        volunteerAdapter.volunteers = if (isGroupArchive) {
+            volunteersViewModel.getVolunteersByIdOfArchiveGroup(group.id).filter { it != elder }
+        } else {
+            volunteersViewModel.getVolunteersByIdOfGroup(group.id).filter { it != elder }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        CoroutineScope(Dispatchers.Main).launch {
+            initRvAdapters()
+        }
+    }
+
     fun onClickSaveGroupData(view: View) {
         if (!isGroupArchive) {
             with(group) {
@@ -143,4 +159,19 @@ class GroupDetailActivity : AppCompatActivity() {
         startActivity(Intent(Intent.ACTION_DIAL, Uri.parse(toDial)))
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        if (isGroupArchive) return false
+        menuInflater.inflate(R.menu.group_detail_menu, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.menu_edit_group -> {
+                val intent = AddNewGroupActivity.getIntentForEditGroup(group.groupCallsign, this, group.id)
+                startActivity(intent)
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
 }

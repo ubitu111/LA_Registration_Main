@@ -26,7 +26,6 @@
         <activity
             android:name=".ui.activities.AddNewGroupActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            android:parentActivityName=".ui.activities.TabbedMainActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activities.TabbedMainActivity"

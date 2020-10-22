@@ -102,4 +102,5 @@
     <string name="group_options_menu_send_to_archive">Отправить в архив</string>
     <string name="archived">В АРХИВЕ</string>
     <string name="message_confirm_add_to_archive">Подтвердите перенос группы в архив</string>
+    <string name="group_detail_menu_edit">Редактировать</string>
 </resources>

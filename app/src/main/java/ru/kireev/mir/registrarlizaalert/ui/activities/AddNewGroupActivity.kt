@@ -27,26 +27,39 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.properties.Delegates
 
-class AddNewGroupActivity : AppCompatActivity() {
+class AddNewGroupActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var volunteersViewModel: VolunteersViewModel
     private lateinit var groupsViewModel: GroupsViewModel
     private var groupCallsign: GroupCallsigns? = null
     private var elder: Volunteer? = null
-    private val searchersList = mutableListOf<Volunteer>()
+    private var searchersList = mutableListOf<Volunteer>()
     private var numberOfGroup by Delegates.notNull<Int>()
-    private var selectedSearcherVolunteer: Volunteer? = null
+    private val deletedOnEditGroupSearchers = mutableListOf<Volunteer>()
     private var isVolunteerElderSelected = false
-    private var isVolunteerSearcherSelected = false
+
     private var volunteersForUpdate = mutableListOf<Volunteer>()
     private lateinit var addNewMemberOfGroupAdapter: NewMemberOfGroupAdapter
     private lateinit var autoCompleteAdapter: VolunteerAutoCompleteAdapter
+    private var isGroupEdit = false
+    private var groupId = 0
+    private var group: Group? = null
 
     companion object {
         private const val ARG_GROUP_CALLSIGN = "group_callsign"
+        private const val ARG_IS_GROUP_EDIT = "is_group_edit"
+        private const val ARG_GROUP_ID = "group_id"
 
         fun getIntent(groupCallsign: GroupCallsigns, context: Context?): Intent {
             val intent = Intent(context, AddNewGroupActivity::class.java)
             intent.putExtra(ARG_GROUP_CALLSIGN, groupCallsign)
+            return intent
+        }
+
+        fun getIntentForEditGroup(groupCallsign: GroupCallsigns, context: Context?, groupId: Int): Intent {
+            val intent = Intent(context, AddNewGroupActivity::class.java)
+            intent.putExtra(ARG_GROUP_CALLSIGN, groupCallsign)
+            intent.putExtra(ARG_IS_GROUP_EDIT, true)
+            intent.putExtra(ARG_GROUP_ID, groupId)
             return intent
         }
     }
@@ -56,6 +69,9 @@ class AddNewGroupActivity : AppCompatActivity() {
         setContentView(R.layout.activity_add_new_group)
 
         groupCallsign = intent.getSerializableExtra(ARG_GROUP_CALLSIGN) as GroupCallsigns
+        isGroupEdit = intent.getBooleanExtra(ARG_IS_GROUP_EDIT, false)
+        groupId = intent.getIntExtra(ARG_GROUP_ID, 0)
+
         setSupportActionBar(new_group_toolbar as Toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = groupCallsign?.getGroupCallsignAsString(this)
@@ -67,7 +83,8 @@ class AddNewGroupActivity : AppCompatActivity() {
         groupsViewModel = groupModel
 
         CoroutineScope(Dispatchers.Main).launch {
-            numberOfGroup = groupsViewModel.getLastNumberOfGroup(groupCallsign ?: GroupCallsigns.LISA) + 1
+            numberOfGroup = groupsViewModel.getLastNumberOfGroup(groupCallsign
+                    ?: GroupCallsigns.LISA) + 1
         }
 
         volunteersViewModel.getVolunteersByStatusAndNotAddedToGroup(getString(R.string.volunteer_status_active)).observe(this, {
@@ -90,6 +107,9 @@ class AddNewGroupActivity : AppCompatActivity() {
                             searchersList.remove(searcher)
                             volunteersForUpdate.add(searcher)
                             autoCompleteAdapter.fullList = volunteersForUpdate
+                            if (isGroupEdit && !deletedOnEditGroupSearchers.contains(searcher)) {
+                                deletedOnEditGroupSearchers.add(searcher)
+                            }
                             break
                         }
                     }
@@ -138,6 +158,9 @@ class AddNewGroupActivity : AppCompatActivity() {
                     elder?.let {
                         volunteersForUpdate.add(it)
                         autoCompleteAdapter.fullList = volunteersForUpdate
+                        if (isGroupEdit && !deletedOnEditGroupSearchers.contains(it)) {
+                            deletedOnEditGroupSearchers.add(it)
+                        }
                         elder = null
                     }
                 }
@@ -163,6 +186,30 @@ class AddNewGroupActivity : AppCompatActivity() {
                 whenTextChanged(s)
             }
         }
+
+        if (isGroupEdit) {
+            CoroutineScope(Dispatchers.Main).launch {
+                group = groupsViewModel.getGroupById(groupId)
+                val elderOfGroup = volunteersViewModel.getVolunteerById(group?.elderOfGroupId)
+                val groupVolunteers = volunteersViewModel.getVolunteersByIdOfGroup(groupId).toMutableList()
+
+                groupVolunteers.remove(elderOfGroup)
+                actv_add_group_elder.setText(elderOfGroup.toString())
+                actv_add_group_searcher.setText(groupVolunteers[0].toString())
+                if (groupVolunteers.size > 1) {
+                    for (i in 1 until groupVolunteers.size) {
+                        addNewMemberOfGroupAdapter.addMember(groupVolunteers[i].toString())
+                    }
+                }
+                elder = elderOfGroup
+                isVolunteerElderSelected = true
+                searchersList = groupVolunteers
+
+            }
+        }
+
+        add_new_member_of_new_group.setOnClickListener(this)
+        b_add_group_save_group.setOnClickListener(this)
     }
 
     private fun containsVolunteerInSearcherList(volunteer: Volunteer): Boolean {
@@ -188,15 +235,12 @@ class AddNewGroupActivity : AppCompatActivity() {
         }
         volunteersForUpdate.remove(volunteer)
         autoCompleteAdapter.fullList = volunteersForUpdate
-        selectedSearcherVolunteer = volunteer
-        isVolunteerSearcherSelected = true
         if (adapterPosition != -1) {
             addNewMemberOfGroupAdapter.newMembers[adapterPosition] = volunteer.toString()
         }
     }
 
     private fun whenTextChanged(s: CharSequence?) {
-        isVolunteerSearcherSelected = false
         s?.let {
             val fieldActv = it.toString()
             if (fieldActv.isNotEmpty()) {
@@ -228,17 +272,28 @@ class AddNewGroupActivity : AppCompatActivity() {
         }
     }
 
-    fun onClickSaveGroup(view: View) {
+    private fun onClickSaveGroup() {
         if (elder == null || searchersList.isEmpty() || searchersList.size != addNewMemberOfGroupAdapter.itemCount + 1) {
             Toast.makeText(this, getString(R.string.select_elder_and_searchers_from_list), Toast.LENGTH_SHORT).show()
+        } else if (isGroupEdit) {
+            editGroup()
         } else {
-            elder?.let {
-                val currentDate = Date()
-                val dateFormat = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
-                val dateOfCreation = dateFormat.format(currentDate)
+            createNewGroup()
+        }
+    }
 
-                CoroutineScope(Dispatchers.Main).launch {
-                 val idOfGroup = groupsViewModel.insertGroup(Group(
+    private fun onClickAddNewMember() {
+        addNewMemberOfGroupAdapter.addMember("")
+    }
+
+    private fun createNewGroup() {
+        elder?.let {
+            val currentDate = Date()
+            val dateFormat = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
+            val dateOfCreation = dateFormat.format(currentDate)
+
+            CoroutineScope(Dispatchers.Main).launch {
+                val idOfGroup = groupsViewModel.insertGroup(Group(
                         0,
                         numberOfGroup,
                         it.uniqueId,
@@ -246,23 +301,45 @@ class AddNewGroupActivity : AppCompatActivity() {
                         groupCallsign = groupCallsign ?: GroupCallsigns.LISA
                 ))
 
-                    it.groupId = idOfGroup
-                    volunteersViewModel.updateVolunteer(it)
+                it.groupId = idOfGroup
+                volunteersViewModel.updateVolunteer(it)
 
-                    for (searcher in searchersList) {
-                        searcher.groupId = idOfGroup
-                        volunteersViewModel.updateVolunteer(searcher)
-                    }
-
+                for (searcher in searchersList) {
+                    searcher.groupId = idOfGroup
+                    volunteersViewModel.updateVolunteer(searcher)
                 }
-                onBackPressed()
+
             }
+            onBackPressed()
         }
     }
 
-    fun onClickAddNewMember(view: View) {
-        isVolunteerSearcherSelected = false
-        addNewMemberOfGroupAdapter.addMember("")
+    private fun editGroup() {
+        elder?.let {
+            group?.elderOfGroupId = it.uniqueId
+            group?.let { it1 -> groupsViewModel.updateGroup(it1) }
+
+            it.groupId = group?.id
+            volunteersViewModel.updateVolunteer(it)
+
+            for (searcher in searchersList) {
+                searcher.groupId = group?.id
+                volunteersViewModel.updateVolunteer(searcher)
+            }
+
+            for (deletedSearcher in deletedOnEditGroupSearchers) {
+                volunteersForUpdate.remove(deletedSearcher)
+                deletedSearcher.groupId = null
+                volunteersViewModel.updateVolunteer(deletedSearcher)
+            }
+            onBackPressed()
+        }
     }
 
+    override fun onClick(v: View?) {
+        when (v?.id) {
+            R.id.add_new_member_of_new_group -> onClickAddNewMember()
+            R.id.b_add_group_save_group -> onClickSaveGroup()
+        }
+    }
 }
