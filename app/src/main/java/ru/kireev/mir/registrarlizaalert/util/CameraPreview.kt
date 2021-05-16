@@ -16,11 +16,11 @@ class CameraPreview(context: Context, private val camera: Camera,
         mHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS)
     }
 
-    override fun surfaceCreated(holder: SurfaceHolder?) {
+    override fun surfaceCreated(holder: SurfaceHolder) {
         camera.setPreviewDisplay(holder)
     }
 
-    override fun surfaceChanged(holder: SurfaceHolder?, format: Int, width: Int, height: Int) {
+    override fun surfaceChanged(holder: SurfaceHolder, format: Int, width: Int, height: Int) {
         camera.stopPreview()
         camera.setDisplayOrientation(90)
         camera.setPreviewDisplay(mHolder)
@@ -29,8 +29,7 @@ class CameraPreview(context: Context, private val camera: Camera,
         camera.autoFocus(autoFocusCb)
     }
 
-    override fun surfaceDestroyed(holder: SurfaceHolder?) {
+    override fun surfaceDestroyed(holder: SurfaceHolder) {
 
     }
-
 }
