@@ -60,14 +60,16 @@ class AddManuallyActivity : AppCompatActivity() {
         if (fullName.isEmpty() || phoneNumber.isEmpty()) {
             Toast.makeText(this, getString(R.string.fill_in_fields_volunteer), Toast.LENGTH_SHORT).show()
         } else if (isEdited) {
-            volunteer.fullName = fullName
-            volunteer.callSign = callSign
-            volunteer.nickName = nickName
-            volunteer.region = region
-            volunteer.phoneNumber = phoneNumber
-            volunteer.car = car
-            viewModel.insertVolunteer(volunteer)
-            onBackPressed()
+            runBlocking {
+                volunteer.fullName = fullName
+                volunteer.callSign = callSign
+                volunteer.nickName = nickName
+                volunteer.region = region
+                volunteer.phoneNumber = phoneNumber
+                volunteer.car = car
+                viewModel.updateVolunteer(volunteer)
+                onBackPressed()
+            }
         } else {
             val status = getString(R.string.volunteer_status_active)
             val volunteer = Volunteer(0, index, fullName, callSign, nickName, region, phoneNumber, car, status = status)
