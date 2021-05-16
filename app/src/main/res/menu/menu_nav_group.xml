@@ -11,24 +11,31 @@
                 <group android:checkableBehavior="single">
                     <item
                         android:id="@+id/nav_group_lisa"
+                        android:icon="@drawable/ic_lisa"
                         android:title="@string/group_callsign_lisa" />
                     <item
                         android:id="@+id/nav_group_bort"
+                        android:icon="@drawable/ic_bort"
                         android:title="@string/group_callsign_bort" />
                     <item
                         android:id="@+id/nav_group_kinolog"
+                        android:icon="@drawable/ic_kinolog"
                         android:title="@string/group_callsign_kinolog" />
                     <item
                         android:id="@+id/nav_group_veter"
+                        android:icon="@drawable/ic_veter"
                         android:title="@string/group_callsign_veter" />
                     <item
                         android:id="@+id/nav_group_voda"
+                        android:icon="@drawable/ic_voda"
                         android:title="@string/group_callsign_voda" />
                     <item
                         android:id="@+id/nav_group_pegas"
+                        android:icon="@drawable/ic_pegas"
                         android:title="@string/group_callsign_pegas" />
                     <item
                         android:id="@+id/nav_group_police"
+                        android:icon="@drawable/ic_police"
                         android:title="@string/group_callsign_police" />
                     <item
                         android:id="@+id/nav_group_mchs"
