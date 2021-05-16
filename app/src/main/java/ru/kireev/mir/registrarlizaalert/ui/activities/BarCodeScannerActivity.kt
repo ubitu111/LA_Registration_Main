@@ -19,9 +19,9 @@ import kotlinx.android.synthetic.main.activity_bar_code_scanner.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import ru.kireev.mir.registrarlizaalert.R
-import ru.kireev.mir.registrarlizaalert.data.Volunteer
-import ru.kireev.mir.registrarlizaalert.data.VolunteersViewModel
-import ru.kireev.mir.registrarlizaalert.util.CameraPreview
+import ru.kireev.mir.registrarlizaalert.data.database.entity.Volunteer
+import ru.kireev.mir.registrarlizaalert.presentation.viewmodel.VolunteersViewModel
+import ru.kireev.mir.registrarlizaalert.ui.util.CameraPreview
 
 class BarCodeScannerActivity : AppCompatActivity() {
 

@@ -18,17 +18,17 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import ru.kireev.mir.registrarlizaalert.R
-import ru.kireev.mir.registrarlizaalert.adapters.GroupsAdapter
-import ru.kireev.mir.registrarlizaalert.data.Group
-import ru.kireev.mir.registrarlizaalert.data.GroupCallsigns
-import ru.kireev.mir.registrarlizaalert.data.GroupsViewModel
-import ru.kireev.mir.registrarlizaalert.data.VolunteersViewModel
-import ru.kireev.mir.registrarlizaalert.listeners.OnClickGroupOptionsMenu
-import ru.kireev.mir.registrarlizaalert.listeners.OnGroupClickListener
-import ru.kireev.mir.registrarlizaalert.listeners.OnVolunteerPhoneNumberClickListener
+import ru.kireev.mir.registrarlizaalert.data.database.GroupCallsigns
+import ru.kireev.mir.registrarlizaalert.data.database.entity.Group
+import ru.kireev.mir.registrarlizaalert.presentation.extention.getGroupCallsignAsString
+import ru.kireev.mir.registrarlizaalert.presentation.viewmodel.GroupsViewModel
+import ru.kireev.mir.registrarlizaalert.presentation.viewmodel.VolunteersViewModel
 import ru.kireev.mir.registrarlizaalert.ui.activities.AddNewGroupActivity
 import ru.kireev.mir.registrarlizaalert.ui.activities.GroupDetailActivity
-import ru.kireev.mir.registrarlizaalert.util.getGroupCallsignAsString
+import ru.kireev.mir.registrarlizaalert.ui.adapters.GroupsAdapter
+import ru.kireev.mir.registrarlizaalert.ui.listeners.OnClickGroupOptionsMenu
+import ru.kireev.mir.registrarlizaalert.ui.listeners.OnGroupClickListener
+import ru.kireev.mir.registrarlizaalert.ui.listeners.OnVolunteerPhoneNumberClickListener
 
 class ActiveGroupFragment : Fragment(), View.OnClickListener {
 

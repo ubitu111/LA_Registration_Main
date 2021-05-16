@@ -17,12 +17,16 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import ru.kireev.mir.registrarlizaalert.R
-import ru.kireev.mir.registrarlizaalert.adapters.NewMemberOfGroupAdapter
-import ru.kireev.mir.registrarlizaalert.adapters.VolunteerAutoCompleteAdapter
-import ru.kireev.mir.registrarlizaalert.data.*
-import ru.kireev.mir.registrarlizaalert.listeners.OnClickDeleteNewMemberOfGroupListener
-import ru.kireev.mir.registrarlizaalert.listeners.OnVolunteerItemClickListener
-import ru.kireev.mir.registrarlizaalert.util.getGroupCallsignAsString
+import ru.kireev.mir.registrarlizaalert.data.database.GroupCallsigns
+import ru.kireev.mir.registrarlizaalert.data.database.entity.Group
+import ru.kireev.mir.registrarlizaalert.data.database.entity.Volunteer
+import ru.kireev.mir.registrarlizaalert.presentation.extention.getGroupCallsignAsString
+import ru.kireev.mir.registrarlizaalert.presentation.viewmodel.GroupsViewModel
+import ru.kireev.mir.registrarlizaalert.presentation.viewmodel.VolunteersViewModel
+import ru.kireev.mir.registrarlizaalert.ui.adapters.NewMemberOfGroupAdapter
+import ru.kireev.mir.registrarlizaalert.ui.adapters.VolunteerAutoCompleteAdapter
+import ru.kireev.mir.registrarlizaalert.ui.listeners.OnClickDeleteNewMemberOfGroupListener
+import ru.kireev.mir.registrarlizaalert.ui.listeners.OnVolunteerItemClickListener
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.properties.Delegates
@@ -293,13 +297,15 @@ class AddNewGroupActivity : AppCompatActivity(), View.OnClickListener {
             val dateOfCreation = dateFormat.format(currentDate)
 
             CoroutineScope(Dispatchers.Main).launch {
-                val idOfGroup = groupsViewModel.insertGroup(Group(
+                val idOfGroup = groupsViewModel.insertGroup(
+                    Group(
                         0,
                         numberOfGroup,
                         it.uniqueId,
                         dateOfCreation = dateOfCreation,
                         groupCallsign = groupCallsign ?: GroupCallsigns.LISA
-                ))
+                )
+                )
 
                 it.groupId = idOfGroup
                 volunteersViewModel.updateVolunteer(it)

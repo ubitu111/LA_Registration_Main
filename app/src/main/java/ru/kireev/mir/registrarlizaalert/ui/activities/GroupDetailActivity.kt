@@ -16,12 +16,12 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import ru.kireev.mir.registrarlizaalert.R
-import ru.kireev.mir.registrarlizaalert.adapters.VolunteerAdapter
-import ru.kireev.mir.registrarlizaalert.data.Group
-import ru.kireev.mir.registrarlizaalert.data.GroupsViewModel
-import ru.kireev.mir.registrarlizaalert.data.VolunteersViewModel
-import ru.kireev.mir.registrarlizaalert.listeners.OnVolunteerPhoneNumberClickListener
-import ru.kireev.mir.registrarlizaalert.util.getGroupCallsignAsString
+import ru.kireev.mir.registrarlizaalert.data.database.entity.Group
+import ru.kireev.mir.registrarlizaalert.presentation.extention.getGroupCallsignAsString
+import ru.kireev.mir.registrarlizaalert.presentation.viewmodel.GroupsViewModel
+import ru.kireev.mir.registrarlizaalert.presentation.viewmodel.VolunteersViewModel
+import ru.kireev.mir.registrarlizaalert.ui.adapters.VolunteerAdapter
+import ru.kireev.mir.registrarlizaalert.ui.listeners.OnVolunteerPhoneNumberClickListener
 
 class GroupDetailActivity : AppCompatActivity() {
 

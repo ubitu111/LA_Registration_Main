@@ -25,9 +25,14 @@ import kotlinx.coroutines.runBlocking
 import ru.kireev.mir.registrarlizaalert.BuildConfig
 import ru.kireev.mir.registrarlizaalert.R
 import ru.kireev.mir.registrarlizaalert.data.*
+import ru.kireev.mir.registrarlizaalert.data.database.GroupCallsigns
+import ru.kireev.mir.registrarlizaalert.data.database.entity.Group
+import ru.kireev.mir.registrarlizaalert.presentation.extention.getGroupCallsignAsString
+import ru.kireev.mir.registrarlizaalert.presentation.viewmodel.GroupsViewModel
+import ru.kireev.mir.registrarlizaalert.presentation.viewmodel.MainViewModel
+import ru.kireev.mir.registrarlizaalert.presentation.viewmodel.VolunteersViewModel
 import ru.kireev.mir.registrarlizaalert.ui.fragments.tabs.groups.GroupSectionsPagerAdapter
 import ru.kireev.mir.registrarlizaalert.ui.fragments.tabs.volunteers.VolunteersSectionsPagerAdapter
-import ru.kireev.mir.registrarlizaalert.util.getGroupCallsignAsString
 import java.io.File
 
 class TabbedMainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {

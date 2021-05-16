@@ -14,14 +14,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.github.clans.fab.FloatingActionMenu
 import kotlinx.android.synthetic.main.fragment_tabbed_not_sent_volunteers.view.*
 import ru.kireev.mir.registrarlizaalert.R
-import ru.kireev.mir.registrarlizaalert.adapters.VolunteerAdapter
-import ru.kireev.mir.registrarlizaalert.data.GroupsViewModel
-import ru.kireev.mir.registrarlizaalert.data.Volunteer
-import ru.kireev.mir.registrarlizaalert.data.VolunteersViewModel
-import ru.kireev.mir.registrarlizaalert.listeners.OnVolunteerClickListener
-import ru.kireev.mir.registrarlizaalert.listeners.OnVolunteerPhoneNumberClickListener
+import ru.kireev.mir.registrarlizaalert.data.database.entity.Volunteer
+import ru.kireev.mir.registrarlizaalert.presentation.viewmodel.GroupsViewModel
+import ru.kireev.mir.registrarlizaalert.presentation.viewmodel.VolunteersViewModel
 import ru.kireev.mir.registrarlizaalert.ui.activities.AddManuallyActivity
 import ru.kireev.mir.registrarlizaalert.ui.activities.BarCodeScannerActivity
+import ru.kireev.mir.registrarlizaalert.ui.adapters.VolunteerAdapter
+import ru.kireev.mir.registrarlizaalert.ui.listeners.OnVolunteerClickListener
+import ru.kireev.mir.registrarlizaalert.ui.listeners.OnVolunteerPhoneNumberClickListener
 
 class NotSentVolunteersFragment : Fragment(), View.OnClickListener, SearchView.OnQueryTextListener {
     companion object {

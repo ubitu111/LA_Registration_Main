@@ -10,12 +10,12 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_archive_group.view.*
 import ru.kireev.mir.registrarlizaalert.R
-import ru.kireev.mir.registrarlizaalert.adapters.GroupsAdapter
-import ru.kireev.mir.registrarlizaalert.data.GroupCallsigns
-import ru.kireev.mir.registrarlizaalert.data.GroupsViewModel
-import ru.kireev.mir.registrarlizaalert.data.VolunteersViewModel
-import ru.kireev.mir.registrarlizaalert.listeners.OnGroupClickListener
+import ru.kireev.mir.registrarlizaalert.data.database.GroupCallsigns
+import ru.kireev.mir.registrarlizaalert.presentation.viewmodel.GroupsViewModel
+import ru.kireev.mir.registrarlizaalert.presentation.viewmodel.VolunteersViewModel
 import ru.kireev.mir.registrarlizaalert.ui.activities.GroupDetailActivity
+import ru.kireev.mir.registrarlizaalert.ui.adapters.GroupsAdapter
+import ru.kireev.mir.registrarlizaalert.ui.listeners.OnGroupClickListener
 
 class ArchiveGroupFragment : Fragment() {
     private var groupCallsign: GroupCallsigns? = null
