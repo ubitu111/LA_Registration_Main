@@ -11,12 +11,12 @@ import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_active_group.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
 import ru.kireev.mir.registrarlizaalert.R
 import ru.kireev.mir.registrarlizaalert.data.database.GroupCallsigns
 import ru.kireev.mir.registrarlizaalert.data.database.entity.Group
@@ -32,9 +32,11 @@ import ru.kireev.mir.registrarlizaalert.ui.listeners.OnVolunteerPhoneNumberClick
 
 class ActiveGroupFragment : Fragment(), View.OnClickListener {
 
+    private val groupsViewModel: GroupsViewModel by inject()
+    private val volunteersViewModel: VolunteersViewModel by inject()
+
     private var groupCallsign: GroupCallsigns? = null
-    private lateinit var groupsViewModel: GroupsViewModel
-    private lateinit var volunteersViewModel: VolunteersViewModel
+
     private lateinit var groupsAdapter: GroupsAdapter
 
     companion object {
@@ -61,10 +63,6 @@ class ActiveGroupFragment : Fragment(), View.OnClickListener {
                               savedInstanceState: Bundle?): View? {
 
         val view = inflater.inflate(R.layout.fragment_active_group, container, false)
-        val groupModel by viewModels<GroupsViewModel>()
-        groupsViewModel = groupModel
-        val volunteerModel by viewModels<VolunteersViewModel>()
-        volunteersViewModel = volunteerModel
         groupsAdapter = GroupsAdapter(activity as AppCompatActivity, volunteersViewModel)
         groupsAdapter.onVolunteerPhoneNumberClickListener = object : OnVolunteerPhoneNumberClickListener {
             override fun onVolunteerPhoneNumberClick(phone: String) {
@@ -88,9 +86,9 @@ class ActiveGroupFragment : Fragment(), View.OnClickListener {
 
         view.rv_active_group_main.adapter = groupsAdapter
         view.rv_active_group_main.layoutManager = LinearLayoutManager(activity)
-        groupsViewModel.getGroupByCallsignNotArchived(groupCallsign ?: GroupCallsigns.LISA).observe(viewLifecycleOwner, {
+        groupsViewModel.getGroupByCallsignNotArchived(groupCallsign ?: GroupCallsigns.LISA).observe(viewLifecycleOwner) {
             groupsAdapter.groups = it
-        })
+        }
 
         view.fab_button_active_group_add.setOnClickListener(this)
         return view

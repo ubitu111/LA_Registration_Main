@@ -7,9 +7,9 @@ import android.os.Bundle
 import android.view.*
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_tabbed_all_volunteers.view.*
+import org.koin.android.ext.android.inject
 import ru.kireev.mir.registrarlizaalert.R
 import ru.kireev.mir.registrarlizaalert.data.database.entity.Volunteer
 import ru.kireev.mir.registrarlizaalert.presentation.viewmodel.GroupsViewModel
@@ -27,22 +27,19 @@ class AllVolunteersFragment : Fragment(), View.OnClickListener, SearchView.OnQue
         private const val EXTRA_VOLUNTEER_ID = "volunteer_id"
     }
 
-    private lateinit var groupsViewModel: GroupsViewModel
-    private lateinit var volunteersViewModel: VolunteersViewModel
-    private lateinit var mainViewModel: MainViewModel
+    private val groupsViewModel: GroupsViewModel by inject()
+    private val volunteersViewModel: VolunteersViewModel by inject()
+    private val mainViewModel: MainViewModel by inject()
+
     private lateinit var adapter: VolunteerAdapter
     private var fullList = listOf<Volunteer>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val root = inflater.inflate(R.layout.fragment_tabbed_all_volunteers, container, false)
         val recyclerView = root.recyclerViewAllVolunteersTab
-        val groupModel by viewModels<GroupsViewModel>()
-        groupsViewModel = groupModel
+
         groupsViewModel.allGroups.observe(viewLifecycleOwner, { })
-        val model by viewModels<VolunteersViewModel>()
-        volunteersViewModel = model
-        val mainModel by viewModels<MainViewModel>()
-        mainViewModel = mainModel
+
         adapter = VolunteerAdapter(requireContext(), volunteersViewModel, groupsViewModel)
         adapter.onVolunteerPhoneNumberClickListener = object : OnVolunteerPhoneNumberClickListener {
             override fun onVolunteerPhoneNumberClick(phone: String) {

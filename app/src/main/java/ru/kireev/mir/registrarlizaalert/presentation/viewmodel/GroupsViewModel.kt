@@ -1,7 +1,6 @@
 package ru.kireev.mir.registrarlizaalert.presentation.viewmodel
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -11,9 +10,9 @@ import ru.kireev.mir.registrarlizaalert.data.database.MainDatabase
 import ru.kireev.mir.registrarlizaalert.data.database.entity.ArchivedGroupsVolunteers
 import ru.kireev.mir.registrarlizaalert.data.database.entity.Group
 
-class GroupsViewModel(app: Application) : AndroidViewModel(app) {
-    private val db = MainDatabase.getInstance(app)
-
+class GroupsViewModel(
+    private val db: MainDatabase
+) : ViewModel() {
 
     val allGroups = db.groupsDao().getAllGroups()
     fun getGroupByCallsignNotArchived(groupCallsign: GroupCallsigns) = db.groupsDao().getGroupsByCallsignNotArchived(groupCallsign)

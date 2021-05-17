@@ -7,11 +7,11 @@ import android.os.Bundle
 import android.view.*
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.clans.fab.FloatingActionMenu
 import kotlinx.android.synthetic.main.fragment_tabbed_sent_volunteers.view.*
+import org.koin.android.ext.android.inject
 import ru.kireev.mir.registrarlizaalert.R
 import ru.kireev.mir.registrarlizaalert.data.database.entity.Volunteer
 import ru.kireev.mir.registrarlizaalert.presentation.viewmodel.GroupsViewModel
@@ -33,8 +33,9 @@ class SentVolunteersFragment : Fragment(), SearchView.OnQueryTextListener, View.
         private const val BUNDLE_KEY_IS_SENT_TO_INFORG = "is_sent_to_inforg"
     }
 
-    private lateinit var viewModel: VolunteersViewModel
-    private lateinit var groupsViewModel: GroupsViewModel
+    private val viewModel: VolunteersViewModel by inject()
+    private val groupsViewModel: GroupsViewModel by inject()
+
     private lateinit var adapter: VolunteerAdapter
     private var fullList = listOf<Volunteer>()
     private var isSentToInforg = false
@@ -47,11 +48,7 @@ class SentVolunteersFragment : Fragment(), SearchView.OnQueryTextListener, View.
             isSentToInforg = it.getBoolean(BUNDLE_KEY_IS_SENT_TO_INFORG)
         }
         val recyclerView = root.recyclerViewSentVolunteersTab
-        val model by viewModels<VolunteersViewModel>()
         famMenu = root.fam_menu_sent
-        viewModel = model
-        val groupsModel by viewModels<GroupsViewModel>()
-        groupsViewModel = groupsModel
         adapter = VolunteerAdapter(requireContext(), viewModel, groupsViewModel)
         adapter.onVolunteerPhoneNumberClickListener = object : OnVolunteerPhoneNumberClickListener {
             override fun onVolunteerPhoneNumberClick(phone: String) {

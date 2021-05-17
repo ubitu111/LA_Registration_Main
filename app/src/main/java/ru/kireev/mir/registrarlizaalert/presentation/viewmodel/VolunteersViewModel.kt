@@ -1,7 +1,6 @@
 package ru.kireev.mir.registrarlizaalert.presentation.viewmodel
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -9,8 +8,9 @@ import kotlinx.coroutines.withContext
 import ru.kireev.mir.registrarlizaalert.data.database.MainDatabase
 import ru.kireev.mir.registrarlizaalert.data.database.entity.Volunteer
 
-class VolunteersViewModel(application: Application) : AndroidViewModel(application) {
-    private val db = MainDatabase.getInstance(application)
+class VolunteersViewModel(
+    private val db: MainDatabase
+) : ViewModel() {
 
     val allVolunteers = db.volunteersDao().getAllVolunteers()
     val sentVolunteers = db.volunteersDao().getSentVolunteers()

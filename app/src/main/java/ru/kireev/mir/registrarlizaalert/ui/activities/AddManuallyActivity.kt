@@ -3,11 +3,11 @@ package ru.kireev.mir.registrarlizaalert.ui.activities
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_add_manually.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import org.koin.android.ext.android.inject
 import ru.kireev.mir.registrarlizaalert.R
 import ru.kireev.mir.registrarlizaalert.data.database.entity.Volunteer
 import ru.kireev.mir.registrarlizaalert.presentation.viewmodel.VolunteersViewModel
@@ -19,7 +19,7 @@ class AddManuallyActivity : AppCompatActivity() {
         private const val EXTRA_VOLUNTEER_ID = "volunteer_id"
     }
 
-    private lateinit var viewModel: VolunteersViewModel
+    private val viewModel: VolunteersViewModel by inject()
     private var index = 0
     private var volunteerId = 0
     private var isEdited = false
@@ -28,8 +28,6 @@ class AddManuallyActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_manually)
-        val model by viewModels<VolunteersViewModel>()
-        viewModel = model
         index = intent.getIntExtra(EXTRA_SIZE, 0)
         volunteerId = intent.getIntExtra(EXTRA_VOLUNTEER_ID, 0)
         if (volunteerId != 0) {

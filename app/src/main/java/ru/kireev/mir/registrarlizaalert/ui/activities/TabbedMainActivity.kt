@@ -10,7 +10,6 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -22,6 +21,7 @@ import com.gun0912.tedpermission.TedPermission
 import kotlinx.android.synthetic.main.activity_tabbed_main.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import org.koin.android.ext.android.inject
 import ru.kireev.mir.registrarlizaalert.BuildConfig
 import ru.kireev.mir.registrarlizaalert.R
 import ru.kireev.mir.registrarlizaalert.data.*
@@ -43,9 +43,11 @@ class TabbedMainActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
         private const val LINE_SEPARATOR = "\n"
         private const val NOTE_SEPARATOR = "\n * * * * * * * * * * * * * *\n"
     }
-    private lateinit var mainViewModel: MainViewModel
-    private lateinit var groupsViewModel: GroupsViewModel
-    private lateinit var volunteersViewModel: VolunteersViewModel
+
+    private val mainViewModel: MainViewModel by inject()
+    private val groupsViewModel: GroupsViewModel by inject()
+    private val volunteersViewModel: VolunteersViewModel by inject()
+
     private var pathToFile = ""
     private var allGroups = listOf<Group>()
 
@@ -64,13 +66,7 @@ class TabbedMainActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
         main_drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
         nav_view_main.setNavigationItemSelectedListener(this)
-        val mainModel by viewModels<MainViewModel>()
-        mainViewModel = mainModel
         mainViewModel.deleteOldTable()
-        val groupsModel by viewModels<GroupsViewModel>()
-        groupsViewModel = groupsModel
-        val volunteersModel by viewModels<VolunteersViewModel>()
-        volunteersViewModel = volunteersModel
         groupsViewModel.allGroups.observe(this, {
             allGroups = it
         })

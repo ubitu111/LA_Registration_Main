@@ -8,13 +8,13 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_group_detail.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
 import ru.kireev.mir.registrarlizaalert.R
 import ru.kireev.mir.registrarlizaalert.data.database.entity.Group
 import ru.kireev.mir.registrarlizaalert.presentation.extention.getGroupCallsignAsString
@@ -27,8 +27,10 @@ class GroupDetailActivity : AppCompatActivity() {
 
     private lateinit var volunteerAdapter: VolunteerAdapter
     private lateinit var elderAdapter: VolunteerAdapter
-    private lateinit var groupsViewModel: GroupsViewModel
-    private lateinit var volunteersViewModel: VolunteersViewModel
+
+    private val groupsViewModel: GroupsViewModel by inject()
+    private val volunteersViewModel: VolunteersViewModel by inject()
+
     private lateinit var group: Group
     private var isGroupArchive = false
     private var groupId = 0
@@ -47,10 +49,6 @@ class GroupDetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_group_detail)
-        val volunteersModel by viewModels<VolunteersViewModel>()
-        volunteersViewModel = volunteersModel
-        val groupsModel by viewModels<GroupsViewModel>()
-        groupsViewModel = groupsModel
         volunteerAdapter = VolunteerAdapter(this, volunteersViewModel, groupsViewModel)
         elderAdapter = VolunteerAdapter(this, volunteersViewModel, groupsViewModel)
 

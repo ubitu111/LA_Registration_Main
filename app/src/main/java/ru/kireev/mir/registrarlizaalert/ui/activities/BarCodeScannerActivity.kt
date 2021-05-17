@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.KeyEvent
 import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.gun0912.tedpermission.PermissionListener
@@ -18,12 +17,15 @@ import com.yanzhenjie.zbar.ImageScanner
 import kotlinx.android.synthetic.main.activity_bar_code_scanner.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import org.koin.android.ext.android.inject
 import ru.kireev.mir.registrarlizaalert.R
 import ru.kireev.mir.registrarlizaalert.data.database.entity.Volunteer
 import ru.kireev.mir.registrarlizaalert.presentation.viewmodel.VolunteersViewModel
 import ru.kireev.mir.registrarlizaalert.ui.util.CameraPreview
 
 class BarCodeScannerActivity : AppCompatActivity() {
+
+    private val viewModel: VolunteersViewModel by inject()
 
     private var mCamera: Camera? = null
     private lateinit var autoFocusHandler: Handler
@@ -36,14 +38,11 @@ class BarCodeScannerActivity : AppCompatActivity() {
     private var region = "-"
     private var phoneNumber = "-"
     private var car = "-"
-    private lateinit var viewModel: VolunteersViewModel
     private var index = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_bar_code_scanner)
-        val model by viewModels<VolunteersViewModel>()
-        viewModel = model
         index = intent.getIntExtra("size", 0)
 
         //запрос разрешения на доступ к камере

@@ -16,5 +16,4 @@ class TimePickerFragment(private val timeSetListener: TimePickerDialog.OnTimeSet
 
         return TimePickerDialog(activity, timeSetListener, hour, minute, DateFormat.is24HourFormat(activity))
     }
-
 }

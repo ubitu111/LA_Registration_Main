@@ -1,22 +1,20 @@
 package ru.kireev.mir.registrarlizaalert.presentation.viewmodel
 
-import android.app.Application
 import android.content.Context
 import android.net.Uri
-import android.widget.Toast
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.sqlite.db.SimpleSQLiteQuery
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import ru.kireev.mir.registrarlizaalert.R
 import ru.kireev.mir.registrarlizaalert.data.database.MainDatabase
 import ru.kireev.mir.registrarlizaalert.data.database.backup_and_restore_db.Backup
 import ru.kireev.mir.registrarlizaalert.data.database.backup_and_restore_db.OnWorkFinishListener
 import ru.kireev.mir.registrarlizaalert.data.database.backup_and_restore_db.Restore
 
-class MainViewModel(private val app: Application) : AndroidViewModel(app) {
-    private val db = MainDatabase.getInstance(app)
+class MainViewModel(
+    private val db: MainDatabase
+) : ViewModel() {
 
     companion object {
         private const val FILENAME_FOR_BACKUP_AND_RESTORE = "database_backup.json"
@@ -31,12 +29,12 @@ class MainViewModel(private val app: Application) : AndroidViewModel(app) {
                 .fileName(FILENAME_FOR_BACKUP_AND_RESTORE)
                 .onWorkFinishListener(object : OnWorkFinishListener {
                     override fun onFinished(success: Boolean, message: String) {
-                        val msg = if (success) {
-                            app.getString(R.string.message_for_success_backup_db)
-                        } else
-                            app.getString(R.string.message_for_error_backup_adn_restore_db)
-
-                        Toast.makeText(app, msg, Toast.LENGTH_SHORT).show()
+//                        val msg = if (success) {
+//                            app.getString(R.string.message_for_success_backup_db)
+//                        } else
+//                            app.getString(R.string.message_for_error_backup_adn_restore_db)
+//
+//                        Toast.makeText(app, msg, Toast.LENGTH_SHORT).show()
                     }
 
                 })
@@ -53,12 +51,12 @@ class MainViewModel(private val app: Application) : AndroidViewModel(app) {
                 .context(context)
                 .onWorkFinishListener(object : OnWorkFinishListener {
                     override fun onFinished(success: Boolean, message: String) {
-                        val msg = if (success) {
-                            app.getString(R.string.message_for_success_restore_db)
-                        } else
-                            app.getString(R.string.message_for_error_backup_adn_restore_db)
-
-                        Toast.makeText(app, msg, Toast.LENGTH_SHORT).show()
+//                        val msg = if (success) {
+//                            app.getString(R.string.message_for_success_restore_db)
+//                        } else
+//                            app.getString(R.string.message_for_error_backup_adn_restore_db)
+//
+//                        Toast.makeText(app, msg, Toast.LENGTH_SHORT).show()
                     }
                 })
                 .execute()

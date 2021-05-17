@@ -8,7 +8,6 @@ import android.text.TextWatcher
 import android.view.View
 import android.widget.AdapterView
 import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,6 +15,7 @@ import kotlinx.android.synthetic.main.activity_add_new_group.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
 import ru.kireev.mir.registrarlizaalert.R
 import ru.kireev.mir.registrarlizaalert.data.database.GroupCallsigns
 import ru.kireev.mir.registrarlizaalert.data.database.entity.Group
@@ -32,8 +32,10 @@ import java.util.*
 import kotlin.properties.Delegates
 
 class AddNewGroupActivity : AppCompatActivity(), View.OnClickListener {
-    private lateinit var volunteersViewModel: VolunteersViewModel
-    private lateinit var groupsViewModel: GroupsViewModel
+
+    private val volunteersViewModel: VolunteersViewModel by inject()
+    private val groupsViewModel: GroupsViewModel by inject()
+
     private var groupCallsign: GroupCallsigns? = null
     private var elder: Volunteer? = null
     private var searchersList = mutableListOf<Volunteer>()
@@ -81,10 +83,6 @@ class AddNewGroupActivity : AppCompatActivity(), View.OnClickListener {
         supportActionBar?.title = groupCallsign?.getGroupCallsignAsString(this)
 
         autoCompleteAdapter = VolunteerAutoCompleteAdapter(this, arrayListOf())
-        val volunteersModel by viewModels<VolunteersViewModel>()
-        volunteersViewModel = volunteersModel
-        val groupModel by viewModels<GroupsViewModel>()
-        groupsViewModel = groupModel
 
         CoroutineScope(Dispatchers.Main).launch {
             numberOfGroup = groupsViewModel.getLastNumberOfGroup(groupCallsign
