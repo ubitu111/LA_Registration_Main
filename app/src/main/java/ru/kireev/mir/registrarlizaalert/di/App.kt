@@ -6,6 +6,7 @@ import org.koin.androidx.fragment.koin.fragmentFactory
 import org.koin.core.context.startKoin
 import ru.kireev.mir.registrarlizaalert.di.modules.databaseModule
 import ru.kireev.mir.registrarlizaalert.di.modules.fragmentModule
+import ru.kireev.mir.registrarlizaalert.di.modules.navigationModule
 import ru.kireev.mir.registrarlizaalert.di.modules.viewModelModule
 
 class App : Application() {
@@ -22,7 +23,8 @@ class App : Application() {
             val modules = listOf(
                 databaseModule,
                 viewModelModule,
-                fragmentModule
+                fragmentModule,
+                navigationModule
             )
             modules(modules)
         }
