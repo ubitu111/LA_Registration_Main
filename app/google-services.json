@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "587859532527",
+    "project_id": "la-registration-main",
+    "storage_bucket": "la-registration-main.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:587859532527:android:4f9b72c90b6cb752e1991a",
+        "android_client_info": {
+          "package_name": "ru.kireev.mir.registrarlizaalert"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "587859532527-8ftciiq7rapp0sb2v06glgru8n78ort2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB6xmkqjH58O5AWHVwwRLTA9iGtd1bvhY8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "587859532527-8ftciiq7rapp0sb2v06glgru8n78ort2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
