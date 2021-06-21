@@ -3,6 +3,7 @@ package ru.kireev.mir.registrarlizaalert.data.database.entity
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import ru.kireev.mir.registrarlizaalert.domain.model.VolunteerStatus
 
 @Entity(tableName = "volunteers",
         foreignKeys = [
@@ -13,22 +14,24 @@ import androidx.room.PrimaryKey
             )
         ])
 data class Volunteer(
-        @PrimaryKey(autoGenerate = true)
+    @PrimaryKey(autoGenerate = true)
         var uniqueId: Int,
-        var _index: Int,
-        var fullName: String,
-        var callSign: String = "",
-        var nickName: String = "",
-        var region: String = "",
-        var phoneNumber: String,
-        var car: String = "",
-        var isSent: String = "false",
-        var status: String,
-        var notifyThatLeft: String = "false",
-        var timeForSearch: String = "",
-        var groupId: Int? = null
+    var _index: Int,
+    var fullName: String,
+    var callSign: String = "",
+    var nickName: String = "",
+    var region: String = "",
+    var phoneNumber: String,
+    var car: String = "",
+    var isSent: String = "false",
+    var status: VolunteerStatus = VolunteerStatus.ACTIVE,
+    var notifyThatLeft: String = "false",
+    var timeForSearch: String = "",
+    var groupId: Int? = null
 ) {
     override fun toString(): String {
         return "$fullName ($callSign)"
     }
 }
+
+fun emptyVolunteer() = Volunteer(0, 0, "", phoneNumber = "")

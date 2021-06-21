@@ -2,6 +2,7 @@ package ru.kireev.mir.registrarlizaalert.data.database.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import io.reactivex.Single
 import ru.kireev.mir.registrarlizaalert.data.database.entity.Volunteer
 
 @Dao
@@ -34,13 +35,13 @@ interface VolunteersDao {
     fun deleteAllVolunteers()
 
     @Query("SELECT * FROM volunteers WHERE uniqueId == :id")
-    fun getVolunteerById(id: Int?): Volunteer
+    fun getVolunteerById(id: Int?): Single<Volunteer>
 
     @Query("SELECT * FROM volunteers WHERE status == :status AND notifyThatLeft == 'false'")
     fun getVolunteersWithStatus(status: String): LiveData<List<Volunteer>>
 
     @Query("SELECT COUNT('uniqueId') > 0 FROM volunteers WHERE fullName == :fullName AND phoneNumber == :phoneNumber")
-    fun checkForVolunteerExist(fullName: String, phoneNumber: String): Boolean
+    fun checkForVolunteerExist(fullName: String, phoneNumber: String): Single<Boolean>
 
     @Query("SELECT * FROM volunteers WHERE groupId == :idOfGroup")
     fun getVolunteersByIdOfGroup(idOfGroup: Int): List<Volunteer>

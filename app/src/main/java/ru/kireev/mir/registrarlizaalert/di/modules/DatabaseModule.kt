@@ -10,6 +10,10 @@ val databaseModule = module {
             .fallbackToDestructiveMigration()
             .build()
     }
+    single { get<MainDatabase>().volunteersDao() }
+    single { get<MainDatabase>().groupsDao() }
+    single { get<MainDatabase>().mainDao() }
+    single { get<MainDatabase>().archiveGroupsVolunteersDao() }
 }
 
 private const val DB_NAME = "main.db"
