@@ -6,7 +6,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.*
 import android.widget.SearchView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,11 +17,11 @@ import ru.kireev.mir.registrarlizaalert.R
 import ru.kireev.mir.registrarlizaalert.data.database.entity.Volunteer
 import ru.kireev.mir.registrarlizaalert.presentation.viewmodel.GroupsViewModel
 import ru.kireev.mir.registrarlizaalert.presentation.viewmodel.VolunteersViewModel
-import ru.kireev.mir.registrarlizaalert.ui.activities.BarCodeScannerActivity
 import ru.kireev.mir.registrarlizaalert.ui.activities.MainFlows
 import ru.kireev.mir.registrarlizaalert.ui.adapters.VolunteerAdapter
 import ru.kireev.mir.registrarlizaalert.ui.listeners.OnVolunteerClickListener
 import ru.kireev.mir.registrarlizaalert.ui.listeners.OnVolunteerPhoneNumberClickListener
+import ru.kireev.mir.registrarlizaalert.ui.util.setActionBarTitle
 
 class NotSentVolunteersFragment : Fragment(), View.OnClickListener, SearchView.OnQueryTextListener {
     companion object {
@@ -65,7 +64,7 @@ class NotSentVolunteersFragment : Fragment(), View.OnClickListener, SearchView.O
             override fun onVolunteerClick(position: Int) {
                 val volunteerId = adapter.volunteers[position].uniqueId
 
-                router.replaceScreen(
+                router.navigateTo(
                     MainFlows.addManuallyScreen(
                         index = adapter.itemCount,
                         volunteerId = volunteerId
@@ -106,7 +105,7 @@ class NotSentVolunteersFragment : Fragment(), View.OnClickListener, SearchView.O
     }
 
     private fun onClickAddManuallyTab() {
-        router.replaceScreen(
+        router.navigateTo(
             MainFlows.addManuallyScreen(
                 index = adapter.itemCount
             )
@@ -115,9 +114,11 @@ class NotSentVolunteersFragment : Fragment(), View.OnClickListener, SearchView.O
     }
 
     private fun onClickAddByScannerTab() {
-        val intent = Intent(context, BarCodeScannerActivity::class.java)
-        intent.putExtra(EXTRA_SIZE, adapter.itemCount)
-        startActivity(intent)
+        router.navigateTo(
+            MainFlows.scanQrCodeScreen(
+                index = adapter.itemCount
+            )
+        )
         famMenu.close(true)
     }
 
@@ -204,8 +205,7 @@ class NotSentVolunteersFragment : Fragment(), View.OnClickListener, SearchView.O
 
     override fun onStart() {
         super.onStart()
-        (activity as AppCompatActivity).supportActionBar?.title =
-            getString(R.string.actionbar_label_volunteers)
+        setActionBarTitle(R.string.actionbar_label_volunteers)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

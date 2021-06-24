@@ -10,7 +10,7 @@ import ru.kireev.mir.registrarlizaalert.databinding.FragmentAddManuallyBinding
 import ru.kireev.mir.registrarlizaalert.presentation.viewmodel.AddManuallyViewModel
 import ru.kireev.mir.registrarlizaalert.ui.util.args
 import ru.kireev.mir.registrarlizaalert.ui.util.getTrimmedString
-import ru.kireev.mir.registrarlizaalert.ui.util.showShortSnack
+import ru.kireev.mir.registrarlizaalert.ui.util.setActionBarTitle
 
 class AddManuallyFragment : Fragment(R.layout.fragment_add_manually) {
 
@@ -32,6 +32,8 @@ class AddManuallyFragment : Fragment(R.layout.fragment_add_manually) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setHasOptionsMenu(true)
+
         viewModel.loadVolunteersData(volunteerId)
         viewModel.error.observe(viewLifecycleOwner, { error ->
             showShortSnack(view, getString(error))
@@ -58,5 +60,10 @@ class AddManuallyFragment : Fragment(R.layout.fragment_add_manually) {
                 index = index
             )
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        setActionBarTitle(R.string.actionbar_label_add_manually)
     }
 }

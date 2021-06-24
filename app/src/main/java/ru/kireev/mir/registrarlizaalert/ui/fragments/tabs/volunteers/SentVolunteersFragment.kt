@@ -10,13 +10,14 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.clans.fab.FloatingActionMenu
+import com.github.terrakok.cicerone.Router
 import kotlinx.android.synthetic.main.fragment_tabbed_sent_volunteers.view.*
 import org.koin.android.ext.android.inject
 import ru.kireev.mir.registrarlizaalert.R
 import ru.kireev.mir.registrarlizaalert.data.database.entity.Volunteer
 import ru.kireev.mir.registrarlizaalert.presentation.viewmodel.GroupsViewModel
 import ru.kireev.mir.registrarlizaalert.presentation.viewmodel.VolunteersViewModel
-import ru.kireev.mir.registrarlizaalert.ui.activities.AddManuallyActivity
+import ru.kireev.mir.registrarlizaalert.ui.activities.MainFlows
 import ru.kireev.mir.registrarlizaalert.ui.adapters.VolunteerAdapter
 import ru.kireev.mir.registrarlizaalert.ui.listeners.OnVolunteerClickListener
 import ru.kireev.mir.registrarlizaalert.ui.listeners.OnVolunteerPhoneNumberClickListener
@@ -35,6 +36,7 @@ class SentVolunteersFragment : Fragment(), SearchView.OnQueryTextListener, View.
 
     private val viewModel: VolunteersViewModel by inject()
     private val groupsViewModel: GroupsViewModel by inject()
+    private val router: Router by inject()
 
     private lateinit var adapter: VolunteerAdapter
     private var fullList = listOf<Volunteer>()
@@ -42,7 +44,11 @@ class SentVolunteersFragment : Fragment(), SearchView.OnQueryTextListener, View.
     private var leftVolunteers = listOf<Volunteer>()
     private lateinit var famMenu: FloatingActionMenu
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         val root = inflater.inflate(R.layout.fragment_tabbed_sent_volunteers, container, false)
         savedInstanceState?.let {
             isSentToInforg = it.getBoolean(BUNDLE_KEY_IS_SENT_TO_INFORG)
@@ -59,10 +65,13 @@ class SentVolunteersFragment : Fragment(), SearchView.OnQueryTextListener, View.
         adapter.onVolunteerClickListener = object : OnVolunteerClickListener {
             override fun onVolunteerClick(position: Int) {
                 val volunteerId = adapter.volunteers[position].uniqueId
-                val intent = Intent(context, AddManuallyActivity::class.java)
-                intent.putExtra(EXTRA_VOLUNTEER_ID, volunteerId)
-                intent.putExtra(EXTRA_SIZE, adapter.itemCount)
-                startActivity(intent)
+
+                router.navigateTo(
+                    MainFlows.addManuallyScreen(
+                        index = adapter.itemCount,
+                        volunteerId = volunteerId
+                    )
+                )
             }
         }
         recyclerView.adapter = adapter
@@ -82,9 +91,10 @@ class SentVolunteersFragment : Fragment(), SearchView.OnQueryTextListener, View.
             adapter.volunteers = it
             fullList = it
         })
-        viewModel.getVolunteersWithStatus(getString(R.string.volunteer_status_left)).observe(viewLifecycleOwner, {
-            leftVolunteers = it
-        })
+        viewModel.getVolunteersWithStatus(getString(R.string.volunteer_status_left))
+            .observe(viewLifecycleOwner, {
+                leftVolunteers = it
+            })
         setHasOptionsMenu(true)
         root.fab_buttonSentLeft.setOnClickListener(this)
         return root
@@ -120,7 +130,7 @@ class SentVolunteersFragment : Fragment(), SearchView.OnQueryTextListener, View.
     }
 
     override fun onClick(v: View?) {
-        when(v?.id) {
+        when (v?.id) {
             R.id.fab_buttonSentLeft -> onClickSentLeft()
         }
     }
@@ -131,40 +141,40 @@ class SentVolunteersFragment : Fragment(), SearchView.OnQueryTextListener, View.
         for (volunteer in leftVolunteers) {
 
             builder
-                    .append(getString(R.string.volunteer_status_left).toUpperCase(Locale.ROOT))
-                    .append(LINE_SEPARATOR)
+                .append(getString(R.string.volunteer_status_left).toUpperCase(Locale.ROOT))
+                .append(LINE_SEPARATOR)
 
-                    .append(getString(R.string.fullName))
-                    .append(SPACE_KEY)
-                    .append(volunteer.fullName)
-                    .append(LINE_SEPARATOR)
+                .append(getString(R.string.fullName))
+                .append(SPACE_KEY)
+                .append(volunteer.fullName)
+                .append(LINE_SEPARATOR)
 
-                    .append(getString(R.string.call_sign))
-                    .append(SPACE_KEY)
-                    .append(volunteer.callSign)
-                    .append(LINE_SEPARATOR)
+                .append(getString(R.string.call_sign))
+                .append(SPACE_KEY)
+                .append(volunteer.callSign)
+                .append(LINE_SEPARATOR)
 
-                    .append(getString(R.string.forum_nickname))
-                    .append(SPACE_KEY)
-                    .append(volunteer.nickName)
-                    .append(LINE_SEPARATOR)
+                .append(getString(R.string.forum_nickname))
+                .append(SPACE_KEY)
+                .append(volunteer.nickName)
+                .append(LINE_SEPARATOR)
 
-                    .append(getString(R.string.region))
-                    .append(SPACE_KEY)
-                    .append(volunteer.region)
-                    .append(LINE_SEPARATOR)
+                .append(getString(R.string.region))
+                .append(SPACE_KEY)
+                .append(volunteer.region)
+                .append(LINE_SEPARATOR)
 
-                    .append(getString(R.string.phone_number))
-                    .append(SPACE_KEY)
-                    .append(volunteer.phoneNumber)
-                    .append(LINE_SEPARATOR)
+                .append(getString(R.string.phone_number))
+                .append(SPACE_KEY)
+                .append(volunteer.phoneNumber)
+                .append(LINE_SEPARATOR)
 
-                    .append(getString(R.string.info_about_car))
-                    .append(SPACE_KEY)
-                    .append(volunteer.car)
-                    .append(LINE_SEPARATOR)
+                .append(getString(R.string.info_about_car))
+                .append(SPACE_KEY)
+                .append(volunteer.car)
+                .append(LINE_SEPARATOR)
 
-                    .append(NOTE_SEPARATOR)
+                .append(NOTE_SEPARATOR)
         }
 
         val message = builder.toString()

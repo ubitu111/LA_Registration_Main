@@ -126,4 +126,7 @@ dependencies {
 
     //ViewBindingDelegate
     implementation 'com.github.kirich1409:viewbindingpropertydelegate:1.4.6'
+
+    //ML KIT barcode scanning
+    implementation 'com.google.mlkit:barcode-scanning:16.1.2'
 }

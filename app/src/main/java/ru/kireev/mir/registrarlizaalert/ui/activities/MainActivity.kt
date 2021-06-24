@@ -9,10 +9,14 @@ import com.github.terrakok.cicerone.androidx.AppNavigator
 import com.github.terrakok.cicerone.androidx.FragmentScreen
 import org.koin.android.ext.android.inject
 import ru.kireev.mir.registrarlizaalert.R
+import ru.kireev.mir.registrarlizaalert.ui.BaseFragment
 
 class MainActivity : AppCompatActivity() {
 
     private val cicerone by inject<Cicerone<Router>>()
+
+    private val currentFragment: BaseFragment?
+        get() = supportFragmentManager.findFragmentById(R.id.main_container) as? BaseFragment
 
     private val navigator: Navigator = object : AppNavigator(this, R.id.main_container) {
         override fun setupFragmentTransaction(
@@ -33,7 +37,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         if (savedInstanceState == null) {
-            navigator.applyCommands(arrayOf(BackTo(null), Replace(MainFlows.volunteersTabbedScreen())))
+            navigator.applyCommands(
+                arrayOf(
+                    BackTo(null),
+                    Replace(MainFlows.volunteersTabbedScreen())
+                )
+            )
         }
     }
 
@@ -46,4 +55,6 @@ class MainActivity : AppCompatActivity() {
         cicerone.getNavigatorHolder().removeNavigator()
         super.onPause()
     }
+
+    override fun onBackPressed() = currentFragment?.onBackPressed() ?: super.onBackPressed()
 }

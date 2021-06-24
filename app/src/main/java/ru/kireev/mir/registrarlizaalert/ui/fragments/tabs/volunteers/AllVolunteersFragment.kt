@@ -8,6 +8,7 @@ import android.view.*
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.github.terrakok.cicerone.Router
 import kotlinx.android.synthetic.main.fragment_tabbed_all_volunteers.view.*
 import org.koin.android.ext.android.inject
 import ru.kireev.mir.registrarlizaalert.R
@@ -15,7 +16,7 @@ import ru.kireev.mir.registrarlizaalert.data.database.entity.Volunteer
 import ru.kireev.mir.registrarlizaalert.presentation.viewmodel.GroupsViewModel
 import ru.kireev.mir.registrarlizaalert.presentation.viewmodel.MainViewModel
 import ru.kireev.mir.registrarlizaalert.presentation.viewmodel.VolunteersViewModel
-import ru.kireev.mir.registrarlizaalert.ui.activities.AddManuallyActivity
+import ru.kireev.mir.registrarlizaalert.ui.activities.MainFlows
 import ru.kireev.mir.registrarlizaalert.ui.adapters.VolunteerAdapter
 import ru.kireev.mir.registrarlizaalert.ui.listeners.OnVolunteerClickListener
 import ru.kireev.mir.registrarlizaalert.ui.listeners.OnVolunteerPhoneNumberClickListener
@@ -31,10 +32,16 @@ class AllVolunteersFragment : Fragment(), View.OnClickListener, SearchView.OnQue
     private val volunteersViewModel: VolunteersViewModel by inject()
     private val mainViewModel: MainViewModel by inject()
 
+    private val router: Router by inject()
+
     private lateinit var adapter: VolunteerAdapter
     private var fullList = listOf<Volunteer>()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         val root = inflater.inflate(R.layout.fragment_tabbed_all_volunteers, container, false)
         val recyclerView = root.recyclerViewAllVolunteersTab
 
@@ -50,10 +57,13 @@ class AllVolunteersFragment : Fragment(), View.OnClickListener, SearchView.OnQue
         adapter.onVolunteerClickListener = object : OnVolunteerClickListener {
             override fun onVolunteerClick(position: Int) {
                 val volunteerId = adapter.volunteers[position].uniqueId
-                val intent = Intent(context, AddManuallyActivity::class.java)
-                intent.putExtra(EXTRA_VOLUNTEER_ID, volunteerId)
-                intent.putExtra(EXTRA_SIZE, adapter.itemCount)
-                startActivity(intent)
+
+                router.navigateTo(
+                    MainFlows.addManuallyScreen(
+                        index = adapter.itemCount,
+                        volunteerId = volunteerId
+                    )
+                )
             }
         }
         recyclerView.adapter = adapter

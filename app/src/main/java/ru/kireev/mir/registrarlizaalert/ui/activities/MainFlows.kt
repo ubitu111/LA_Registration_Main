@@ -2,6 +2,7 @@ package ru.kireev.mir.registrarlizaalert.ui.activities
 
 import com.github.terrakok.cicerone.androidx.FragmentScreen
 import ru.kireev.mir.registrarlizaalert.ui.fragments.AddManuallyFragment
+import ru.kireev.mir.registrarlizaalert.ui.fragments.BarCodeScannerFragment
 import ru.kireev.mir.registrarlizaalert.ui.fragments.tabs.volunteers.TabbedVolunteersFragment
 
 object MainFlows {
@@ -10,5 +11,8 @@ object MainFlows {
     }
     fun addManuallyScreen(index: Int, volunteerId: Int? = null) = FragmentScreen {
         AddManuallyFragment.newInstance(index, volunteerId)
+    }
+    fun scanQrCodeScreen(index: Int) = FragmentScreen {
+        BarCodeScannerFragment.newInstance(index)
     }
 }

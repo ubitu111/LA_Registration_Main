@@ -2,22 +2,20 @@ package ru.kireev.mir.registrarlizaalert.presentation.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.github.terrakok.cicerone.Router
-import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import ru.kireev.mir.registrarlizaalert.R
 import ru.kireev.mir.registrarlizaalert.data.database.entity.emptyVolunteer
 import ru.kireev.mir.registrarlizaalert.domain.repository.AddManuallyRepository
+import ru.kireev.mir.registrarlizaalert.presentation.BaseViewModel
 import timber.log.Timber
 
 class AddManuallyViewModel(
     private val repository: AddManuallyRepository,
     private val router: Router
-) : ViewModel() {
+) : BaseViewModel() {
 
-    private val disposable = CompositeDisposable()
     private var volunteer = emptyVolunteer()
     private var isEdited = false
 
@@ -81,10 +79,5 @@ class AddManuallyViewModel(
                     .addTo(disposable)
             }
         }
-    }
-
-    override fun onCleared() {
-        disposable.dispose()
-        super.onCleared()
     }
 }

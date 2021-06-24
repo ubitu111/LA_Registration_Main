@@ -24,7 +24,6 @@
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -36,16 +35,6 @@
             android:name=".ui.activities.TabbedMainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".ui.activities.BarCodeScannerActivity"
-            android:label="@string/actionbar_label_scan_QR"
-            android:parentActivityName=".ui.activities.TabbedMainActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.activities.AddManuallyActivity"
-            android:label="@string/actionbar_label_add_manually"
-            android:parentActivityName=".ui.activities.TabbedMainActivity"
-            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activities.GroupDetailActivity"
             android:label="@string/label_group_detail"
